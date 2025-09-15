@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome for icons, linked from a reliable CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../navbar.css">
+    <link rel="stylesheet" href="../../footer.css">
+    <title>Contact Us - IGDTUW Insider</title>
+    <style>
+        /* General Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Light Theme */
+            --bg-primary: #f8f5e9;
+            --bg-secondary: #f1e6cc87;
+            --card-bg: #fffdf8;
+
+            --text-primary: #4a2f2f;
+            --text-secondary: #6a4a4a;
+            --muted-text: #8b6c6c;
+
+            --accent-primary: #7a2e3a;
+            --accent-secondary: #9c3f4b;
+            --accent-subtle: #c9a27e;
+
+            --border-color: #d8cbb7;
+            --shadow: rgba(0, 0, 0, 0.08);
+
+            --navbar-bg: rgba(248, 245, 233, 0.9);
+            --footer-bg: #e9e1d0;
+            --footer-text: #4a2f2f;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ========================================
+        ANIMATIONS
+        ======================================== */
+        @keyframes backgroundPan {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes iconWiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-8deg); }
+            75% { transform: rotate(8deg); }
+        }
+
+        @keyframes textReveal {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Base state for scroll-triggered animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .scroll-fade-up {
+            transform: translateY(40px);
+        }
+        
+        .is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 90px;
+            background-color:#f2eace; 
+            background-size: 400% 400%;
+            animation: backgroundPan 15s ease infinite;
+            text-align: center; 
+            overflow: hidden;
+        }
+        .hero h1 { 
+            font-size: 3.8rem; 
+            font-weight: 800; 
+            margin-bottom: 1rem; 
+            animation: fadeInDown 0.8s ease-out;
+        }
+        .hero p { 
+            font-size: 1.3rem; 
+            color: var(--text-secondary); 
+            max-width: 650px; 
+            margin: 0 auto; 
+        }
+        
+        /* Contact Section */
+        .contact-section { 
+            padding: 80px 0; 
+        }
+        .contact-section h2 { 
+            font-size: 2.5rem; 
+            text-align: center; 
+            margin-bottom: 1.5rem; 
+            animation: fadeInDown 0.8s ease-out;
+        }
+        .contact-section .section-subtitle { 
+            text-align: center; 
+            font-size: 1.1rem; 
+            color: var(--text-secondary); 
+            margin-bottom: 4rem; 
+        }
+
+        /* Quick Tips Card */
+        .quick-tips-card { 
+            background: var(--bg-secondary); 
+            padding: 1.5rem 2rem; 
+            border-radius: 12px; 
+            border-left: 5px solid var(--accent-primary); 
+            margin-bottom: 3rem; 
+            box-shadow: 0 4px 15px var(--shadow); 
+        }
+        .quick-tips-card h3 { 
+            margin-top: 0; 
+            margin-bottom: 1rem; 
+            font-size: 1.4rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+        .quick-tips-card .tips-content { 
+            font-size: 1rem; 
+            color: var(--text-secondary); 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            align-items: center; 
+        }
+        .quick-tips-card .tips-content span { 
+            padding-right: 15px; 
+        }
+
+        /* Layout */
+        .contact-layout { 
+            display: grid; 
+            grid-template-columns: 2fr 1fr; 
+            gap: 3rem; 
+            align-items: flex-start; 
+        }
+        .form-container h3, 
+        .info-container h3 { 
+            font-size: 2rem; 
+            margin-bottom: 1.5rem; 
+            color: var(--text-primary); 
+        }
+
+        /* Google Form Embed */
+        .google-form-embed { 
+            width: 100%; 
+            height: 903px; 
+            overflow: hidden; 
+            border-radius: 12px; 
+            border: 1px solid var(--border-color); 
+            box-shadow: 0 8px 30px var(--shadow); 
+        }
+        .google-form-embed iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: 0; 
+        }
+
+        /* Info Cards */
+        .info-cards { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 1.5rem; 
+        }
+
+        .info-card {
+            position: relative;
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* Gradient border effect - hidden initially */
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent 0deg,
+                transparent 180deg,
+                var(--accent-primary) 180deg,
+                var(--accent-secondary) 270deg,
+                var(--accent-primary) 360deg
+            );
+            animation: rotate-border 6s linear infinite;
+            z-index: -1;
+            opacity: 0; /* hidden until hover */
+            transition: opacity 0.4s ease;
+        }
+
+        /* Inner safe background */
+        .info-card::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            z-index: -1;
+        }
+
+        /* Hover Glow */
+        .info-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 25px var(--shadow-hover),
+                        0 0 15px var(--accent-primary),
+                        0 0 25px var(--accent-secondary);
+        }
+        .info-card:hover::before {
+            opacity: 1; /* border glows in */
+        }
+
+        /* Icon wiggle animation */
+        .info-card:hover .info-icon { 
+            animation: iconWiggle 0.5s ease; 
+        }
+
+        .info-icon { 
+            font-size: 2.2rem; 
+            margin-bottom: 1rem; 
+            color: var(--accent-primary); 
+            transition: color 0.3s ease; 
+        }
+        .info-card h3 { 
+            font-size: 1.3rem; 
+            margin-bottom: 0.5rem; 
+        }
+        .info-card p { 
+            color: var(--text-secondary); 
+            margin-bottom: 0.3rem; 
+        }
+        .info-note { 
+            font-size: 0.9rem; 
+            color: var(--text-secondary); 
+            font-style: italic; 
+        }
+
+        /* Keyframes */
+        @keyframes rotate-border {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .social-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .social-link {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            text-decoration: none;
+            color: var(--accent-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--accent-primary);
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px var(--shadow);
+        }
+        /* FAQ Section */
+        .faq-section { padding: 80px 0; background: var(--bg-secondary); }
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { background: var(--card-bg); border-radius: 12px; margin-bottom: 1rem; border: 1px solid var(--border-color); overflow: hidden; transition: all 0.3s ease; }
+        .faq-item:hover { border-color: var(--accent-primary); transform: scale(1.02); }
+        .faq-question { padding: 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-question h3 { font-size: 1.2rem; color: var(--text-primary); margin: 0; }
+        .faq-toggle { font-size: 1.5rem; color: var(--accent-primary); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out; }
+        .faq-answer p { padding: 0 1.5rem; color: var(--text-secondary); transform: translateY(-10px); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease; }
+        .faq-item.active .faq-toggle { transform: rotate(45deg); }
+        .faq-item.active .faq-answer { max-height: 200px; padding-bottom: 1.5rem; }
+        .faq-item.active .faq-answer p { transform: translateY(0); opacity: 1; transition-delay: 0.1s; }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .contact-layout { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: var(--navbar-bg);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px var(--shadow);
+                padding: 2rem 0;
+                backdrop-filter: blur(15px);
+            }
+
+            .nav-menu.active {
+                left: 0;
+                animation: slideInRight 0.3s ease-out;
+            }
+
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(100px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            .hero h1 { font-size: 2.8rem; }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, var(--accent-secondary), var(--accent-primary));
+        }
+
+        /* Loading Animation */
+        .loading {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="loading">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="../../logo.jpg" alt="Logo" class="logo-img">
+                <h2>IGDTUW Insider</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../../index.html" class="nav-link">Home</a></li>
+                <li><a href="../about/about.html" class="nav-link">About</a></li>
+                <li><a href="../edition/edition.html" class="nav-link">Editions</a></li>
+                <li><a href="../team/team.html" class="nav-link">The Team</a></li>
+                <li><a href="contact.html" class="nav-link">Contact Us</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="animated-heading"><span class="reveal-wrapper"><span class="reveal-text">Get in Touch</span></span></h1>
+            <p class="section-subtitle animate-on-scroll scroll-fade-up">Have a story idea, feedback, or want to contribute? We'd love to hear from you!</p>
+        </div>
+    </section>
+
+    <!-- Main Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <h2 class="animate-on-scroll scroll-fade-up">Send Us a Message</h2>
+            <p class="section-subtitle animate-on-scroll scroll-fade-up">For submissions and general inquiries, use the form below or contact us directly.</p>
+            
+            <div class="quick-tips-card animate-on-scroll scroll-fade-up">
+                <h3> Quick Tips</h3>
+                <div class="tips-content">
+                    <span> For story submissions, include a brief summary.</span>
+                    <span> Event coverage requests should be 1 week in advance.</span>
+                    <span> For urgent news, please email us directly.</span>
+                    <span> Feel free to attach relevant photos or documents.</span>
+                </div>
+            </div>
+
+            <div class="contact-layout">
+                <div class="form-container animate-on-scroll scroll-fade-up">
+                    <h3>Feedback Form</h3>
+                    <div class="google-form-embed">
+                        <!-- Google Form for submissions -->
+                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSctNSpyuLidM1q3_L_lwrMQT5fhkE5ckOtsVcMzJShdLeo4fg/viewform?usp=sharing&ouid=111341131689872010196" marginheight="0" marginwidth="0">Loading…</iframe>
+                    </div>
+                </div>
+                
+                <div class="info-container">
+                    <h3 class="animate-on-scroll scroll-fade-up">Reach Us Directly</h3>
+                    <div class="info-cards">
+                        <div class="info-cards">
+                            <!-- Email Card -->
+                            <div class="info-card animate-on-scroll scroll-fade-up">
+                                <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                                <h3>Email Us</h3>
+                                <p><a href="mailto:igdtuwinsider01@gmail.com" class="social-link">igdtuwinsider01@gmail.com</a></p>
+                                <p class="info-note">We respond within 24-48 hours</p>
+                            </div>
+
+                            <!-- Instagram Card -->
+                            <div class="info-card animate-on-scroll scroll-fade-up">
+                                <div class="info-icon"><i class="fab fa-instagram"></i></div>
+                                <h3>Instagram</h3>
+                                <p><a href="https://www.instagram.com/igdtuw_insider" target="_blank" class="social-link">@igdtuw_insider</a></p>
+                                <p class="info-note">Follow us for updates</p>
+                            </div>
+
+                            <!-- LinkedIn Card -->
+                            <div class="info-card animate-on-scroll scroll-fade-up">
+                                <div class="info-icon"><i class="fab fa-linkedin"></i></div>
+                                <h3>LinkedIn</h3>
+                                <p><a href="https://www.linkedin.com/company/igdtuw-insider/" target="_blank" class="social-link">IGDTUW Insider</a></p>
+                                <p class="info-note">Follow us for updates</p>
+                            </div>
+
+                            <!-- Visit Us Card -->
+                            <div class="info-card animate-on-scroll scroll-fade-up">
+                                <div class="info-icon">📍</div>
+                                <h3>Visit Us</h3>
+                                <p>IGDTUW Campus, Kashmere Gate</p>
+                                <p class="info-note">Office hours: 10 AM - 5 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="animate-on-scroll scroll-fade-up">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item animate-on-scroll scroll-fade-up">
+                    <div class="faq-question"><h3>How can I submit a story or article?</h3><span class="faq-toggle">+</span></div>
+                    <div class="faq-answer"><p>You can submit your story by filling out our contact form above or by directly emailing us. Please include a brief summary and any relevant details.</p></div>
+                </div>
+                <div class="faq-item animate-on-scroll scroll-fade-up">
+                    <div class="faq-question"><h3>Do you cover events outside the campus?</h3><span class="faq-toggle">+</span></div>
+                    <div class="faq-answer"><p>We primarily focus on campus-related news. However, if an external event has significant relevance to our university community, we may consider covering it.</p></div>
+                </div>
+                <div class="faq-item animate-on-scroll scroll-fade-up">
+                    <div class="faq-question"><h3>How long does it take to get a response?</h3><span class="faq-toggle">+</span></div>
+                    <div class="faq-answer"><p>We typically respond to emails within 24-48 hours. For urgent matters, please mention "URGENT" in your email subject line for a faster response.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+
+                <div class="footer-section">
+                    <h3>IGDTUW Insider</h3>
+                    <p>Bringing you the latest news and stories from our university community with dedication and excellence.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../../index.html">Home</a></li>
+                        <li><a href="../about/about.html">About</a></li>
+                        <li><a href="../edition/edition.html">Editions</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>📧 Email: <a href="mailto:igdtuwinsider01@gmail.com" class="contact-link">igdtuwinsider01@gmail.com</a></p>
+                    <p>📷 Instagram: <a href="https://www.instagram.com/igdtuw_insider" target="_blank" class="contact-link">@igdtuw_insider</a></p>
+                    <p>💼 LinkedIn: <a href="https://www.linkedin.com/company/igdtuw-insider/" target="_blank" class="contact-link">@IGDTUW Insider</a></p>
+                    <p>📍 Location: IGDTUW, Kashmere Gate, Delhi</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 IGDTUW Insider. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!-- All JavaScript is self-contained and requires no external files -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- Enhanced Mobile Menu Toggle with Animation ---
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            
+            // Animate hamburger lines
+            const spans = hamburger.querySelectorAll('span');
+            if (hamburger.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(9px, 9px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            const spans = hamburger.querySelectorAll('span');
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+        }));
+
+        // --- FAQ Accordion ---
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.closest('.faq-item');
+                const currentlyActive = document.querySelector('.faq-item.active');
+                if (currentlyActive && currentlyActive !== faqItem) {
+                    currentlyActive.classList.remove('active');
+                }
+                faqItem.classList.toggle('active');
+            });
+        });
+
+        // --- Enhanced Navbar background on scroll ---
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            const scrolled = window.pageYOffset;
+            
+            if (scrolled > 100) {
+                navbar.style.background = 'var(--navbar-bg)';
+                navbar.style.backdropFilter = 'blur(20px)';
+                navbar.style.boxShadow = '0 4px 20px var(--shadow)';
+            } else {
+                navbar.style.background = 'var(--navbar-bg)';
+                navbar.style.backdropFilter = 'blur(15px)';
+                navbar.style.boxShadow = 'none';
+            }
+        });
+
+        // --- Simplified Intersection Observer for scroll animations ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -30px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // --- Enhanced Loading Animation ---
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+        });
+
+        // --- Simplified click effects without excessive animations ---
+        document.querySelectorAll('.info-card, .faq-item').forEach(element => {
+            element.addEventListener('click', function(e) {
+                // Simple scale effect
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    });
+    </script>
+</body>
+</html>

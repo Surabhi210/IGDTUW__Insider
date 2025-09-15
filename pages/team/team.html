@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Team - IGDTUW Insider</title>
+    <link rel="stylesheet" href="../../navbar.css">
+    <link rel="stylesheet" href="../../footer.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #f8f5e9;
+            --bg-secondary: #f1e6cc87;
+            --card-bg: #fffdf8;
+
+            --text-primary: #4a2f2f;
+            --text-secondary: #6a4a4a;
+            --muted-text: #8b6c6c;
+
+            --accent-primary: #7a2e3a;
+            --accent-secondary: #9c3f4b;
+            --accent-subtle: #c9a27e;
+
+            --border-color: #d8cbb7;
+            --shadow: rgba(0, 0, 0, 0.08);
+
+            
+            --footer-bg: #e9e1d0;
+            --footer-text: #4a2f2f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 150px 0 80px;
+            text-align: center;
+            background: #f2eace;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+        }
+
+        /* Sections */
+        .team-section {
+            padding: 80px 0;
+        }
+
+        .team-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Responsive Grid System */
+        .team-grid {
+            display: grid;
+            gap: 2rem;
+            justify-content: center;
+            justify-items: center;
+        }
+
+        /* Founders - side by side on desktop, stack on mobile */
+        .founders-grid {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Secretary - single column */
+        .secretary-grid {
+            grid-template-columns: 1fr;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        /* Editorial Team - 3 columns on desktop, responsive */
+        .editorial-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Design Team - single column */
+        .design-grid {
+            grid-template-columns: 1fr;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        /* Tech Team Lead - single column */
+        .tech-lead-grid {
+            grid-template-columns: 1fr;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        /* Tech Team Members - 3 columns on desktop, responsive */
+        .tech-members-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Member Cards */
+        .member-card {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            height: 400px;
+            padding: 1.8rem;
+            border-radius: 14px;
+            text-align: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 25px var(--shadow);
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .founder-card {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            height: 440px;
+            padding: 1rem;
+            border-radius: 14px;
+            text-align: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 25px var(--shadow);
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* Avatar */
+        .avatar-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto 1.2rem;
+}
+
+/* Avatar box */
+.avatar-placeholder {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin: 0 auto 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: #fff;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: filter 0.3s ease;
+    overflow: hidden;   /* ensures images don't spill outside the circle */
+}
+
+/* Avatar image */
+.avatar-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   
+    border-radius: 50%;  /* keeps the circular shape */
+    display: block;      /* avoids bottom spacing */
+}
+
+/* LinkedIn button (bottom center) */
+.linkedin-link {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 10;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    box-shadow: none;
+    background: none;
+    display: inline-block;
+}
+
+/* Show LinkedIn button on hover */
+.avatar-wrapper:hover .linkedin-link {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+    pointer-events: auto;
+}
+
+/* Darken avatar on hover */
+.avatar-wrapper:hover .avatar-placeholder {
+    filter: brightness(0.7);
+}
+
+        /* Founder role text */
+        .founder-role {
+            color: var(--accent-primary);
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            font-size: 2.2rem;
+        }
+
+        /* Text inside card */
+        .member-info h3 {
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .member-role {
+            color: var(--accent-primary);
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .member-department {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .member-info p {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .member-card:hover {
+            border-color: var(--accent-primary);
+            transform: scale(1.02);
+            box-shadow: 0 12px 35px var(--shadow);
+        }
+
+        .founder-card:hover {
+            border-color: var(--accent-primary);
+            transform: scale(1.02);
+            box-shadow: 0 12px 35px var(--shadow);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .member-card,
+            .founder-card {
+                max-width: 380px;
+                height: auto;
+                min-height: 380px;
+                padding: 1.5rem;
+            }
+            
+            .founder-card {
+                min-height: 420px;
+            }
+            
+            .avatar-placeholder {
+                width: 180px;
+                height: 180px;
+                font-size: 1.8rem;
+            }
+            
+            .team-grid {
+                gap: 1.5rem;
+            }
+
+            .member-info h3 {
+                font-size: 1.4rem;
+                line-height: 1.3;
+            }
+
+            .member-role {
+                font-size: 1.4rem;
+                line-height: 1.3;
+            }
+
+            .founder-role {
+                font-size: 2rem;
+                line-height: 1.3;
+            }
+
+            /* Adjust grid minimums */
+            .founders-grid {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            }
+
+            .editorial-grid,
+            .tech-members-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                padding: 120px 0 60px;
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .team-section {
+                padding: 60px 0;
+            }
+            
+            .team-section h2 {
+                font-size: 2.2rem;
+                margin-bottom: 2.5rem;
+            }
+            
+            .member-card,
+            .founder-card {
+                max-width: 350px;
+                height: auto;
+                min-height: 360px;
+                padding: 1.4rem;
+            }
+            
+            .founder-card {
+                min-height: 400px;
+            }
+            
+            .avatar-placeholder {
+                width: 160px;
+                height: 160px;
+                font-size: 1.6rem;
+            }
+
+            .member-info h3 {
+                font-size: 1.3rem;
+                line-height: 1.4;
+            }
+
+            .member-role {
+                font-size: 1.3rem;
+                line-height: 1.4;
+            }
+
+            .founder-role {
+                font-size: 1.8rem;
+                line-height: 1.4;
+            }
+
+            /* Force smaller grids on medium screens */
+            .editorial-grid,
+            .tech-members-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                max-width: 800px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 100px 0 50px;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+                line-height: 1.2;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+                padding: 0 1rem;
+                line-height: 1.5;
+            }
+            
+            .team-section {
+                padding: 50px 0;
+            }
+            
+            .team-section h2 {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+            
+            /* All grids become single column on tablet and below */
+            .team-grid,
+            .founders-grid,
+            .editorial-grid,
+            .tech-members-grid {
+                grid-template-columns: 1fr !important;
+                max-width: 450px !important;
+            }
+            
+            .member-card,
+            .founder-card {
+                width: 100%;
+                max-width: 400px;
+                height: auto;
+                min-height: 350px;
+                padding: 1.5rem;
+            }
+            
+            .founder-card {
+                min-height: 380px;
+            }
+            
+            .avatar-placeholder {
+                width: 150px;
+                height: 150px;
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .founder-role {
+                font-size: 2rem;
+                line-height: 1.3;
+            }
+            
+            .member-role {
+                font-size: 1.3rem;
+                line-height: 1.3;
+            }
+            
+            .member-info h3 {
+                font-size: 1.3rem;
+                line-height: 1.4;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .member-card,
+            .founder-card {
+                max-width: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 80px 0 40px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+                line-height: 1.3;
+                margin-bottom: 0.8rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+                padding: 0 0.5rem;
+                line-height: 1.6;
+            }
+            
+            .team-section {
+                padding: 40px 0;
+            }
+            
+            .team-section h2 {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+                line-height: 1.3;
+            }
+            
+            .member-card,
+            .founder-card {
+                max-width: 320px;
+                min-height: 320px;
+                padding: 1.2rem;
+            }
+            
+            .founder-card {
+                min-height: 350px;
+            }
+            
+            .avatar-placeholder {
+                width: 130px;
+                height: 130px;
+                font-size: 1.3rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .founder-role {
+                font-size: 1.6rem;
+                margin-bottom: 0.3rem;
+                line-height: 1.3;
+            }
+            
+            .member-role {
+                font-size: 1.2rem;
+                margin-bottom: 0.3rem;
+                line-height: 1.3;
+            }
+            
+            .member-info h3 {
+                font-size: 1.2rem;
+                line-height: 1.4;
+            }
+            
+            .member-info p {
+                font-size: 0.95rem;
+                line-height: 1.4;
+            }
+            
+            .linkedin-link {
+                bottom: 15px;
+            }
+            
+            .linkedin-link img {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .container {
+                padding: 0 12px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .member-card,
+            .founder-card {
+                max-width: 300px;
+                padding: 1rem;
+            }
+
+            .member-info h3 {
+                font-size: 1.1rem;
+            }
+
+            .member-role {
+                font-size: 1.1rem;
+            }
+
+            .founder-role {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .team-section h2 {
+                font-size: 1.6rem;
+            }
+            
+            .member-card,
+            .founder-card {
+                max-width: 280px;
+                min-height: 300px;
+                padding: 1rem;
+            }
+            
+            .founder-card {
+                min-height: 330px;
+            }
+            
+            .avatar-placeholder {
+                width: 110px;
+                height: 110px;
+                font-size: 1.1rem;
+            }
+            
+            .founder-role {
+                font-size: 1.4rem;
+                line-height: 1.2;
+            }
+            
+            .member-role {
+                font-size: 1.1rem;
+                line-height: 1.2;
+            }
+            
+            .member-info h3 {
+                font-size: 1.1rem;
+                line-height: 1.3;
+            }
+            
+            .container {
+                padding: 0 10px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .member-card,
+            .founder-card {
+                max-width: 260px;
+                min-height: 280px;
+                padding: 0.8rem;
+            }
+            
+            .founder-card {
+                min-height: 310px;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .member-info h3 {
+                font-size: 1rem;
+                line-height: 1.3;
+            }
+
+            .member-role {
+                font-size: 1rem;
+                line-height: 1.3;
+            }
+
+            .founder-role {
+                font-size: 1.3rem;
+                line-height: 1.2;
+            }
+
+            .container {
+                padding: 0 8px;
+            }
+        }
+
+        /* Landscape phone optimization */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .hero {
+                padding: 60px 0 30px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .team-section {
+                padding: 30px 0;
+            }
+            
+            .team-section h2 {
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+  .nav-menu {
+    background-color: #4A0E1A !important; /* force solid */
+    opacity: 1 !important;
+    backdrop-filter: none !important;
+  }
+}
+
+
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="../../logo.jpg" alt="Logo" class="logo-img">
+                <h2>IGDTUW Insider</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../../index.html" class="nav-link">Home</a></li>
+                <li><a href="../about/about.html" class="nav-link">About</a></li>
+                <li><a href="../edition/edition.html" class="nav-link">Editions</a></li>
+                <li><a href="team.html" class="nav-link">The Team</a></li>
+                <li><a href="../contact/contact.html" class="nav-link">Contact Us</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="fade-up">Meet Our Team</h1>
+            <p class="fade-up">The passionate individuals behind IGDTUW Insider</p>
+        </div>
+    </section>
+
+    <!-- Founder -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="fade-up">Founders</h2>
+            <div class="team-grid founders-grid">
+                <!-- card 1 -->
+                <div class="founder-card">
+                    <p class="founder-role">Founder</p>
+
+                    <!-- avatar with LinkedIn overlay -->
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="mimansha.png" alt="Mimansha Kumar">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/mimansha-kumar/" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+
+                    <div class="member-info">
+                        <h3>Mimansha Kumar</h3>
+                        <p class="member-role">President</p>
+                        <p class="member-info">Editor-In-Chief</p>
+                    </div>
+                </div>
+
+                <!-- card 2 -->
+                <div class="founder-card">
+                    <p class="founder-role">Founder</p>
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="riddhima.png" alt="Riddhima">
+                        </div>
+
+                        <a class="linkedin-link" href="http://www.linkedin.com/in/riddhima-batra-937242317" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Riddhima Batra</h3>
+                        <p class="member-role">Vice President</p>
+                        <p class="member-info">Associate Editor</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Secretary -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="fade-up">Secretary</h2>
+            <div class="team-grid secretary-grid">
+                <div class="member-card">
+                    <p class="member-role">Associate Editor</p>
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="mishka.png" alt="Mishka">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/mishka-malhotra/" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Mishka Malhotra</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Editorial Team -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="fade-up">Editorial Team</h2>
+            <div class="team-grid editorial-grid">
+                <div class="member-card">
+                    <p class="member-role">Assistant Editor</p>
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="anoushkag.png" alt="Anoushka Gupta">
+                        </div>
+
+                        <a class="linkedin-link" href="http://www.linkedin.com/in/anoushka-gupta-331163319" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Anoushka Gupta</h3>
+                    </div>
+                </div>
+                <div class="member-card">
+                    <p class="member-role">Assistant Editor</p>
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="hiya.png" alt="Hiya">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/hiya-trehan-2127a4317/" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Hiya Trehan</h3>
+                    </div>
+                </div>
+                <div class="member-card">
+                    <p class="member-role">Assistant Editor</p>
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="muskan.png" alt="Muskan">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/muskan-goel-apr10" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Muskan Goel</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Design Team -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="fade-up">Design Team</h2>
+            <div class="team-grid design-grid">
+                <div class="member-card">
+                    <p class="member-role">Assistant Illustrator</p>
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="anoushka.jpg" alt="Anoushka">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/anoushkanoush/" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Anoushka</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Team -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="fade-up">Tech Team</h2>
+
+            <!-- Tech Team Lead -->
+            <div class="team-grid tech-lead-grid">
+                <div class="member-card">
+                    <p class="member-role">Assistant Web Manager</p>
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="surabhi.png" alt="Surabhi">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/surabhisethi" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Surabhi Sethi</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tech Team Members -->
+            <div class="team-grid tech-members-grid" style="margin-top: 2rem;">
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="srishti.png" alt="srishti">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/srishtigupta1837/" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Srishti Gupta</h3>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="tanishas.png" alt="tanisha">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/tanisha20" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Tanisha Sharma</h3>
+                    </div>
+                </div>
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="tanishao.png" alt="Tanisha">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/tanisha-ojha-6bb1b0203/" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Tanisha Ojha</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+
+                <div class="footer-section">
+                    <h3>IGDTUW Insider</h3>
+                    <p>Bringing you the latest news and stories from our university community with dedication and
+                        excellence.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../../index.html">Home</a></li>
+                        <li><a href="../about/about.html">About</a></li>
+                        <li><a href="../edition/edition.html">Editions</a></li>
+                        <li><a href="../contact/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>📧 Email: <a href="mailto:igdtuwinsider01@gmail.com"
+                            class="contact-link">igdtuwinsider01@gmail.com</a></p>
+                    <p>📷 Instagram: <a href="https://www.instagram.com/igdtuw_insider" target="_blank"
+                            class="contact-link">@igdtuw_insider</a></p>
+                    <p>💼 LinkedIn: <a href="https://www.linkedin.com/company/igdtuw-insider/" target="_blank"
+                            class="contact-link">@IGDTUW Insider</a></p>
+                    <p>📍 Location: IGDTUW, Kashmere Gate, Delhi</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 IGDTUW Insider. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile nav
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        hamburger.addEventListener('click', () => { 
+            hamburger.classList.toggle('active'); 
+            navMenu.classList.toggle('active'); 
+        });
+
+        // Fade-in cards and text on scroll
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = "fadeInUp 0.8s ease forwards";
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.member-card, .team-section h2, .hero h1, .hero p, .founder-card')
+            .forEach(el => observer.observe(el));
+    </script>
+</body>
+
+</html>

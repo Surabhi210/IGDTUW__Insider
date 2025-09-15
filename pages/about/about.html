@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - IGDTUW Insider</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../navbar.css">
+    <link rel="stylesheet" href="../../footer.css">
+    <style>
+
+:root {
+  --bg-primary: #f5eed2;
+  --bg-secondary: #e8dcc0;
+  --card-bg: #fffdf8;
+
+  --text-primary: #4a2f2f;
+  --text-secondary: #6a4a4a;
+  --muted-text: #8b6c6c;
+
+  --accent-primary: #7a2e3a;
+  --accent-secondary: #9c3f4b;
+  --accent-subtle: #c9a27e;
+
+  --border-color: #d8cbb7;
+  --shadow: rgba(0, 0, 0, 0.08);
+
+  --navbar-bg: #4A0E1A; 
+  --footer-bg: #e9e1d0;
+  --footer-text: #4a2f2f;
+}
+
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  overflow-x: hidden;
+  margin:0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Hero Section */
+.hero {
+  padding: 150px 0 80px;
+  background: linear-gradient(
+    135deg,
+    var(--bg-primary) 0%,
+    var(--bg-secondary) 100%
+  );
+  text-align: center;
+}
+
+.hero .container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--text-primary) !important; /* force palette */
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.3rem;
+  color: var(--text-secondary) !important; /* force palette */
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* About Us Section */
+.about {
+  padding: 80px 0;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.about-image-box {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px var(--shadow);
+  transform: rotate(-3deg);
+  transition: transform 0.5s ease-in-out;
+}
+
+.about-image-box:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+
+.about-image-box img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.about-text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.about-text p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+/* Mission & Vision Section */
+.mission {
+  padding: 80px 0;
+  background: var(--bg-secondary);
+}
+
+.mission-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.mission-text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.mission-text h3 {
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem;
+  color: var(--accent-primary);
+}
+
+.mission-text p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.mission-bullets ul {
+  list-style: none;
+  padding: 0;
+}
+
+.mission-bullets ul li {
+  color: var(--text-secondary);
+  margin-bottom: 0.8rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 1.1rem;
+}
+
+.mission-bullets ul li::before {
+  content: '‣';
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+  font-weight: bold;
+}
+
+/* Animations */
+@keyframes fadeInText {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rotate-border {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-text-up,
+.animate-fade-in-right,
+.animate-fade-in-left,
+.animate-scale-up,
+.animate-fade-in-bottom,
+.animate-float-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.animate-text-up {
+  transform: translateY(30px);
+}
+
+.animate-fade-in-right {
+  transform: translateX(30px);
+}
+
+.animate-fade-in-left {
+  transform: translateX(-30px);
+}
+
+.animate-scale-up {
+  transform: scale(0.9);
+}
+
+.animate-fade-in-bottom {
+  transform: translateY(30px);
+}
+
+.animate-float-up {
+  transform: translateY(20px);
+}
+
+/* When animated */
+.animate-text-up.active,
+.animate-fade-in-right.active,
+.animate-fade-in-left.active,
+.animate-scale-up.active,
+.animate-fade-in-bottom.active,
+.animate-float-up.active {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+.delay-1 {
+  transition-delay: 0.15s;
+}
+
+.delay-2 {
+  transition-delay: 0.3s;
+}
+
+.delay-3 {
+  transition-delay: 0.45s;
+}
+
+.delay-4 {
+  transition-delay: 0.6s;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: fixed;
+    left: -100%;
+    top: 70px;
+    flex-direction: column;
+    background-color: var(--navbar-bg);
+    width: 100%;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 10px 27px var(--shadow);
+    padding: 0;
+    margin: 0;
+    backdrop-filter: none;
+    opacity: 1;
+  }
+
+  .nav-menu.active {
+    left: 0;
+    animation: slideInRight 0.3s ease-out;
+  }
+
+  .nav-menu li {
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none;
+  }
+
+  .nav-menu .nav-link {
+    display: block;
+    padding: 20px;
+    margin: 0;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .nav-menu li:last-child .nav-link {
+    border-bottom: none;
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .about-content,
+  .mission-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .about-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .about-image-box {
+    order: 1;
+  }
+
+  .about-text {
+    order: 2;
+  }
+
+  .values-grid,
+  .team-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .about-text h2,
+  .mission-text h2,
+  .values h2,
+  .join-team h2 {
+    font-size: 2rem;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, var(--accent-secondary), var(--accent-primary));
+}
+
+/* Loading Animation */
+.loading {
+  opacity: 0;
+  animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+    </style>
+</head>  
+    <body class="loading">
+    <!-- Enhanced Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="../../logo.jpg" alt="Logo" class="logo-img">
+                <h2>IGDTUW Insider</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../../index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="../edition/edition.html" class="nav-link">Editions</a></li>
+                <li><a href="../team/team.html" class="nav-link">The Team</a></li>
+                <li><a href="../contact/contact.html" class="nav-link">Contact Us</a></li>
+
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h1 class="animate-text-up">About IGDTUW Insider</h1>
+            <p class="animate-text-up delay-1">The heartbeat of campus journalism at IGDTUW.</p>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image-box animate-fade-in-left">
+                    <img src="logo.png" alt="A placeholder image of a university campus">
+                </div>
+                <div class="about-text animate-fade-in-right">
+                    <h2>About Us</h2>
+                    <p>IGDTUW Insider is a passion project born from the desire to connect our vibrant university
+                        community. We believe in the power of words and visuals to inspire, inform, and unite. Our team,
+                        comprised entirely of students, is dedicated to bringing you stories that matter—from campus
+                        news and events to the groundbreaking achievements of our peers and faculty. We're more than
+                        just a publication; we're a platform for expression, a source of truth, and a record of our
+                        shared journey at IGDTUW.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mission">
+        <div class="container">
+            <div class="mission-content">
+                <div class="mission-text animate-fade-in-right">
+                    <h2>Our Mission</h2>
+                    <p>IGDTUW Insider is dedicated to serving as the voice of our university community. We strive to
+                        inform, engage, and connect students, faculty, and staff through accurate reporting, thoughtful
+                        analysis, and compelling storytelling.</p>
+
+                    <h3 class="animate-fade-in-right delay-1">Our Vision</h3>
+                    <p>Our vision is to build a vibrant and inclusive platform that empowers diverse voices, fosters
+                        critical thinking, and celebrates the spirit of IGDTUW. We aim to be the most trusted source of
+                        news and a cornerstone of campus dialogue.</p>
+                </div>
+                <div class="mission-bullets animate-fade-in-left">
+                    <h3>What We Will Do</h3>
+                    <ul>
+                        <li>Report on campus news and events</li>
+                        <li>Highlight student and faculty achievements</li>
+                        <li>Provide a platform for diverse voices and opinions</li>
+                        <li>Foster dialogue about issues that matter to our community</li>
+                        <li>Celebrate the rich culture and traditions of IGDTUW</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+
+                <div class="footer-section">
+                    <h3>IGDTUW Insider</h3>
+                    <p>Bringing you the latest news and stories from our university community with dedication and excellence.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../../index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="../edition/edition.html">Editions</a></li>
+                        <li><a href="../contact/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>📧 Email: <a href="mailto:igdtuwinsider01@gmail.com" class="contact-link">igdtuwinsider01@gmail.com</a></p>
+                    <p>📷 Instagram: <a href="https://www.instagram.com/igdtuw_insider" target="_blank" class="contact-link">@igdtuw_insider</a></p>
+                    <p>💼 LinkedIn: <a href="https://www.linkedin.com/company/igdtuw-insider/" target="_blank" class="contact-link">@IGDTUW Insider</a></p>
+                    <p>📍 Location: IGDTUW, Kashmere Gate, Delhi</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 IGDTUW Insider.All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced Mobile Menu Toggle with Animation
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', function () {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+
+            // Animate hamburger lines
+            const spans = hamburger.querySelectorAll('span');
+            if (hamburger.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(9px, 9px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            const spans = hamburger.querySelectorAll('span');
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+        }));
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Enhanced Navbar background on scroll
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.navbar');
+            const scrolled = window.pageYOffset;
+
+            if (scrolled > 100) {
+                navbar.style.background = 'var(--navbar-bg)';
+                navbar.style.backdropFilter = 'blur(20px)';
+                navbar.style.boxShadow = '0 4px 20px var(--shadow)';
+            } else {
+                navbar.style.background = 'var(--navbar-bg)';
+                navbar.style.backdropFilter = 'blur(15px)';
+                navbar.style.boxShadow = 'none';
+            }
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // Stop observing once it's active
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.animate-text-up, .animate-fade-in-right, .animate-fade-in-left, .animate-scale-up, .animate-fade-in-bottom, .animate-float-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Enhanced Loading Animation
+        window.addEventListener('load', function () {
+            document.body.classList.add('loaded');
+        });
+
+        // Click effects for interactive elements
+        document.querySelectorAll('.value-card, .team-card').forEach(element => {
+            element.addEventListener('click', function (e) {
+                // Simple scale effect
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+
+</html>

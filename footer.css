@@ -1,0 +1,106 @@
+:root {
+    --footer-bg: #4a0e1a;
+    --footer-text: white;
+    --footer-link-hover: #cccccc;
+    --footer-border: rgba(255, 255, 255, 0.2);
+}
+
+.footer {
+    background: #4A0E1A;
+    padding: 50px 20px;
+    border-top: 1px solid var(--footer-border);
+    position: relative;
+    overflow: hidden;
+    color: white;
+}
+
+/* --- Grid layout --- */
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    text-align: center;
+    z-index: 2;
+}
+
+/* --- Sections --- */
+.footer-content > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+/* Subtle hover effect for symmetry */
+.footer-content > div:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Headings --- */
+.footer h3, 
+.footer h4 {
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.footer h3:hover, 
+.footer h4:hover {
+    color: #cccccc;
+}
+
+/* --- Links --- */
+.footer a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.footer a:hover {
+    color: #cccccc;
+    transform: scale(1.05);
+}
+
+/* --- Quick links list --- */
+.footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer ul li {
+    margin: 0.5rem 0;
+}
+
+/* --- Footer bottom --- */
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--footer-border);
+    color: white;
+    font-size: 0.9rem;
+    animation: fadeInText 1s ease-out 0.5s both;
+}
+
+/* --- Animations --- */
+@keyframes fadeInText {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Responsiveness --- */
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr; /* stack sections vertically */
+        text-align: center;
+    }
+
+    .footer-content > div {
+        margin-bottom: 1.5rem;
+    }
+}

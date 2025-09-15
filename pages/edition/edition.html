@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editions - IGDTUW Insider</title>
+    <link rel="stylesheet" href="../../navbar.css">
+    <link rel="stylesheet" href="../../footer.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #f2eace;
+            --bg-secondary: #f1e6cc87;
+            --card-bg: #fffdf8;
+
+            --text-primary: #4a2f2f;
+            --text-secondary: #6a4a4a;
+            --muted-text: #8b6c6c;
+
+            --accent-primary: #7a2e3a;
+            --accent-secondary: #9c3f4b;
+            --accent-subtle: #c9a27e;
+
+            --border-color: #d8cbb7;
+            --shadow: rgba(0, 0, 0, 0.08);
+
+            --navbar-bg: #4A0E1A;
+            --footer-bg: #e9e1d0;
+            --footer-text: #4a2f2f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 60px;
+            background: #f2eace;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .filter-dropdown {
+            padding: 10px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 130px;
+        }
+
+        .filter-dropdown:hover,
+        .filter-dropdown:focus {
+            border-color: var(--accent-primary);
+            outline: none;
+        }
+
+        /* Editions Grid */
+        .editions-section {
+            padding: 60px 0;
+        }
+
+        .editions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            justify-items: center;
+        }
+
+        .edition-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            max-width: 280px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .edition-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .edition-cover {
+            height: 380px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .edition-cover.drive-preview {
+            background-image: url('https://drive.google.com/thumbnail?id=1AfW9OkTTbSoCyTBiLyTonTccFKiNu-RR&sz=w800');
+        }
+
+        .edition-cover:hover {
+            transform: scale(1.05);
+        }
+
+        .hover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(122, 46, 58, 0.7));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 2;
+        }
+
+        .edition-cover:hover .hover-overlay {
+            opacity: 1;
+        }
+
+        .view-button {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--accent-primary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: translateY(10px);
+            margin-bottom: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .edition-cover:hover .view-button {
+            transform: translateY(0);
+            background: white;
+        }
+
+        .view-button:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .edition-title {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            transform: translateY(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .edition-cover:hover .edition-title {
+            transform: translateY(0);
+        }
+
+        .special-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 3;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .no-results h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .no-results p {
+            color: var(--text-secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: var(--navbar-bg);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px var(--shadow);
+                padding: 0;
+                margin: 0;
+                backdrop-filter: none;
+                opacity: 1;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-menu li {
+                margin: 0 !important;
+                padding: 0 !important;
+                list-style: none;
+            }
+
+            .nav-menu .nav-link {
+                display: block;
+                padding: 20px;
+                margin: 0;
+                color: white;
+                text-decoration: none;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .nav-menu li:last-child .nav-link {
+                border-bottom: none;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .editions-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+                padding: 0 1rem;
+            }
+
+            .edition-card {
+                max-width: 100%;
+            }
+
+            .edition-cover {
+                height: 320px;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .edition-cover {
+                height: 280px;
+            }
+
+            .hero {
+                padding: 100px 0 40px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .editions-grid {
+                padding: 0 0.5rem;
+                grid-template-columns: 1fr;
+            }
+
+            .edition-card {
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="../../logo.jpg" alt="Logo" class="logo-img">
+                <h2>IGDTUW Insider</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../../index.html" class="nav-link">Home</a></li>
+                <li><a href="../about/about.html" class="nav-link">About</a></li>
+                <li><a href="edition.html" class="nav-link">Editions</a></li>
+                <li><a href="../team/team.html" class="nav-link">The Team</a></li>
+                <li><a href="../contact/contact.html" class="nav-link">Contact Us</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Newspaper Archive</h1>
+            <p>Browse through our past editions. A journey through the history of IGDTUW.</p>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <select id="yearFilter" class="filter-dropdown">
+                    <option value="">All Years</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <section class="editions-section">
+        <div class="container">
+            <div class="editions-grid" id="editionsGrid">
+                <!-- Edition 1 -->
+                <div class="edition-card" data-year="2025" onclick="window.open('https://drive.google.com/file/d/1AfW9OkTTbSoCyTBiLyTonTccFKiNu-RR/view?usp=sharing', '_blank')">
+                    <div class="edition-cover drive-preview">
+                        <div class="hover-overlay">
+                            <button class="view-button">VIEW</button>
+                            <div class="edition-title">Edition-1 | September 2025</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="edition-card" data-year="2024" onclick="window.open('https://drive.google.com/file/d/1AfW9OkTTbSoCyTBiLyTonTccFKiNu-RR/view?usp=sharing', '_blank')">
+                    <div class="edition-cover drive-preview" style="background-image: url('https://drive.google.com/thumbnail?id=1AfW9OkTTbSoCyTBiLyTonTccFKiNu-RR&sz=w800');">
+                        <div class="hover-overlay">
+                            <button class="view-button">VIEW</button>
+                            <div class="edition-title">Edition-2 | December 2024</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="edition-card" data-year="2024" onclick="window.open('https://drive.google.com/file/d/1AfW9OkTTbSoCyTBiLyTonTccFKiNu-RR/view?usp=sharing', '_blank')">
+                    <div class="edition-cover drive-preview" style="background-image: url('https://drive.google.com/thumbnail?id=1AfW9OkTTbSoCyTBiLyTonTccFKiNu-RR&sz=w800');">
+                        <div class="hover-overlay">
+                            <button class="view-button">VIEW</button>
+                            <div class="edition-title">Edition-3 | October 2024</div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+
+            <!-- No Results Message -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <h3>No editions found</h3>
+                <p>Try selecting a different year or clear the filter to see all editions.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>IGDTUW Insider</h3>
+                    <p>Bringing you the latest news and stories from our university community with dedication and excellence.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../../index.html">Home</a></li>
+                        <li><a href="../about/about.html">About</a></li>
+                        <li><a href="edition.html">Editions</a></li>
+                        <li><a href="../contact/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>📧 Email: <a href="mailto:igdtuwinsider01@gmail.com" class="contact-link">igdtuwinsider01@gmail.com</a></p>
+                    <p>📷 Instagram: <a href="https://www.instagram.com/igdtuw_insider" target="_blank" class="contact-link">@igdtuw_insider</a></p>
+                    <p>💼 LinkedIn: <a href="https://www.linkedin.com/company/igdtuw-insider/" target="_blank" class="contact-link">@IGDTUW Insider</a></p>
+                    <p>📍 Location: IGDTUW, Kashmere Gate, Delhi</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 IGDTUW Insider. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', function () {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+
+            // Animate hamburger lines
+            const spans = hamburger.querySelectorAll('span');
+            if (hamburger.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(9px, 9px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            const spans = hamburger.querySelectorAll('span');
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+        }));
+
+        // Filter functionality
+        const yearFilter = document.getElementById('yearFilter');
+        const editionsGrid = document.getElementById('editionsGrid');
+        const noResults = document.getElementById('noResults');
+
+        yearFilter.addEventListener('change', function () {
+            const selectedYear = this.value;
+            const editionCards = document.querySelectorAll('.edition-card');
+            let visibleCount = 0;
+
+            editionCards.forEach(card => {
+                const cardYear = card.getAttribute('data-year');
+
+                if (selectedYear === '' || cardYear === selectedYear) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Show/hide no results message
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+                editionsGrid.style.display = 'none';
+            } else {
+                noResults.style.display = 'none';
+                editionsGrid.style.display = 'grid';
+            }
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -30px 0px'
+        };
+
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe edition cards for animation
+        document.querySelectorAll('.edition-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            observer.observe(card);
+        });
+
+        // Prevent button click from triggering card click
+        document.querySelectorAll('.view-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // The card's onclick will still be triggered by the parent div
+            });
+        });
+    </script>
+
+</body>
+
+</html>
