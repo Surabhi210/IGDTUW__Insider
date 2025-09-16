@@ -7,6 +7,8 @@
     <title>Editions - IGDTUW Insider</title>
     <link rel="stylesheet" href="../../navbar.css">
     <link rel="stylesheet" href="../../footer.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         * {
@@ -45,7 +47,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -103,120 +105,99 @@
 
         .editions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
             margin-top: 2rem;
             justify-items: center;
         }
 
         .edition-card {
-            background: var(--card-bg);
+            width: 100%;
+            max-width: 380px;
+            aspect-ratio: 3/4;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 30px var(--shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 100%;
-            max-width: 280px;
-            position: relative;
             cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px var(--shadow);
         }
 
         .edition-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
         }
 
         .edition-cover {
-            height: 380px;
+            width: 100%;
+            height: 100%;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             position: relative;
-            overflow: hidden;
             transition: all 0.3s ease;
-            border-radius: 15px;
         }
 
         .edition-cover.drive-preview {
-            background-image: url('https://drive.google.com/thumbnail?id=1AfW9OkTTbSoCyTBiLyTonTccFKiNu-RR&sz=w800');
+            background-image: url('https://drive.google.com/thumbnail?id=1CeYAS5mLdk-Zo_gly4ZN_Dq_aNySjQmT&sz=w800');
         }
 
-        .edition-cover:hover {
-            transform: scale(1.05);
-        }
-
+        /* Hover Overlay */
         .hover-overlay {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(122, 46, 58, 0.7));
+            background: rgba(0, 0, 0, 0.6);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: all 0.4s ease;
             z-index: 2;
         }
 
-        .edition-cover:hover .hover-overlay {
+        .edition-card:hover .hover-overlay {
             opacity: 1;
         }
 
-        .view-button {
-            background: rgba(255, 255, 255, 0.95);
-            color: var(--accent-primary);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
+        /* OPTION 1: Font Awesome Icon */
+        .search-icon {
+            width: 70px;
+            height: 70px;
+            border: 3px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             transition: all 0.3s ease;
-            transform: translateY(10px);
-            margin-bottom: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: scale(0.8);
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: white;
         }
 
-        .edition-cover:hover .view-button {
-            transform: translateY(0);
-            background: white;
-        }
-
-        .view-button:hover {
-            transform: translateY(-2px) !important;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        .edition-card:hover .search-icon {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .edition-title {
             color: white;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
             text-align: center;
             transform: translateY(10px);
             transition: transform 0.3s ease;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
-        .edition-cover:hover .edition-title {
+        .edition-card:hover .edition-title {
             transform: translateY(0);
-        }
-
-        .special-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-            color: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            z-index: 3;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
         }
 
         /* No Results */
@@ -233,18 +214,6 @@
 
         .no-results p {
             color: var(--text-secondary);
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         /* Responsive Design */
@@ -300,28 +269,30 @@
 
             .editions-grid {
                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 1.5rem;
+                gap: 2rem;
                 padding: 0 1rem;
             }
 
             .edition-card {
-                max-width: 100%;
-            }
-
-            .edition-cover {
-                height: 320px;
+                max-width: 300px;
             }
 
             .container {
                 padding: 0 15px;
             }
+
+            .search-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+
+            .edition-title {
+                font-size: 1.1rem;
+            }
         }
 
         @media (max-width: 480px) {
-            .edition-cover {
-                height: 280px;
-            }
-
             .hero {
                 padding: 100px 0 40px;
             }
@@ -331,13 +302,36 @@
             }
 
             .editions-grid {
-                padding: 0 0.5rem;
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 0 0.5rem;
             }
 
             .edition-card {
-                max-width: 300px;
+                max-width: 280px;
             }
+
+            .search-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 22px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease forwards;
         }
     </style>
 </head>
@@ -387,34 +381,17 @@
     <section class="editions-section">
         <div class="container">
             <div class="editions-grid" id="editionsGrid">
-                <!-- Edition 1 -->
-                <div class="edition-card" data-year="2025" onclick="window.open('https://drive.google.com/file/d/1AfW9OkTTbSoCyTBiLyTonTccFKiNu-RR/view?usp=sharing', '_blank')">
+                <!-- Edition 1 - Font Awesome Option -->
+                <div class="edition-card" data-year="2025" onclick="window.open('https://drive.google.com/drive/folders/1cLhmhJWDAVS0RokqKq7ENLi4ZJyp76xM', '_blank')">
                     <div class="edition-cover drive-preview">
                         <div class="hover-overlay">
-                            <button class="view-button">VIEW</button>
+                            <div class="search-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
                             <div class="edition-title">Edition-1 | September 2025</div>
                         </div>
                     </div>
                 </div>
-
-                <!-- <div class="edition-card" data-year="2024" onclick="window.open('https://drive.google.com/file/d/1AfW9OkTTbSoCyTBiLyTonTccFKiNu-RR/view?usp=sharing', '_blank')">
-                    <div class="edition-cover drive-preview" style="background-image: url('https://drive.google.com/thumbnail?id=1AfW9OkTTbSoCyTBiLyTonTccFKiNu-RR&sz=w800');">
-                        <div class="hover-overlay">
-                            <button class="view-button">VIEW</button>
-                            <div class="edition-title">Edition-2 | December 2024</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="edition-card" data-year="2024" onclick="window.open('https://drive.google.com/file/d/1AfW9OkTTbSoCyTBiLyTonTccFKiNu-RR/view?usp=sharing', '_blank')">
-                    <div class="edition-cover drive-preview" style="background-image: url('https://drive.google.com/thumbnail?id=1AfW9OkTTbSoCyTBiLyTonTccFKiNu-RR&sz=w800');">
-                        <div class="hover-overlay">
-                            <button class="view-button">VIEW</button>
-                            <div class="edition-title">Edition-3 | October 2024</div>
-                        </div>
-                    </div>
-                </div> -->
-            </div>
 
             <!-- No Results Message -->
             <div class="no-results" id="noResults" style="display: none;">
@@ -463,63 +440,67 @@
         const hamburger = document.querySelector('.hamburger');
         const navMenu = document.querySelector('.nav-menu');
 
-        hamburger.addEventListener('click', function () {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', function () {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
 
-            // Animate hamburger lines
-            const spans = hamburger.querySelectorAll('span');
-            if (hamburger.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(9px, 9px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-            } else {
+                // Animate hamburger lines
+                const spans = hamburger.querySelectorAll('span');
+                if (hamburger.classList.contains('active')) {
+                    spans[0].style.transform = 'rotate(45deg) translate(9px, 9px)';
+                    spans[1].style.opacity = '0';
+                    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                } else {
+                    spans[0].style.transform = 'none';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = 'none';
+                }
+            });
+
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                const spans = hamburger.querySelectorAll('span');
                 spans[0].style.transform = 'none';
                 spans[1].style.opacity = '1';
                 spans[2].style.transform = 'none';
-            }
-        });
-
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-            const spans = hamburger.querySelectorAll('span');
-            spans[0].style.transform = 'none';
-            spans[1].style.opacity = '1';
-            spans[2].style.transform = 'none';
-        }));
+            }));
+        }
 
         // Filter functionality
         const yearFilter = document.getElementById('yearFilter');
         const editionsGrid = document.getElementById('editionsGrid');
         const noResults = document.getElementById('noResults');
 
-        yearFilter.addEventListener('change', function () {
-            const selectedYear = this.value;
-            const editionCards = document.querySelectorAll('.edition-card');
-            let visibleCount = 0;
+        if (yearFilter) {
+            yearFilter.addEventListener('change', function () {
+                const selectedYear = this.value;
+                const editionCards = document.querySelectorAll('.edition-card');
+                let visibleCount = 0;
 
-            editionCards.forEach(card => {
-                const cardYear = card.getAttribute('data-year');
+                editionCards.forEach(card => {
+                    const cardYear = card.getAttribute('data-year');
 
-                if (selectedYear === '' || cardYear === selectedYear) {
-                    card.style.display = 'block';
-                    visibleCount++;
+                    if (selectedYear === '' || cardYear === selectedYear) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Show/hide no results message
+                if (visibleCount === 0) {
+                    noResults.style.display = 'block';
+                    editionsGrid.style.display = 'none';
                 } else {
-                    card.style.display = 'none';
+                    noResults.style.display = 'none';
+                    editionsGrid.style.display = 'grid';
                 }
             });
-
-            // Show/hide no results message
-            if (visibleCount === 0) {
-                noResults.style.display = 'block';
-                editionsGrid.style.display = 'none';
-            } else {
-                noResults.style.display = 'none';
-                editionsGrid.style.display = 'grid';
-            }
-        });
+        }
 
         // Intersection Observer for animations
         const observerOptions = {
@@ -544,13 +525,8 @@
             observer.observe(card);
         });
 
-        // Prevent button click from triggering card click
-        document.querySelectorAll('.view-button').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.stopPropagation();
-                // The card's onclick will still be triggered by the parent div
-            });
-        });
+        // Add smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
     </script>
 
 </body>
