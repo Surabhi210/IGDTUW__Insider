@@ -98,6 +98,22 @@
             outline: none;
         }
 
+        .clear-filter {
+            padding: 10px 20px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .clear-filter:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+        }
+
         /* Editions Grid */
         .editions-section {
             padding: 60px 0;
@@ -163,7 +179,6 @@
             opacity: 1;
         }
 
-        /* OPTION 1: Font Awesome Icon */
         .search-icon {
             width: 70px;
             height: 70px;
@@ -203,17 +218,13 @@
         /* No Results */
         .no-results {
             text-align: center;
-            padding: 3rem 0;
+            padding: 1rem 0;
         }
 
         .no-results h3 {
             font-size: 1.3rem;
             margin-bottom: 1rem;
             color: var(--text-primary);
-        }
-
-        .no-results p {
-            color: var(--text-secondary);
         }
 
         /* Responsive Design */
@@ -267,6 +278,12 @@
                 font-size: 2.2rem;
             }
 
+            .filter-section {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
             .editions-grid {
                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
                 gap: 2rem;
@@ -289,6 +306,15 @@
 
             .edition-title {
                 font-size: 1.1rem;
+            }
+
+            .no-results {
+                padding: 2rem 1rem;
+                margin: 1rem;
+            }
+
+            .no-results-icon {
+                font-size: 3rem;
             }
         }
 
@@ -332,6 +358,21 @@
 
         .fade-in-up {
             animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease forwards;
         }
     </style>
 </head>
@@ -381,7 +422,7 @@
     <section class="editions-section">
         <div class="container">
             <div class="editions-grid" id="editionsGrid">
-                <!-- Edition 1 - Font Awesome Option -->
+                <!-- Edition 1 -->
                 <div class="edition-card" data-year="2025" onclick="window.open('https://drive.google.com/drive/folders/1cLhmhJWDAVS0RokqKq7ENLi4ZJyp76xM', '_blank')">
                     <div class="edition-cover drive-preview">
                         <div class="hover-overlay">
@@ -393,10 +434,13 @@
                     </div>
                 </div>
 
+                <!-- Add more editions here as they become available -->
+                
+            </div>
+
             <!-- No Results Message -->
             <div class="no-results" id="noResults" style="display: none;">
-                <h3>No editions found</h3>
-                <p>Try selecting a different year or clear the filter to see all editions.</p>
+                <h3>No Editions found</h3>
             </div>
         </div>
     </section>
@@ -474,32 +518,34 @@
         const editionsGrid = document.getElementById('editionsGrid');
         const noResults = document.getElementById('noResults');
 
-        if (yearFilter) {
-            yearFilter.addEventListener('change', function () {
-                const selectedYear = this.value;
-                const editionCards = document.querySelectorAll('.edition-card');
-                let visibleCount = 0;
+        function updateFilter() {
+            const selectedYear = yearFilter.value;
+            const editionCards = document.querySelectorAll('.edition-card');
+            let visibleCount = 0;
 
-                editionCards.forEach(card => {
-                    const cardYear = card.getAttribute('data-year');
+            editionCards.forEach(card => {
+                const cardYear = card.getAttribute('data-year');
 
-                    if (selectedYear === '' || cardYear === selectedYear) {
-                        card.style.display = 'block';
-                        visibleCount++;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-                // Show/hide no results message
-                if (visibleCount === 0) {
-                    noResults.style.display = 'block';
-                    editionsGrid.style.display = 'none';
+                if (selectedYear === '' || cardYear === selectedYear) {
+                    card.style.display = 'block';
+                    visibleCount++;
                 } else {
-                    noResults.style.display = 'none';
-                    editionsGrid.style.display = 'grid';
+                    card.style.display = 'none';
                 }
             });
+
+            // Show/hide no results message
+            if (visibleCount === 0 && selectedYear !== '') {
+                noResults.style.display = 'block';
+                editionsGrid.style.display = 'none';
+            } else {
+                noResults.style.display = 'none';
+                editionsGrid.style.display = 'grid';
+            }
+        }
+
+        if (yearFilter) {
+            yearFilter.addEventListener('change', updateFilter);
         }
 
         // Intersection Observer for animations
