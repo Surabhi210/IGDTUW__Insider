@@ -36,7 +36,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             transition: all 0.3s ease;
@@ -99,6 +99,13 @@
             margin: 0 auto;
         }
 
+        /* Faculty - single column */
+        .faculty-grid {
+            grid-template-columns: 1fr;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
         /* Editorial Team - 3 columns on desktop, responsive */
         .editorial-grid {
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -138,7 +145,7 @@
             text-align: center;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            box-shadow: 0 8px 25px var(--shadow);
+            /* box-shadow: 0 8px 25px var(--shadow); */
             overflow: hidden;
             z-index: 1;
             transition: all 0.3s ease;
@@ -156,7 +163,7 @@
             text-align: center;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            box-shadow: 0 8px 25px var(--shadow);
+            /* box-shadow: 0 8px 25px var(--shadow); */
             overflow: hidden;
             z-index: 1;
             transition: all 0.3s ease;
@@ -267,13 +274,13 @@
         .member-card:hover {
             border-color: var(--accent-primary) !important;
             transform: scale(1.05) translateY(0px) !important;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15) !important;
+            /* box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15) !important; */
         }
 
         .founder-card:hover {
             border-color: var(--accent-primary) !important;
             transform: scale(1.05) translateY(0px) !important;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15) !important;
+            /* box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15) !important; */
         }
 
         /* Animations */
@@ -643,7 +650,6 @@
   }
 }
 
-
     </style>
 </head>
 
@@ -673,8 +679,8 @@
     <!-- Hero -->
     <section class="hero">
         <div class="container">
-            <h1 class="fade-up">Meet Our Team</h1>
-            <p class="fade-up">The passionate individuals behind IGDTUW Insider</p>
+            <h1 class="fade-up" >Meet Our Team</h1>
+            <p class="fade-up" >The passionate individuals behind IGDTUW Insider</p>
         </div>
     </section>
 
@@ -915,6 +921,31 @@
                     </div>
                     <div class="member-info">
                         <h3>Tanisha Ojha</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section">
+        <div class="container">
+            <h2 class="fade-up">Faculty Advisor</h2>
+            <div class="team-grid faculty-grid">
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="facultyadv.jpg" alt="Dr. Shweta Jindal">
+                        </div>
+
+                        <!-- <a class="linkedin-link" href="https://www.linkedin.com/in/mishka-malhotra/" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a> -->
+                    </div>
+                    <div class="member-info">
+                        <h3>Dr. Shweta Jindal</h3>
+                        <p class="member-role">Faculty Advisor</p>
                     </div>
                 </div>
             </div>
