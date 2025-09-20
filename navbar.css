@@ -61,8 +61,7 @@
 /* Logo text */
 .logo h2 {
     color: var(--navbar-text);
-    font-family: "Josefin Sans", sans-serif;
-    font-weight: 400;
+    font-weight: 700;
     font-size: 1.8rem;
     transition: color 0.3s ease;
     text-shadow: none;
@@ -85,9 +84,7 @@
 .nav-link {
     text-decoration: none;
     color: var(--navbar-text);
-    font-weight: 350;
-    font-family: "Josefin Sans", sans-serif;
-    font-size: 0.9rem;
+    font-weight: 500;
     transition: all 0.3s ease;
     position: relative;
     padding: 10px 15px;
@@ -150,11 +147,19 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
 }
 
 .logo-img {
-    height: 30px;
+    height: 40px;
     width: auto;
+    transition: transform 0.3s ease;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .logo-img:hover {
