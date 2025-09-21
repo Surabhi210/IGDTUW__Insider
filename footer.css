@@ -14,6 +14,13 @@
     color: white;
 }
 
+/* Container styling - This was missing and causing the layout issues */
+.footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
 /* --- Grid layout --- */
 .footer-content {
     display: grid;
@@ -54,6 +61,13 @@
     color: #cccccc;
 }
 
+/* --- Paragraphs --- */
+.footer p {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
 /* --- Links --- */
 .footer a {
     color: white;
@@ -64,6 +78,17 @@
 .footer a:hover {
     color: #cccccc;
     transform: scale(1.05);
+}
+
+/* Contact links specific styling */
+.contact-link {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-link:hover {
+    color: white;
 }
 
 /* --- Quick links list --- */
@@ -85,6 +110,12 @@
     color: white;
     font-size: 0.9rem;
     animation: fadeInText 1s ease-out 0.5s both;
+    margin-top: 2rem;
+}
+
+.footer-bottom p {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
 }
 
 /* --- Animations --- */
@@ -95,12 +126,26 @@
 
 /* --- Responsiveness --- */
 @media (max-width: 768px) {
+    .footer {
+        padding: 30px 15px;
+    }
+
+    .footer .container {
+        padding: 0 10px;
+    }
+    
     .footer-content {
         grid-template-columns: 1fr; /* stack sections vertically */
         text-align: center;
+        gap: 1.5rem;
     }
 
     .footer-content > div {
         margin-bottom: 1.5rem;
+    }
+    
+    .footer-content > div:hover {
+        transform: none; /* Disable hover effects on mobile */
+        box-shadow: none;
     }
 }
