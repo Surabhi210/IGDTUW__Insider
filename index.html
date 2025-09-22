@@ -52,7 +52,7 @@
         <div class="container">
             <h2 class="animate-on-scroll">Featured Stories</h2>
             <div class="featured-grid">
-                <div class="featured-card main-story animate-on-scroll" onclick="openArticle('prof-rk-singh.html')">
+                <a href="prof-rk-singh.html" class="featured-card main-story animate-on-scroll">
                     <div class="feature-badge">FEATURED</div>
                     <h3>A Tribute to Prof. R.K. Singh: A Legacy of Leadership and Vision</h3>
                     <p>As Prof. R.K. Singh's remarkable tenure as Dean Student Welfare comes to an end, we celebrate his
@@ -61,9 +61,9 @@
                         <span class="story-author">IGDTUW Community</span>
                         <span class="story-date">Read Story</span>
                     </div>
-                </div>
+                </a>
 
-                <div class="featured-card animate-on-scroll" onclick="openArticle('ucc-interview.html')">
+                <a href="ucc-interview.html" class="featured-card animate-on-scroll">
                     <div class="feature-badge">SPOTLIGHT</div>
                     <h3>UCC Interview: Shaping Campus Culture</h3>
                     <p>An exclusive conversation with the inaugural University Cultural Committee about their journey,
@@ -72,7 +72,7 @@
                         <span class="story-author">IGDTUW Insider</span>
                         <span class="story-date">Read Interview</span>
                     </div>
-                </div>
+                </a>
 
                 <div class="featured-card animate-on-scroll" onclick="showUpdateMessage(this)">
                     <div class="feature-badge">TRENDING</div>
@@ -284,19 +284,12 @@
         // Simplified click effects without excessive animations
         document.querySelectorAll('.btn, .link-card, .story-card').forEach(element => {
             element.addEventListener('click', function (e) {
-                // Simple scale effect
                 this.style.transform = 'scale(0.98)';
                 setTimeout(() => {
                     this.style.transform = '';
                 }, 150);
             });
         });
-
-        // Function to open articles in new tab
-        function openArticle(url) {
-            window.open(url, '_blank');
-        }
-
         // Featured Stories Click Handler for "Coming Soon" items
         function showUpdateMessage(element) {
             const originalContent = element.innerHTML;
