@@ -18,8 +18,10 @@
             --bg-primary: #f5eed2;
             --bg-secondary: #f8f8f8;
             --card-bg: #ffffff;
-            --text-primary: #333333;
+            --text-primary: #000000;
+            /* black for answers */
             --text-secondary: #666666;
+            /* subtitles, metadata, quotes remain gray */
             --muted-text: #999999;
             --accent-primary: #690609;
             --accent-secondary: #4a0e1a;
@@ -31,7 +33,8 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            background-color:#f5eed2;;
+            background-color: #f5eed2;
+            ;
             min-height: 100vh;
             color: var(--text-primary);
             padding-top: 80px;
@@ -44,78 +47,54 @@
         }
 
         .article-header {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: white;
-            padding: 40px;
-            border-radius: 20px;
             text-align: center;
             margin-bottom: 40px;
-            box-shadow: 0 15px 30px rgba(105, 6, 9, 0.2);
         }
 
         .article-badge {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
             font-size: 0.9rem;
             font-weight: bold;
             display: inline-block;
-            margin-bottom: 20px;
-            backdrop-filter: blur(10px);
+            margin-bottom: 10px;
+            color: var(--accent-primary);
         }
 
         .article-title {
             font-size: 2.3rem;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             line-height: 1.2;
+            color: var(--accent-primary);
         }
 
         .article-subtitle {
             font-size: 1.2rem;
             margin-bottom: 20px;
-            opacity: 0.9;
             font-style: italic;
+            color: var(--text-secondary);
         }
 
         .article-meta {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1rem;
-            margin-top: 20px;
-        }
-
-        .article-content {
-            background: var(--card-bg);
-            padding: 50px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px var(--shadow);
-            line-height: 1.8;
+            font-size: 0.9rem;
+            color: #666666;
         }
 
         .qa-section {
             margin-bottom: 40px;
-            border-left: 4px solid var(--accent-primary);
-            padding-left: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
         }
 
         .question {
-            background: linear-gradient(135deg, #f8f5f0, #f2ede3);
-            padding: 20px 25px;
-            border-radius: 15px;
-            margin-bottom: 20px;
             font-weight: 600;
             font-size: 1.1rem;
             color: var(--accent-primary);
+            margin-bottom: 10px;
         }
 
         .answer {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid var(--border-color);
             font-size: 1rem;
-            color: var(--text-primary);
-            box-shadow: 0 5px 15px var(--shadow);
+            color: #000000;
+            /* now black */
         }
 
         .answer p {
@@ -127,38 +106,52 @@
         }
 
         .highlight-quote {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
+            border-left: 4px solid var(--accent-primary);
+            padding-left: 20px;
             font-style: italic;
+            font-weight: 600;
+            /* makes it bold */
             font-size: 1.1rem;
-            margin: 30px 0;
-            position: relative;
-        }
-
-        .highlight-quote::before {
-            content: '"';
-            font-size: 3rem;
-            position: absolute;
-            top: -10px;
-            left: 15px;
-            opacity: 0.3;
+            margin: 20px 0;
+            color: #000000;
         }
 
         @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: var(--navbar-bg);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px var(--shadow);
+                padding: 2rem 0;
+                backdrop-filter: blur(15px);
+            }
+
+            .nav-menu.active {
+                left: 0;
+                animation: slideInRight 0.3s ease-out;
+            }
+
             .article-title {
                 font-size: 1.8rem;
             }
-            
+
             .article-header {
                 padding: 30px 20px;
             }
-            
+
             .article-content {
                 padding: 30px 20px;
             }
-            
+
             .container {
                 padding: 20px 15px;
             }
@@ -167,9 +160,23 @@
                 padding-left: 15px;
             }
 
-            .question, .answer {
+            .question,
+            .answer {
                 padding: 15px 20px;
             }
+
+        }
+
+        /* New styles for the image */
+        .article-image {
+            width: 60%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: block; /* Make the image a block-level element */
+            margin-left: auto; /* Automatically set the left margin */
+            margin-right: auto; /* Automatically set the right margin */
         }
     </style>
     <link rel="stylesheet" href="navbar.css">
@@ -177,7 +184,6 @@
 </head>
 
 <body>
-    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
@@ -200,120 +206,200 @@
     </nav>
 
     <div class="container">
-
-        <div class="article-header">
+        <header class="article-header">
             <span class="article-badge">SPOTLIGHT INTERVIEW</span>
             <h1 class="article-title">UCC Interview: Shaping Campus Culture</h1>
             <p class="article-subtitle">An exclusive conversation with the inaugural University Cultural Committee</p>
+            <p class="photo-credit" >By <strong>Astha Singh, 2nd year</strong></p>
             <div class="article-meta">
-                <span>By IGDTUW Insider</span>
-                <span> • </span>
+                <!-- <span>IGDTUW Insider</span>
+                <span> • </span> -->
                 <span>September 2025</span>
+                
             </div>
-        </div>
+        </header>
 
-        <div class="article-content">
+        <img src="ucc.jpg"
+            alt="Students working on a cultural event" class="article-image">
+
+        <main class="article-content">
             <div class="qa-section">
                 <div class="question">
-                    Q1: As the inaugural University Cultural Committee (UCC) of our college, how does it feel to be shaping our cultural events?
+                    Q: As the inaugural University Cultural Committee (UCC) of our college, how does it feel to be
+                    shaping our cultural events?
                 </div>
                 <div class="answer">
-                    <p>It has been an exhilarating experience! Building something from scratch is fun, and we're learning how many details go into making an event successful. Our "Golden Rolodex" of talented campus individuals has been a great asset, helping with everything from sound to decoration. This year, our committee was faculty-led, and that guidance made a significant difference. They brought a wonderful sense of discipline and structure to our events, while we, the student members, infused the process with creativity and casual energy. This partnership ensured our events were both well-organised and genuinely engaging.</p>
-                    <p>The best part, however, has been the friendships we've built along the way. We've become a close-knit team, and we're proud to shape campus culture together.</p>
-                </div>
-            </div>
-
-            <div class="qa-section">
-                <div class="question">
-                    Q2: How would you rate your experience working in a faculty-led Cultural Committee compared to your understanding of a student-led one?
-                </div>
-                <div class="answer">
-                    <p>The experience has been transformative and has offered a new, more holistic perspective on organising events. In a student-led model, the energy is incredible, and we aim for excitement and liveliness. The faculty leadership, however, gave the necessary guidance that we, as students, tend to lack. They provided a structured vision aligned with the institution's long-term values and goals, ensuring every event was not only fun but also safe and sustainable.</p>
-                    <p>A key advantage was their role as a bridge. They expertly connected between students, college administration and potential sponsors. This insightful approach to logistics and partnerships was something we hadn't fully valued before. Perhaps the most significant shift was in our own perspective. Working alongside them, we saw the human side behind the titles. They became our mentors, collaborators and a helping hand we could always turn to for guidance. It was a perfect balance of our youthful energy and their experienced navigation.</p>
-                </div>
-            </div>
-
-            <div class="qa-section">
-                <div class="question">
-                    Q3: The fest was a phenomenal success. How did you and your team manage to pull off such an incredible event?
-                </div>
-                <div class="answer">
-                    <p>Thank you! The short answer is: together. None of this would have been possible without the team. Teamwork wasn't just important; it was everything.</p>
-                    <p>The long answer is a little more chaotic! We've spent countless hours side by side, from dawn till dusk, figuring things out together. There was pressure, excitement and moments of pure exhaustion. But in between all that, there were also shared laughs, small victories, and a sense of purpose that kept us going. The pain was shared, the fun was shared, and time kaise sath mein beet gya wo pata hi nhi chala.</p>
-                    <p>That collective spirit transforms the responsibility into an adventure. When we finally saw the crowd enjoying what we had built, every long hour felt worth it. The final applause is for the event, but the real reward is the unbreakable bond you form with your crew and the memories you'll cherish forever.</p>
+                    <p>It has been an exhilarating experience! Building something from scratch is fun, and we're learning
+                        how many details go into making an event successful. Our "Golden Rolodex" of talented campus
+                        individuals has been a great asset, helping with everything from sound to decoration. This year,
+                        our committee was faculty-led, and that guidance made a significant difference. They brought a
+                        wonderful sense of discipline and structure to our events, while we, the student members,
+                        infused the process with creativity and casual energy. This partnership ensured our events were
+                        both well-organised and genuinely engaging.</p>
+                    <p>The best part, however, has been the friendships we've built along the way. We've become a
+                        close-knit team, and we're proud to shape campus culture together.</p>
                 </div>
             </div>
 
             <div class="qa-section">
                 <div class="question">
-                    Q4: Where do you see the University Cultural Committee in the next five years?
+                    Q: How would you rate your experience working in a faculty-led Cultural Committee compared to your
+                    understanding of a student-led one?
                 </div>
                 <div class="answer">
-                    <p>We envision a bright future for the UCC, built on the momentum we've gained this year through our innovative approach and improved PR. In five years, we aim for the UCC to be the cornerstone of campus spirit, creating shared memories that define student life. We anticipate significant growth in corporate sponsorship, enabling us to host more renowned artists and spectacular events that attract large crowds.</p>
-                    <p>While specific future developments may be unpredictable: the UCC will grow and become a defining pillar of the student experience at our university.</p>
+                    <p>The experience has been transformative and has offered a new, more holistic perspective on
+                        organising events. In a student-led model, the energy is incredible, and we aim for excitement
+                        and liveliness. The faculty leadership, however, gave the necessary guidance that we, as
+                        students, tend to lack. They provided a structured vision aligned with the institution's
+                        long-term values and goals, ensuring every event was not only fun but also safe and
+                        sustainable.</p>
+                    <p>A key advantage was their role as a bridge. They expertly connected between students, college
+                        administration and potential sponsors. This insightful approach to logistics and partnerships
+                        was something we hadn't fully valued before. Perhaps the most significant shift was in our own
+                        perspective. Working alongside them, we saw the human side behind the titles. They became our
+                        mentors, collaborators and a helping hand we could always turn to for guidance. It was a perfect
+                        balance of our youthful energy and their experienced navigation.</p>
                 </div>
             </div>
 
             <div class="qa-section">
                 <div class="question">
-                    Q5: With so many people involved, how did the UCC handle the inevitable disagreements and creative differences?
+                    Q: The fest was a phenomenal success. How did you and your team manage to pull off such an
+                    incredible event?
                 </div>
                 <div class="answer">
-                    <p>Disagreements weren't just inevitable; they were an essential part of the process. With so many passionate students, faculty advisors, and seniors on board, clashing perspectives were omnipresent.</p>
-                    <p>Our approach was organic but structured. We'd often "fight it out" in debates until the best option prevailed. A natural hierarchy based on responsibility helped provide direction, but it was never rigid. The key was maintaining a hands-on approach at every level to ensure everyone felt heard. Obviously, when exhaustion sets in, the only thing that matters is progress. In those moments, our mantra became, "Whoever is willing to get it done, please do." That trust and flexibility allowed people to take ownership and run with a solution, which was what truly moved us forward and turned disagreement into results.</p>
+                    <p>Thank you! The short answer is: together. None of this would have been possible without the team.
+                        Teamwork wasn't just important; it was everything.</p>
+                    <p>The long answer is a little more chaotic! We've spent countless hours side by side, from dawn
+                        till dusk, figuring things out together. There was pressure, excitement and moments of pure
+                        exhaustion. But in between all that, there were also shared laughs, small victories, and a sense
+                        of purpose that kept us going. The pain was shared, the fun was shared, and time kaise sath mein
+                        beet gya wo pata hi nhi chala.</p>
+                    <p>That collective spirit transforms the responsibility into an adventure. When we finally saw the
+                        crowd enjoying what we had built, every long hour felt worth it. The final applause is for the
+                        event, but the real reward is the unbreakable bond you form with your crew and the memories
+                        you'll cherish forever.</p>
                 </div>
             </div>
 
             <div class="qa-section">
                 <div class="question">
-                    Q6: Beyond the logistics, what is the most valuable personal lesson you will take away from this experience?
+                    Q: Where do you see the University Cultural Committee in the next five years?
                 </div>
                 <div class="answer">
-                    <p>This position had our team learn valuable lessons in teamwork and leadership that extend far beyond event coordination. As a team, our greatest lesson was the transformative power of open communication, humility, and trust. We learned to prioritize candid conversations and realized that effective leadership requires detaching from titles and viewing people as individuals. This experience taught us to set aside our pride, acknowledge our flaws, and ask for help when we needed it.</p>
-                    <p>Most importantly, we learned not to take challenges personally. Letting go of minor disagreements was essential for our well-being and success. By focusing on our shared mission instead of individual credit, we conserved our energy for what truly mattered: supporting each other and achieving our common goal. That sense of collective resilience is the lesson we will carry with us into everything we do.</p>
+                    <p>We envision a bright future for the UCC, built on the momentum we've gained this year through our
+                        innovative approach and improved PR. In five years, we aim for the UCC to be the cornerstone of
+                        campus spirit, creating shared memories that define student life. We anticipate significant
+                        growth in corporate sponsorship, enabling us to host more renowned artists and spectacular
+                        events that attract large crowds.</p>
+                    <p>While specific future developments may be unpredictable: the UCC will grow and become a defining
+                        pillar of the student experience at our university.</p>
                 </div>
             </div>
 
             <div class="qa-section">
                 <div class="question">
-                    Q7: With so many incredible moments throughout the fest, which one stands out as the most memorable for you all?
+                    Q: With so many people involved, how did the UCC handle the inevitable disagreements and creative
+                    differences?
                 </div>
                 <div class="answer">
-                    <p>There is one moment we will all carry with us forever. It was during the inaugural event when we finally revealed the secret we'd been guarding for months. As the first chords of Mohit Chauhan's iconic song echoed through the venue, the crowd erupted in cheers. The vibe was unreal.</p>
+                    <p>Disagreements weren't just inevitable; they were an essential part of the process. With so many
+                        passionate students, faculty advisors, and seniors on board, clashing perspectives were
+                        omnipresent.</p>
+                    <p>Our approach was organic but structured. We'd often "fight it out" in debates until the best
+                        option prevailed. A natural hierarchy based on responsibility helped provide direction, but it
+                        was never rigid. The key was maintaining a hands-on approach at every level to ensure everyone
+                        felt heard. Obviously, when exhaustion sets in, the only thing that matters is progress. In those
+                        moments, our mantra became, "Whoever is willing to get it done, please do." That trust and
+                        flexibility allowed people to take ownership and run with a solution, which was what truly moved
+                        us forward and turned disagreement into results.</p>
+                </div>
+            </div>
+
+            <div class="qa-section">
+                <div class="question">
+                    Q: Beyond the logistics, what is the most valuable personal lesson you will take away from this
+                    experience?
+                </div>
+                <div class="answer">
+                    <p>This position had our team learn valuable lessons in teamwork and leadership that extend far
+                        beyond event coordination. As a team, our greatest lesson was the transformative power of open
+                        communication, humility, and trust. We learned to prioritize candid conversations and realized
+                        that effective leadership requires detaching from titles and viewing people as individuals. This
+                        experience taught us to set aside our pride, acknowledge our flaws, and ask for help when we
+                        needed it.</p>
+                    <p>Most importantly, we learned not to take challenges personally. Letting go of minor disagreements
+                        was essential for our well-being and success. By focusing on our shared mission instead of
+                        individual credit, we conserved our energy for what truly mattered: supporting each other and
+                        achieving our common goal. That sense of collective resilience is the lesson we will carry with
+                        us into everything we do.</p>
+                </div>
+            </div>
+
+            <div class="qa-section">
+                <div class="question">
+                    Q: With so many incredible moments throughout the fest, which one stands out as the most memorable
+                    for you all?
+                </div>
+                <div class="answer">
+                    <p>There is one moment we will all carry with us forever. It was during the inaugural event when we
+                        finally revealed the secret we'd been guarding for months. As the first chords of Mohit Chauhan's
+                        iconic song echoed through the venue, the crowd erupted in cheers. The vibe was unreal.</p>
                     <div class="highlight-quote">
-                        But the truly unforgettable peak came later, on the main night. After meticulous planning, mounting stress and sleepless nights, watching Mohit Chauhan himself ascend the stage felt surreal. When he sang "tumse hi din hota hai, surmayi shaam aati h….", we looked at each other, then at the screaming, joyous crowd, and a single thought passed between us: this was the shaam we'd been working for.
+                        But the truly unforgettable peak came later, on the main night. After meticulous planning,
+                        mounting stress and sleepless nights, watching Mohit Chauhan himself ascend the stage felt
+                        surreal. When he sang "tumse hi din hota hai, surmayi shaam aati h….", we looked at each other,
+                        then at the screaming, joyous crowd, and a single thought passed between us: this was the shaam
+                        we'd been working for.
                     </div>
-                    <p>A shaam that would stay with us forever, not just as a memory, but as a testament of what passion and perseverance can create. For just a moment, it was perfectly relaxing and deeply rewarding; a brief, beautiful pause in the chaos where we could simply soak it all in. It was our victory.</p>
+                    <p>A shaam that would stay with us forever, not just as a memory, but as a testament of what passion
+                        and perseverance can create. For just a moment, it was perfectly relaxing and deeply rewarding;
+                        a brief, beautiful pause in the chaos where we could simply soak it all in. It was our
+                        victory.</p>
                 </div>
             </div>
 
             <div class="qa-section">
                 <div class="question">
-                    Q8: What advice would you give to the students who will take on this role next year?
+                    Q: What advice would you give to the students who will take on this role next year?
                 </div>
                 <div class="answer">
-                    <p>Our most crucial advice: your team is your greatest strength. Build a foundation of open communication and trust. If you're struggling, speak up; if you need help, ask for it. Learn to delegate, because a small, dedicated, and efficient team is far more powerful than a large, disconnected one. Start your sponsorship drive early, as it is a process that always takes longer than anticipated. Most importantly, maintain a humble and respectful relationship with faculty advisors; their guidance is invaluable. This role is as taxing as it is rewarding, so cultivate a strong support system. Keep work divisions clear, rely on each other, and you will not only survive the chaos; you'll build something incredible together.</p>
+                    <p>Our most crucial advice: your team is your greatest strength. Build a foundation of open
+                        communication and trust. If you're struggling, speak up; if you need help, ask for it. Learn to
+                        delegate, because a small, dedicated, and efficient team is far more powerful than a large,
+                        disconnected one. Start your sponsorship drive early, as it is a process that always takes
+                        longer than anticipated. Most importantly, maintain a humble and respectful relationship with
+                        faculty advisors; their guidance is invaluable. This role is as taxing as it is rewarding, so
+                        cultivate a strong support system. Keep work divisions clear, rely on each other, and you will
+                        not only survive the chaos; you'll build something incredible together.</p>
                 </div>
             </div>
 
             <div class="qa-section">
                 <div class="question">
-                    Q9: How did you manage to balance the immense UCC responsibilities with your academic workload?
+                    Q: How did you manage to balance the immense UCC responsibilities with your academic workload?
                 </div>
                 <div class="answer">
-                    <p>The honest truth is that it requires significant personal sacrifice and a relentless time dedication. No one is perfect at time management, and you must accept that you can't do everything. The key lies in setting boundaries and prioritizing what you can, making tough choices about where your energy is best spent. This is where your support system becomes indispensable. Having good, understanding friends who have your back, whether it's sharing notes, covering for you, or just being there to listen after a long day, makes all the difference in the world. It's a difficult balance, but the experience teaches you resilience and focus that prove to be invaluable beyond the role.</p>
+                    <p>The honest truth is that it requires significant personal sacrifice and a relentless time
+                        dedication. No one is perfect at time management, and you must accept that you can't do
+                        everything. The key lies in setting boundaries and prioritizing what you can, making tough choices
+                        about where your energy is best spent. This is where your support system becomes indispensable.
+                        Having good, understanding friends who have your back, whether it's sharing notes, covering for
+                        you, or just being there to listen after a long day, makes all the difference in the world. It's
+                        a difficult balance, but the experience teaches you resilience and focus that prove to be
+                        invaluable beyond the role.</p>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>IGDTUW Insider</h3>
-                    <p>Bringing you the latest news and stories from our university community with dedication and excellence.</p>
+                    <p>Bringing you the latest news and stories from our university community with dedication and
+                        excellence.</p>
                 </div>
 
                 <div class="footer-section">
@@ -328,9 +414,12 @@
 
                 <div class="footer-section">
                     <h4>Contact Info</h4>
-                    <p>📧 Email: <a href="mailto:igdtuwinsider01@gmail.com" class="contact-link">igdtuwinsider01@gmail.com</a></p>
-                    <p>📷 Instagram: <a href="https://www.instagram.com/igdtuw_insider" target="_blank" class="contact-link">@igdtuw_insider</a></p>
-                    <p>💼 LinkedIn: <a href="https://www.linkedin.com/company/igdtuw-insider/" target="_blank" class="contact-link">@IGDTUW Insider</a></p>
+                    <p>📧 Email: <a href="mailto:igdtuwinsider01@gmail.com"
+                            class="contact-link">igdtuwinsider01@gmail.com</a></p>
+                    <p>📷 Instagram: <a href="https://www.instagram.com/igdtuw_insider" target="_blank"
+                            class="contact-link">@igdtuw_insider</a></p>
+                    <p>💼 LinkedIn: <a href="https://www.linkedin.com/company/igdtuw-insider/" target="_blank"
+                            class="contact-link">@IGDTUW Insider</a></p>
                     <p>📍 Location: IGDTUW, Kashmere Gate, Delhi</p>
                 </div>
             </div>
