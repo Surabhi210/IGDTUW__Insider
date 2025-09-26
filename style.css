@@ -789,3 +789,6 @@ body {
 .featured-card:nth-child(3) {
     animation-delay: 0.3s;
 }
+*{
+    font-family: "Newsreader", serif;
+}
