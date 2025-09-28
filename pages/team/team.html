@@ -7,16 +7,13 @@
     <title>The Team - IGDTUW Insider</title>
     <link rel="stylesheet" href="../../navbar.css">
     <link rel="stylesheet" href="../../footer.css">
-
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Newsreader", serif;
         }
 
         :root {
@@ -110,8 +107,8 @@
 
         /* Faculty - single column */
         .faculty-grid {
-            grid-template-columns: 1fr;
-            max-width: 450px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            max-width: 900px;
             margin: 0 auto;
         }
 
@@ -676,8 +673,8 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <img src="../../secondary-logo2.svg" alt="Logo" class="logo-img">
-                <!-- <h2 style="padding-top:10px">IGDTUW INSIDER</h2> -->
+                <img src="../../secondary-logo.png" alt="Logo" class="logo-img">
+                <h2 style="padding-top:10px">IGDTUW INSIDER</h2>
             </div>
             <ul class="nav-menu">
                 <li><a href="../../index.html" class="nav-link">HOME</a></li>
@@ -947,24 +944,33 @@
 
     <section class="team-section">
         <div class="container">
-            <h2 class="fade-up">Faculty Advisor</h2>
+            <h2 class="fade-up">Faculty Advisors</h2>
             <div class="team-grid faculty-grid">
-                <div class="member-card">
+                <div class="founder-card">
                     <div class="avatar-wrapper">
                         <div class="avatar-placeholder">
-                            <img src="facultyadv.jpg" alt="Dr. Shweta Jindal">
+                            <img src="facultyadv.jpg" alt="Dr. Shweta Jindal">
                         </div>
-
-                        <a class="linkedin-link" href="#" target="_blank"
-                            rel="noopener" aria-label="Connect on LinkedIn">
-                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
-                                width="32" height="32">
-                        </a>
                     </div>
                     <div class="member-info">
-                        <h3>Dr. Shweta Jindal</h3>
+                        <h3>Dr. Shweta Jindal</h3>
+                        <p class="member-role">Assistant Professor</p>
+                        <p class="member-info"></p>
                     </div>
                 </div>
+                <div class="founder-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="Rishabh Kaushal.jpeg" alt="Dr. Rishabh Kaushal">
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>Dr. Rishabh Kaushal</h3>
+                        <p class="member-role">Associate Professor, Incharge (ACM Student Chapter)</p>
+                        <p class="member-role"></p>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
     </section>
