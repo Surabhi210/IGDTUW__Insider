@@ -9,11 +9,13 @@
     <link rel="stylesheet" href="../../footer.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: "Newsreader", serif;
         }
 
         :root {
@@ -40,7 +42,7 @@
 
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Newsreader", serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             transition: all 0.3s ease;
@@ -151,7 +153,6 @@
             text-align: center;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            /* box-shadow: 0 8px 25px var(--shadow); */
             overflow: hidden;
             z-index: 1;
             transition: all 0.3s ease;
@@ -169,7 +170,6 @@
             text-align: center;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            /* box-shadow: 0 8px 25px var(--shadow); */
             overflow: hidden;
             z-index: 1;
             transition: all 0.3s ease;
@@ -179,67 +179,67 @@
 
         /* Avatar */
         .avatar-wrapper {
-    position: relative;
-    display: inline-block;
-    margin: 0 auto 1.2rem;
-}
+            position: relative;
+            display: inline-block;
+            margin: 0 auto 1.2rem;
+        }
 
-/* Avatar box */
-.avatar-placeholder {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    margin: 0 auto 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-    color: #fff;
-    font-size: 2rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: filter 0.3s ease;
-    overflow: hidden;   /* ensures images don't spill outside the circle */
-}
+        /* Avatar box */
+        .avatar-placeholder {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: #fff;
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: filter 0.3s ease;
+            overflow: hidden;
+        }
 
-/* Avatar image */
-.avatar-placeholder img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;   
-    border-radius: 50%;  /* keeps the circular shape */
-    display: block;      /* avoids bottom spacing */
-}
+        /* Avatar image */
+        .avatar-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;   
+            border-radius: 50%;
+            display: block;
+        }
 
-/* LinkedIn button (bottom center) */
-.linkedin-link {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%) scale(0.8);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease;
-    z-index: 10;
-    width: auto;
-    height: auto;
-    border-radius: 0;
-    box-shadow: none;
-    background: none;
-    display: inline-block;
-}
+        /* LinkedIn button (bottom center) */
+        .linkedin-link {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 10;
+            width: auto;
+            height: auto;
+            border-radius: 0;
+            box-shadow: none;
+            background: none;
+            display: inline-block;
+        }
 
-/* Show LinkedIn button on hover */
-.avatar-wrapper:hover .linkedin-link {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-    pointer-events: auto;
-}
+        /* Show LinkedIn button on hover */
+        .avatar-wrapper:hover .linkedin-link {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+            pointer-events: auto;
+        }
 
-/* Darken avatar on hover */
-.avatar-wrapper:hover .avatar-placeholder {
-    filter: brightness(0.7);
-}
+        /* Darken avatar on hover */
+        .avatar-wrapper:hover .avatar-placeholder {
+            filter: brightness(0.7);
+        }
 
         /* Text inside card */
         .member-info h3 {
@@ -280,13 +280,11 @@
         .member-card:hover {
             border-color: var(--accent-primary) !important;
             transform: scale(1.05) translateY(0px) !important;
-            /* box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15) !important; */
         }
 
         .founder-card:hover {
             border-color: var(--accent-primary) !important;
             transform: scale(1.05) translateY(0px) !important;
-            /* box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15) !important; */
         }
 
         /* Animations */
@@ -649,22 +647,22 @@
         }
 
         @media (max-width: 768px) {
-  .nav-menu {
-    background-color: #4A0E1A !important; /* force solid */
-    opacity: 1 !important;
-    backdrop-filter: none !important;
-  }
-}
+            .nav-menu {
+                background-color: #4A0E1A !important;
+                opacity: 1 !important;
+                backdrop-filter: none !important;
+            }
+        }
     
-.logo h2{
-    font-family: "Josefin Sans", sans-serif;
-    font-weight: 500;
-    }
+        .logo h2{
+            font-family: "Josefin Sans", sans-serif;
+            font-weight: 500;
+        }
     
-.nav-menu{
-    font-family: "Josefin Sans", sans-serif;
-    font-weight:500;
-    }
+        .nav-menu{
+            font-family: "Josefin Sans", sans-serif;
+            font-weight:500;
+        }
     </style>
 </head>
 
@@ -673,8 +671,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <img src="../../secondary-logo.png" alt="Logo" class="logo-img">
-                <h2 style="padding-top:10px">IGDTUW INSIDER</h2>
+                <img src="../../secondary-logo2.svg" alt="Logo" class="logo-img">
             </div>
             <ul class="nav-menu">
                 <li><a href="../../index.html" class="nav-link">HOME</a></li>
@@ -694,8 +691,8 @@
     <!-- Hero -->
     <section class="hero">
         <div class="container">
-            <h1 class="fade-up" >Meet Our Team</h1>
-            <p class="fade-up" >The passionate individuals behind IGDTUW Insider</p>
+            <h1 class="fade-up">Meet Our Team</h1>
+            <p class="fade-up">The passionate individuals behind IGDTUW Insider</p>
         </div>
     </section>
 
@@ -955,7 +952,6 @@
                     <div class="member-info">
                         <h3>Dr. Shweta Jindal</h3>
                         <p class="member-role">Assistant Professor</p>
-                        <p class="member-info"></p>
                     </div>
                 </div>
                 <div class="founder-card">
@@ -966,11 +962,10 @@
                     </div>
                     <div class="member-info">
                         <h3>Dr. Rishabh Kaushal</h3>
-                        <p class="member-role">Associate Professor, Incharge (ACM Student Chapter)</p>
-                        <p class="member-role"></p>
+                        <p class="member-role">Associate Professor</p>
+                        <p class="member-department">Incharge (ACM Student Chapter)</p>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
     </section>

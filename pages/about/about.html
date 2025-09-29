@@ -405,6 +405,7 @@ body {
 }
 
 /* ACM Student Chapter */
+/* ACM Student Chapter */
 .acm_student_chapter {
     padding: 80px 0;
 }
@@ -417,12 +418,26 @@ body {
     max-width: 300px;   
     height: auto;       
     border-radius: 12px;
-    margin-left: 140px;
-    margin-top: 20px;
+    margin: 20px auto 0;
+    display: block;
 }
 
 .acm_student_chapter a:hover {
     color: var(--accent-secondary); 
+}
+
+/* Responsive adjustments for ACM logo */
+@media (max-width: 768px) {
+  .acm_student_chapter .about-image-box img {
+    max-width: 200px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .acm_student_chapter .about-image-box img {
+    max-width: 150px;
+  }
 }
 
     </style>
