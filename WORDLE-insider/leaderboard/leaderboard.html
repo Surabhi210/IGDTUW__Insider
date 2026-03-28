@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wordle Leaderboard</title>
+  <link rel="stylesheet" href="leaderboardstyle.css">
+</head>
+<body>
+
+<div class="leaderboard-card">
+  <div class="header">
+    <div class="header-main">Leaderboard</div>
+    <div class="header-date">FEB 22 <span class="dot">•</span> <span class="rank-id">#42</span></div>
+  </div>
+
+  <div class="tabs-container">
+    <div class="tabs">
+      <button class="tab active" data-tab="today">TODAY</button>
+      <button class="tab" data-tab="alltime">ALL-TIME</button>
+    </div>
+  </div>
+
+  <div id="today" class="content active">
+    <div class="today-word-row">
+      <span class="label">Today's word</span>
+      <span class="word">LIBRARY</span>
+    </div>
+    <div class="table-header today-grid">
+      <span>#</span><span>PLAYER</span><span>PTS</span><span>TRIES</span><span>TIME</span>
+    </div>
+    <div id="today-list"></div>
+    <div class="footer">
+      <span class="count">47 players today</span>
+      <button class="share-btn">Share</button>
+    </div>
+    <div class="note">Resets at midnight • Next word in <span class="maroon-text">08:42:17</span></div>
+  </div>
+
+  <div id="alltime" class="content">
+    <div class="table-header alltime-grid">
+      <span>#</span><span>PLAYER</span><span>TOTAL</span><span>PLAYED</span><span>WIN%</span>
+    </div>
+    <div id="alltime-list"></div>
+    <div class="footer">
+      <span class="count">24 total players</span>
+      <button class="share-btn">Share</button>
+    </div>
+    <div class="note">Never resets • Cumulative points from all sessions</div>
+  </div>
+</div>
+
+<script src="leaderboardscript.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+:root {
+  --maroon: #6b1e2b;
+  --bg-cream: #f9f3ee;
+  --text-gray: #7a6e65;
+  --green-val: #4e8c4f;
+}
+
+body {
+  background-color: #e2d3c5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  color: #333;
+}
+
+.leaderboard-card {
+  width: 360px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.header {
+  background-color: var(--maroon);
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header-main { font-family: serif; font-size: 20px; font-weight: bold; }
+.header-date { color: #d4a373; font-weight: bold; font-size: 14px; }
+
+/* Tabs */
+.tabs-container { background: var(--bg-cream); padding: 12px; }
+.tabs { display: flex; background: #e8ddd3; border-radius: 10px; padding: 4px; }
+.tab { 
+  flex: 1; border: none; padding: 10px; border-radius: 8px; 
+  font-weight: bold; color: var(--text-gray); cursor: pointer; background: none;
+}
+.tab.active { background: var(--maroon); color: white; }
+
+/* Views */
+.content { display: none; }
+.content.active { display: block; }
+
+/* Grids */
+.today-grid { display: grid; grid-template-columns: 30px 1fr 45px 45px 60px; }
+.alltime-grid { display: grid; grid-template-columns: 30px 1fr 50px 50px 50px; }
+
+.table-header {
+  padding: 10px 20px;
+  font-size: 12px;
+  color: #aaa;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+}
+
+.row {
+  padding: 12px 20px;
+  border-bottom: 1px solid #f9f9f9;
+  align-items: center;
+  font-size: 14px;
+}
+
+/* Today Word Bar */
+.today-word-row {
+  display: flex; justify-content: space-between;
+  padding: 15px 20px; border-bottom: 1px solid #eee;
+}
+.today-word-row .label { color: #aaa; font-size: 13px; }
+.today-word-row .word { color: var(--maroon); font-weight: bold; letter-spacing: 1px; }
+
+/* Player Styles */
+.player-name { font-weight: bold; }
+.streak-label { font-size: 11px; color: var(--text-gray); display: block; }
+.you { 
+  background: var(--maroon); color: white; font-size: 10px; 
+  padding: 2px 6px; border-radius: 4px; margin-left: 5px; 
+}
+.pts-green { color: var(--green-val); font-weight: bold; }
+.playing-txt { font-style: italic; color: #bbb; }
+
+/* Footer */
+.footer { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
+.count { color: #aaa; font-size: 13px; }
+.share-btn { 
+  background: var(--maroon); color: white; border: none; 
+  padding: 8px 18px; border-radius: 20px; font-weight: bold; cursor: pointer;
+}
+.note { text-align: center; font-size: 11px; color: #aaa; padding-bottom: 15px; }
+.maroon-text { color: var(--maroon); font-weight: bold; }
