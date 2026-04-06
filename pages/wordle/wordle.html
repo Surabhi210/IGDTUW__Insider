@@ -504,12 +504,19 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;ba
   background:linear-gradient(160deg,var(--maroon-dark),var(--maroon));
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   z-index:1000;color:#fff;
+  text-align:center; /* Ensures text stays centered if it wraps */
+  padding:0 20px;    /* Adds safe space on the left/right */
 }
 #loading-screen.hidden{display:none}
 .loading-title{
-  font-family:var(--font-serif);font-size:2.2rem;font-weight:900;
-  letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;
+  font-family:var(--font-serif);
+  font-size:clamp(1.5rem, 8vw, 2.2rem); /* Fluid sizing: shrinks on small screens */
+  font-weight:900;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  margin-bottom:10px;
   text-shadow:0 2px 20px rgba(0,0,0,.3);
+  line-height:1.2;
 }
 .loading-dots{display:flex;gap:7px;margin-top:6px}
 .loading-dot{
