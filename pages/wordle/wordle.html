@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insider Wordle – Daily Challenge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --maroon:#6b0f1a;
+  --maroon-dark:#4a0a12;
+  --maroon-mid:#7d1220;
+  --maroon-light:#9b1a2c;
+  --cream:#f7f2ea;
+  --cream-dark:#ede7d9;
+  --cream-mid:#f0e9dc;
+  --green:#3d9142;
+  --green-light:#4caf52;
+  --yellow:#c8a832;
+  --grey:#818384;
+  --grey-light:#d3d6da;
+  --tile-bg:#fff;
+  --text:#1a1a1a;
+  --gold:#c9a227;
+  --gold-light:#e0b93a;
+  --shadow-sm:0 2px 8px rgba(107,15,26,.12);
+  --shadow-md:0 6px 24px rgba(107,15,26,.18);
+  --shadow-lg:0 16px 48px rgba(107,15,26,.22);
+  --font-ui:'DM Sans',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --font-serif:'Playfair Display',serif;
+}
+
+html,body{height:100%;background:var(--cream);color:var(--text);font-family:var(--font-ui)}
+
+/* ── HEADER ── */
+header{
+  background:linear-gradient(135deg,var(--maroon-dark) 0%,var(--maroon) 60%,var(--maroon-light) 100%);
+  padding:0 32px;display:flex;align-items:center;justify-content:space-between;
+  height:56px;position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 16px rgba(0,0,0,.35);
+}
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,162,39,.4),transparent)}
+.header-logo{
+  color:#fff;font-family:var(--font-serif);font-size:1.25rem;font-weight:700;
+  letter-spacing:.08em;display:flex;align-items:center;gap:10px;
+}
+.header-logo-dot{width:8px;height:8px;background:var(--gold);border-radius:50%;display:inline-block}
+.header-user-wrap{display:flex;align-items:center;gap:10px}
+.header-user{
+  color:rgba(255,255,255,.85);font-size:.78rem;font-family:var(--font-mono);
+  background:rgba(255,255,255,.08);padding:4px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.15);
+}
+.header-edit-btn{
+  background:rgba(201,162,39,.15);border:1px solid rgba(201,162,39,.4);
+  color:var(--gold-light);font-size:.65rem;padding:4px 10px;border-radius:4px;
+  cursor:pointer;font-family:var(--font-ui);font-weight:600;text-transform:uppercase;
+  letter-spacing:.06em;transition:all .2s;
+}
+.header-edit-btn:hover{background:rgba(201,162,39,.28);border-color:var(--gold-light)}
+
+/* ── HERO ── */
+.hero{
+  text-align:center;padding:20px 16px 10px;
+  background:linear-gradient(160deg,var(--maroon-dark) 0%,var(--maroon) 50%,var(--maroon-mid) 100%);
+  color:#fff;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 120%,rgba(201,162,39,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-label{
+  font-size:.6rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.hero-label::before,.hero-label::after{content:'';width:24px;height:1px;background:var(--gold);opacity:.5}
+.hero-title{
+  font-family:var(--font-serif);font-size:clamp(2rem,5.5vw,3.2rem);font-weight:900;
+  letter-spacing:.08em;line-height:1;text-transform:uppercase;
+  text-shadow:0 2px 20px rgba(0,0,0,.3);
+}
+.hero-sub{font-size:.75rem;color:rgba(255,255,255,.55);margin-top:5px;font-family:var(--font-mono);letter-spacing:.06em}
+.hero-meta{font-family:var(--font-mono);font-size:.68rem;color:rgba(255,255,255,.4);margin-top:3px}
+
+/* ── MAIN LAYOUT ── */
+.main-layout{
+  display:grid;grid-template-columns:290px 1fr 290px;
+  gap:0 28px;max-width:1060px;margin:0 auto;padding:24px 16px;
+  min-height:calc(100vh - 150px);align-items:start;
+}
+@media(max-width:920px){.main-layout{grid-template-columns:1fr}.col-left,.col-right{display:none}}
+
+/* ── SCOREBOARD (left) ── */
+.scoreboard-card{
+  background:linear-gradient(160deg,var(--maroon-dark) 0%,#3a0810 100%);
+  border-radius:14px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+  box-shadow:var(--shadow-lg);
+}
+.scoreboard-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;
+  background:rgba(0,0,0,.2);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.scoreboard-title{
+  display:flex;align-items:center;gap:8px;color:#fff;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  font-family:var(--font-ui);
+}
+.scoreboard-title svg{width:14px;height:14px;fill:var(--gold)}
+.scoreboard-player{
+  color:var(--gold);font-size:.7rem;font-family:var(--font-mono);
+  background:rgba(201,162,39,.12);padding:3px 9px;border-radius:12px;
+  border:1px solid rgba(201,162,39,.2);
+}
+.scoreboard-rows{padding:6px 0}
+.score-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 18px;border-bottom:1px solid rgba(255,255,255,.04);
+  transition:background .15s;
+}
+.score-row:last-child{border:none}
+.score-row:hover{background:rgba(255,255,255,.03)}
+.score-label{
+  color:rgba(255,255,255,.45);font-size:.68rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.07em;font-family:var(--font-ui);
+}
+.score-value{color:#fff;font-family:var(--font-mono);font-size:.9rem;font-weight:500}
+.score-value.gold{
+  color:var(--gold-light);
+  text-shadow:0 0 12px rgba(201,162,39,.4);
+}
+.score-value.green{color:#6adf70}
+.score-value.rank{
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;font-size:.95rem;font-weight:700;
+}
+.stat-pill{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(255,255,255,.06);padding:3px 10px;border-radius:20px;
+  font-family:var(--font-mono);font-size:.82rem;color:#fff;
+}
+.stat-pill.fire::before{content:'🔥';font-size:.75rem}
+
+/* ── CENTER COLUMN ── */
+.col-center{display:flex;flex-direction:column;align-items:center;gap:0}
+.puzzle-wrap{width:100%;max-width:440px}
+
+.score-info{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:7px 14px;font-size:.7rem;color:#666;
+  font-family:var(--font-mono);font-weight:500;
+  background:#fff;border:1px solid #e8e0d4;border-radius:24px;
+  margin:0 auto 10px;width:fit-content;
+  box-shadow:var(--shadow-sm);
+}
+.score-dot{width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+.score-divider{color:#ccc}
+
+/* ── HOW TO PLAY BUTTON — centered ── */
+.how-to-wrap{
+  display:flex;justify-content:center;margin:0 0 10px;width:100%;
+}
+.how-to-btn{
+  background:var(--maroon);color:#fff;border:none;
+  border-radius:8px;padding:9px 22px;
+  font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  cursor:pointer;font-family:var(--font-ui);
+  display:inline-flex;align-items:center;gap:7px;
+  box-shadow:var(--shadow-md);transition:all .2s;
+  position:relative;overflow:hidden;
+}
+.how-to-btn::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);
+  pointer-events:none;
+}
+.how-to-btn:hover{
+  background:var(--maroon-light);transform:translateY(-1px);
+  box-shadow:0 8px 24px rgba(107,15,26,.3);
+}
+.how-to-btn svg{width:15px;height:15px}
+
+/* hint bar */
+.hint-bar{
+  background:linear-gradient(135deg,#fffbf0,#fff8e3);
+  border:1px solid #e8d87a;border-left:3px solid var(--gold);
+  border-radius:8px;padding:9px 16px;margin:0 0 8px;
+  text-align:center;font-size:.78rem;color:#5a4a00;
+  width:100%;box-shadow:0 2px 8px rgba(201,162,39,.1);
+}
+.hint-bar strong{color:var(--gold);margin-right:4px}
+
+/* game board */
+#game-board{display:flex;flex-direction:column;gap:5px;padding:8px 0;width:100%}
+.letter-row{display:flex;gap:5px;justify-content:center}
+.letter-box{
+  width:clamp(50px,11vw,64px);height:clamp(50px,11vw,64px);
+  border:2px solid #ddd;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:clamp(1.3rem,3.5vw,1.65rem);font-weight:500;
+  text-transform:uppercase;border-radius:6px;color:var(--text);
+  transition:border-color .12s,transform .08s;background:#fff;user-select:none;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.letter-box.filled{border-color:#999;animation:pop .08s ease}
+.letter-box.active-cursor{border-color:var(--maroon)!important;box-shadow:0 0 0 2px rgba(107,15,26,.15)}
+.letter-box[data-state="correct"]{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 2px 8px rgba(61,145,66,.3)}
+.letter-box[data-state="present"]{background:var(--yellow);border-color:var(--yellow);color:#fff;box-shadow:0 2px 8px rgba(200,168,50,.3)}
+.letter-box[data-state="absent"]{background:#787c7e;border-color:#787c7e;color:#fff}
+@keyframes pop{0%{transform:scale(.93)}60%{transform:scale(1.07)}100%{transform:scale(1)}}
+@keyframes flip{0%{transform:rotateX(0)}50%{transform:rotateX(-90deg)}100%{transform:rotateX(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.shake{animation:shake .4s ease}
+
+/* theme footer */
+.theme-footer{
+  text-align:center;padding:8px;font-size:.65rem;color:#aaa;
+  letter-spacing:.1em;text-transform:uppercase;font-family:var(--font-mono);
+}
+.theme-footer strong{color:var(--maroon);font-weight:700}
+
+/* keyboard */
+#keyboard-cont{width:100%;max-width:440px;padding:4px 0 8px}
+.kb-row{display:flex;justify-content:center;gap:5px;margin-bottom:5px}
+.kb-key{
+  height:54px;min-width:34px;padding:0 6px;border:none;border-radius:6px;
+  background:#e0ddd8;font-family:var(--font-mono);font-size:.82rem;font-weight:500;
+  text-transform:uppercase;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .12s,color .12s,transform .08s;
+  color:var(--text);flex:1;max-width:42px;
+  box-shadow:0 2px 0 rgba(0,0,0,.15);
+}
+.kb-key:active{transform:translateY(1px);box-shadow:none}
+.kb-key.wide{min-width:62px;max-width:72px;font-size:.65rem;font-family:var(--font-ui);font-weight:600;flex:initial;letter-spacing:.04em}
+.kb-key[data-state="correct"]{background:var(--green);color:#fff;box-shadow:0 2px 0 #2d6b32}
+.kb-key[data-state="present"]{background:var(--yellow);color:#fff;box-shadow:0 2px 0 #9e7d1a}
+.kb-key[data-state="absent"]{background:#787c7e;color:#fff;box-shadow:0 2px 0 #555}
+.kb-key svg{width:17px;height:17px}
+
+/* ── LEADERBOARD (right) ── */
+.leaderboard-card{
+  background:#fff;border-radius:14px;
+  border:1px solid rgba(0,0,0,.07);
+  overflow:hidden;box-shadow:var(--shadow-md);
+}
+.lb-header{
+  background:linear-gradient(135deg,var(--maroon-dark) 0%,var(--maroon) 100%);
+  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+  position:relative;
+}
+.lb-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,162,39,.4),transparent)}
+.lb-title{
+  color:#fff;font-family:var(--font-serif);font-size:1rem;font-weight:700;
+  display:flex;align-items:center;gap:8px;letter-spacing:.03em;
+}
+.lb-title svg{width:14px;height:14px;fill:var(--gold)}
+.lb-datebadge{
+  background:rgba(201,162,39,.15);color:var(--gold-light);
+  font-family:var(--font-mono);font-size:.62rem;padding:4px 10px;
+  border-radius:20px;font-weight:500;letter-spacing:.06em;
+  border:1px solid rgba(201,162,39,.25);
+}
+.lb-tabs{
+  display:flex;border-bottom:1px solid #f0ece4;background:#faf8f5;
+}
+.lb-tab{
+  flex:1;padding:10px;text-align:center;font-size:.68rem;font-weight:700;
+  letter-spacing:.08em;cursor:pointer;text-transform:uppercase;color:#aaa;
+  border-bottom:2px solid transparent;transition:all .15s;background:none;
+  border-top:none;border-left:none;border-right:none;
+  font-family:var(--font-ui);
+}
+.lb-tab.active{color:var(--maroon);border-bottom:2px solid var(--maroon);background:#fff}
+.lb-word-row{
+  display:flex;justify-content:space-between;padding:8px 16px;
+  font-size:.68rem;color:#bbb;border-bottom:1px solid #f5f0e8;
+  font-family:var(--font-mono);background:#fdfcf9;
+}
+.lb-word-row strong{color:var(--maroon);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+.lb-col-headers{
+  display:grid;grid-template-columns:26px 1fr 36px 48px 50px;gap:0;
+  padding:7px 16px;background:#f5f2ec;
+  font-size:.6rem;font-weight:700;color:#aaa;text-transform:uppercase;
+  letter-spacing:.08em;font-family:var(--font-ui);
+  border-bottom:1px solid #ede8de;
+}
+.lb-col-headers-alltime{
+  display:grid;grid-template-columns:26px 1fr 52px 58px 52px;gap:0;
+  padding:7px 16px;background:#f5f2ec;
+  font-size:.6rem;font-weight:700;color:#aaa;text-transform:uppercase;
+  letter-spacing:.08em;font-family:var(--font-ui);
+  border-bottom:1px solid #ede8de;
+}
+.lb-row{
+  display:grid;grid-template-columns:26px 1fr 36px 48px 50px;gap:0;
+  align-items:center;padding:9px 16px;border-bottom:1px solid #f7f3ed;font-size:.82rem;
+  transition:background .12s;
+}
+.lb-row-alltime{
+  display:grid;grid-template-columns:26px 1fr 52px 58px 52px;gap:0;
+  align-items:center;padding:8px 16px;border-bottom:1px solid #f7f3ed;font-size:.78rem;
+}
+.lb-row:hover,.lb-row-alltime:hover{background:#fdf8f2}
+.lb-row:last-child,.lb-row-alltime:last-child{border-bottom:none}
+.lb-row.you{background:linear-gradient(90deg,#fdf0e5,#fff8f0)!important}
+.lb-row-alltime.you{background:linear-gradient(90deg,#fdf0e5,#fff8f0)!important}
+.lb-rank{font-family:var(--font-mono);font-weight:700;font-size:.72rem;color:#ccc}
+.lb-rank.gold-medal::before{content:'🥇';font-size:.85rem}
+.lb-rank.silver-medal::before{content:'🥈';font-size:.85rem}
+.lb-rank.bronze-medal::before{content:'🥉';font-size:.85rem}
+.lb-rank.gold-medal,.lb-rank.silver-medal,.lb-rank.bronze-medal{font-size:0}
+.lb-name{
+  font-weight:600;font-size:.8rem;display:flex;align-items:center;
+  gap:5px;flex-wrap:wrap;line-height:1.3;font-family:var(--font-ui);
+}
+.lb-name .streak-sub{font-size:.6rem;color:#bbb;font-weight:400;font-family:var(--font-ui);width:100%}
+.you-badge{
+  background:var(--maroon);color:#fff;font-size:.5rem;
+  padding:2px 6px;border-radius:4px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.lb-pts{font-family:var(--font-mono);font-weight:700;color:var(--green);font-size:.9rem}
+.lb-tries,.lb-time,.lb-total,.lb-played,.lb-winpct{
+  font-family:var(--font-mono);font-size:.7rem;color:#888;
+}
+.lb-playing{color:#ccc;font-style:italic;font-size:.68rem;font-family:var(--font-ui)}
+.lb-footer{
+  padding:10px 16px;display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid #f0ece4;font-size:.68rem;color:#bbb;font-family:var(--font-mono);
+  background:#faf8f5;
+}
+.lb-footer-cumulative{
+  padding:8px 16px;font-size:.65rem;color:#bbb;font-family:var(--font-ui);
+  border-top:1px solid #f0ece4;background:#faf8f5;
+}
+.share-btn{
+  background:linear-gradient(135deg,var(--maroon),var(--maroon-light));
+  color:#fff;border:none;border-radius:20px;padding:6px 14px;
+  font-size:.68rem;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;gap:5px;font-family:var(--font-ui);
+  text-transform:uppercase;letter-spacing:.05em;
+  box-shadow:0 2px 8px rgba(107,15,26,.25);transition:all .2s;
+}
+.share-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(107,15,26,.3)}
+.challenge-btn{
+  width:100%;border:1.5px solid #ede8de;background:#faf8f5;padding:9px;border-radius:8px;
+  font-size:.7rem;color:#777;cursor:pointer;font-weight:700;
+  font-family:var(--font-ui);margin-top:8px;transition:all .15s;
+  letter-spacing:.04em;text-transform:uppercase;
+}
+.challenge-btn:hover{background:var(--cream-dark);border-color:#ccc;color:#555}
+.lb-reset-note{font-size:.62rem;color:#bbb;font-family:var(--font-mono);margin-top:2px;line-height:1.5}
+.lb-count{color:#bbb;font-size:.68rem}
+.lb-loading{padding:24px;text-align:center;color:#ccc;font-size:.78rem;font-family:var(--font-ui)}
+
+/* ── OVERLAYS ── */
+.overlay{
+  position:fixed;inset:0;background:rgba(20,5,5,.55);z-index:200;
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  backdrop-filter:blur(4px);
+}
+.overlay.hidden{display:none}
+.modal{
+  background:#fff;border-radius:16px;padding:32px 36px;
+  max-width:400px;width:100%;
+  box-shadow:0 32px 80px rgba(0,0,0,.35);
+  position:relative;animation:modalIn .22s cubic-bezier(.16,1,.3,1);
+}
+@keyframes modalIn{from{transform:scale(.9) translateY(10px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.modal-close{
+  position:absolute;top:14px;right:16px;background:none;border:none;
+  font-size:1.2rem;cursor:pointer;color:#bbb;line-height:1;padding:4px;
+  transition:color .15s;border-radius:4px;
+}
+.modal-close:hover{color:#666;background:#f5f5f5}
+.modal-icon{font-size:2.4rem;text-align:center;margin-bottom:8px}
+.modal h2{
+  font-family:var(--font-serif);font-size:1.4rem;font-weight:700;
+  margin-bottom:4px;text-align:center;color:var(--maroon);
+}
+.modal-sub{font-size:.8rem;color:#999;text-align:center;margin-bottom:18px;line-height:1.5}
+
+/* join modal */
+.name-input{
+  width:100%;border:1.5px solid #e0dbd3;border-radius:9px;padding:11px 15px;
+  font-size:.88rem;font-family:var(--font-mono);outline:none;
+  transition:border-color .15s,box-shadow .15s;color:var(--text);background:#faf9f7;
+}
+.name-input:focus{border-color:var(--maroon);box-shadow:0 0 0 3px rgba(107,15,26,.08);background:#fff}
+.name-hint{font-size:.68rem;color:#bbb;margin-top:6px;margin-bottom:16px;line-height:1.5}
+.name-hint strong{color:#888}
+.privacy-note{
+  font-size:.66rem;color:#bbb;text-align:center;margin-top:10px;padding:10px;
+  background:#faf8f5;border-radius:8px;line-height:1.6;
+}
+.privacy-note svg{width:11px;height:11px;vertical-align:middle;fill:var(--gold);margin-right:3px}
+.join-btn{
+  width:100%;
+  background:linear-gradient(135deg,var(--maroon-dark),var(--maroon-light));
+  color:#fff;border:none;border-radius:9px;padding:12px;
+  font-size:.85rem;font-weight:700;cursor:pointer;font-family:var(--font-ui);
+  text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;
+  transition:all .2s;box-shadow:var(--shadow-md);
+}
+.join-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg)}
+.skip-link{
+  text-align:center;font-size:.72rem;color:#bbb;cursor:pointer;
+  text-decoration:underline;display:block;margin-top:4px;transition:color .15s;
+}
+.skip-link:hover{color:#777}
+
+/* how to play modal */
+.how-examples{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.how-row{display:flex;align-items:center;gap:12px}
+.how-tiles{display:flex;gap:4px}
+.mini-tile{
+  width:34px;height:34px;border:2px solid var(--grey-light);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:.85rem;font-weight:500;
+  text-transform:uppercase;border-radius:5px;
+}
+.mini-tile.green{background:var(--green);border-color:var(--green);color:#fff}
+.mini-tile.yellow{background:var(--yellow);border-color:var(--yellow);color:#fff}
+.mini-tile.grey{background:#787c7e;border-color:#787c7e;color:#fff}
+.how-desc{font-size:.75rem;color:#666;line-height:1.5}
+.scoring-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.78rem}
+.scoring-table th{
+  text-align:left;padding:7px 10px;border-bottom:2px solid #f0ece4;
+  font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:#bbb;font-weight:700;
+}
+.scoring-table td{padding:7px 10px;border-bottom:1px solid #f5f5f5;color:#555}
+.scoring-table td:last-child{font-family:var(--font-mono);font-weight:700;color:var(--green);text-align:right}
+.scoring-section{
+  font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  color:#444;margin:14px 0 6px;display:flex;align-items:center;gap:6px;
+}
+.scoring-section svg{width:12px;height:12px;fill:var(--gold)}
+.how-main{font-size:.8rem;color:#666;line-height:1.7;margin-bottom:8px}
+.how-divider{height:1px;background:#f0ece4;margin:10px 0}
+
+/* toast */
+.toast-container{
+  position:fixed;top:72px;left:50%;transform:translateX(-50%);
+  z-index:500;display:flex;flex-direction:column;gap:6px;pointer-events:none;
+}
+.toast{
+  background:#222;color:#fff;padding:10px 22px;border-radius:10px;
+  font-size:.82rem;font-weight:600;font-family:var(--font-ui);
+  box-shadow:0 6px 20px rgba(0,0,0,.3);
+  animation:toastIn .2s ease,toastOut .2s ease 1.8s forwards;white-space:nowrap;
+}
+.toast.success{background:var(--green)}
+.toast.error{background:#c03030}
+@keyframes toastIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastOut{to{opacity:0;transform:translateY(-10px)}}
+
+/* result modal */
+.result-word{
+  font-family:var(--font-mono);font-size:1.9rem;font-weight:500;
+  text-align:center;color:var(--maroon);margin:8px 0 4px;
+  text-transform:uppercase;letter-spacing:.14em;
+}
+.result-sub{font-size:.78rem;color:#aaa;text-align:center;margin-bottom:14px;font-family:var(--font-ui)}
+.result-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:12px 0}
+.result-stat{
+  text-align:center;padding:12px 8px;background:linear-gradient(135deg,#faf7f2,#f5f0e8);
+  border-radius:10px;border:1px solid #ede8de;
+}
+.result-stat-val{
+  font-family:var(--font-mono);font-size:1.5rem;font-weight:500;color:var(--maroon);
+}
+.result-stat-label{
+  font-size:.6rem;color:#bbb;text-transform:uppercase;letter-spacing:.07em;
+  margin-top:3px;font-family:var(--font-ui);
+}
+.result-share{
+  width:100%;
+  background:linear-gradient(135deg,var(--maroon-dark),var(--maroon-light));
+  color:#fff;border:none;border-radius:10px;padding:13px;
+  font-size:.85rem;font-weight:700;cursor:pointer;font-family:var(--font-ui);
+  text-transform:uppercase;letter-spacing:.07em;margin-top:12px;
+  transition:all .2s;box-shadow:var(--shadow-md);
+}
+.result-share:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg)}
+.next-word-countdown{
+  font-family:var(--font-mono);font-size:1.1rem;color:var(--maroon);
+  font-weight:500;text-align:center;letter-spacing:.08em;
+}
+.next-word-label{
+  font-size:.62rem;color:#bbb;text-align:center;margin-bottom:4px;
+  text-transform:uppercase;letter-spacing:.1em;font-family:var(--font-ui);
+}
+
+/* loading screen */
+#loading-screen{
+  position:fixed;inset:0;
+  background:linear-gradient(160deg,var(--maroon-dark),var(--maroon));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:1000;color:#fff;
+}
+#loading-screen.hidden{display:none}
+.loading-title{
+  font-family:var(--font-serif);font-size:2.2rem;font-weight:900;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;
+  text-shadow:0 2px 20px rgba(0,0,0,.3);
+}
+.loading-dots{display:flex;gap:7px;margin-top:6px}
+.loading-dot{
+  width:8px;height:8px;background:rgba(255,255,255,.3);
+  border-radius:50%;animation:ld-pulse 1.2s ease infinite;
+}
+.loading-dot:nth-child(2){animation-delay:.2s}
+.loading-dot:nth-child(3){animation-delay:.4s}
+@keyframes ld-pulse{0%,100%{background:rgba(255,255,255,.25)}50%{background:rgba(255,255,255,.9)}}
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading-screen">
+  <div style="font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px">Daily Challenge</div>
+  <div class="loading-title">INSIDER WORDLE</div>
+  <div class="loading-dots"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- Join leaderboard overlay -->
+<div class="overlay hidden" id="join-overlay">
+  <div class="modal">
+    <div class="modal-icon">🏆</div>
+    <h2>Join the Leaderboard</h2>
+    <p class="modal-sub">Pick a display name to show on today's leaderboard.<br>You'll only be asked once!</p>
+    <input class="name-input" id="player-name-input" maxlength="20" placeholder="e.g. Riya, CSE3rdYear, WordleQueen…" autocomplete="off">
+    <p class="name-hint">Max 20 characters. <strong>No real name needed</strong> — use a nickname or anything you like.</p>
+    <button class="join-btn" id="join-btn">Let's Play →</button>
+    <span class="skip-link" id="skip-link">Skip — play without a name</span>
+    <p class="privacy-note"><svg viewBox="0 0 24 24"><path d="M12 2L4 6v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6l-8-4z"/></svg>Your name is only used for the leaderboard. No account needed.</p>
+  </div>
+</div>
+
+<!-- How to play overlay -->
+<div class="overlay hidden" id="howto-overlay">
+  <div class="modal" style="max-width:460px">
+    <button class="modal-close" id="howto-close">✕</button>
+    <h2 style="text-align:left">How to Play</h2>
+    <p class="modal-sub" style="text-align:left;margin-bottom:6px">Guess the 5-letter campus word in 6 tries</p>
+    <div class="how-divider"></div>
+    <p class="how-main">Each guess must be a valid 5-letter word. Hit <strong>Enter</strong> to submit. The tile colors reveal how close you were.</p>
+    <div class="how-examples">
+      <div class="how-row">
+        <div class="how-tiles">
+          <div class="mini-tile green">L</div>
+          <div class="mini-tile">A</div>
+          <div class="mini-tile">B</div>
+          <div class="mini-tile">S</div>
+          <div class="mini-tile">Y</div>
+        </div>
+        <div class="how-desc"><strong style="color:var(--green)">L</strong> is in the word and in the correct spot</div>
+      </div>
+      <div class="how-row">
+        <div class="how-tiles">
+          <div class="mini-tile">H</div>
+          <div class="mini-tile yellow">O</div>
+          <div class="mini-tile">S</div>
+          <div class="mini-tile">T</div>
+          <div class="mini-tile">E</div>
+        </div>
+        <div class="how-desc"><strong style="color:var(--yellow)">O</strong> is in the word but in the wrong spot</div>
+      </div>
+      <div class="how-row">
+        <div class="how-tiles">
+          <div class="mini-tile">C</div>
+          <div class="mini-tile">A</div>
+          <div class="mini-tile">N</div>
+          <div class="mini-tile">T</div>
+          <div class="mini-tile grey">E</div>
+        </div>
+        <div class="how-desc"><strong style="color:#787c7e">E</strong> is not in the word at any spot</div>
+      </div>
+    </div>
+    <div class="how-divider"></div>
+    <div class="scoring-section"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>Scoring</div>
+    <table class="scoring-table">
+      <thead><tr><th>Guesses Used</th><th>Note</th><th>Points</th></tr></thead>
+      <tbody>
+        <tr><td>1 guess</td><td>⚡ Perfect solve</td><td>6 pts</td></tr>
+        <tr><td>2 guesses</td><td></td><td>5 pts</td></tr>
+        <tr><td>3 guesses</td><td></td><td>4 pts</td></tr>
+        <tr><td>4 guesses</td><td></td><td>3 pts</td></tr>
+        <tr><td>5 guesses</td><td></td><td>2 pts</td></tr>
+        <tr><td>6 guesses</td><td></td><td>1 pt</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Result overlay -->
+<div class="overlay hidden" id="result-overlay">
+  <div class="modal">
+    <div class="modal-icon" id="result-icon">🎉</div>
+    <h2 id="result-title">You got it!</h2>
+    <p class="result-word" id="result-word"></p>
+    <p class="result-sub" id="result-sub"></p>
+    <div class="result-stats">
+      <div class="result-stat"><div class="result-stat-val" id="rs-guesses">–</div><div class="result-stat-label">Guesses</div></div>
+      <div class="result-stat"><div class="result-stat-val" id="rs-pts">–</div><div class="result-stat-label">Points</div></div>
+      <div class="result-stat"><div class="result-stat-val" id="rs-streak">–</div><div class="result-stat-label">Streak 🔥</div></div>
+    </div>
+    <p class="next-word-label">Next Word In</p>
+    <p class="next-word-countdown" id="countdown">–</p>
+    <button class="result-share" id="result-share-btn">🔥 Share Result</button>
+  </div>
+</div>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="header-logo">
+    <span class="header-logo-dot"></span>
+    INSIDER WORDLE
+  </div>
+  <div class="header-user-wrap">
+    <span class="header-user" id="header-user">–</span>
+    <button class="header-edit-btn" id="header-edit-btn" style="display:none">✏ Edit</button>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-label">Daily Challenge</div>
+  <div class="hero-title">INSIDER WORDLE</div>
+  <div class="hero-sub">A new campus-themed word every day</div>
+  <div class="hero-meta" id="hero-meta">–</div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main-layout">
+
+  <!-- LEFT: Scoreboard -->
+  <div class="col-left">
+    <div class="scoreboard-card">
+      <div class="scoreboard-header">
+        <div class="scoreboard-title">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+          Your Scoreboard
+        </div>
+        <div class="scoreboard-player" id="sb-playername">–</div>
+      </div>
+      <div class="scoreboard-rows">
+        <div class="score-row">
+          <span class="score-label">Today's Score</span>
+          <span class="score-value gold" id="sb-today">–</span>
+        </div>
+        <div class="score-row">
+          <span class="score-label">Total Score</span>
+          <span class="score-value gold" id="sb-total">– PTS</span>
+        </div>
+        <div class="score-row">
+          <span class="score-label">Games Played</span>
+          <span class="score-value" id="sb-played">–</span>
+        </div>
+        <div class="score-row">
+          <span class="score-label">Win Rate</span>
+          <span class="score-value green" id="sb-winrate">–</span>
+        </div>
+        <div class="score-row">
+          <span class="score-label">Streak</span>
+          <span class="score-value"><span class="stat-pill fire" id="sb-streak">0</span></span>
+        </div>
+        <div class="score-row">
+          <span class="score-label">Best Streak</span>
+          <span class="score-value" id="sb-beststreak">–</span>
+        </div>
+        <div class="score-row">
+          <span class="score-label">Today's Rank</span>
+          <span class="score-value rank" id="sb-rank">–</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER: Game -->
+  <div class="col-center">
+    <div class="puzzle-wrap">
+      <!-- Info strip -->
+      <div class="score-info" id="score-info-strip">
+        <span class="score-dot"></span>
+        <span>Score counts towards leaderboard</span>
+        <span class="score-divider">·</span>
+        <span>Next word in <strong id="next-word-timer">–</strong></span>
+      </div>
+
+      <!-- How to Play — centered -->
+      <div class="how-to-wrap">
+        <button class="how-to-btn" id="how-to-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          How to Play
+        </button>
+      </div>
+
+      <div class="hint-bar" id="hint-bar">
+        <strong>💡 Hint:</strong><span id="hint-text">Loading…</span>
+      </div>
+
+      <div id="game-board"></div>
+
+      <div class="theme-footer">Theme: <strong id="theme-display">CAMPUS LIFE</strong></div>
+
+      <div id="keyboard-cont">
+        <div class="kb-row" id="kb-row-1"></div>
+        <div class="kb-row" id="kb-row-2"></div>
+        <div class="kb-row" id="kb-row-3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Leaderboard -->
+  <div class="col-right">
+    <div class="leaderboard-card">
+      <div class="lb-header">
+        <div class="lb-title">
+          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+          Leaderboard
+        </div>
+        <div class="lb-datebadge" id="lb-datebadge">–</div>
+      </div>
+      <div class="lb-tabs">
+        <button class="lb-tab active" id="lb-tab-today">Today</button>
+        <button class="lb-tab" id="lb-tab-alltime">All-Time</button>
+      </div>
+
+      <!-- Today panel -->
+      <div id="lb-today-panel">
+        <div class="lb-word-row">Today's word <strong id="lb-today-word" style="visibility:hidden">–</strong></div>
+        <div class="lb-col-headers"><span>#</span><span>Player</span><span>Pts</span><span>Tries</span><span>Time</span></div>
+        <div id="lb-today-rows"><div class="lb-loading">Loading leaderboard…</div></div>
+        <div class="lb-footer">
+          <span class="lb-count" id="lb-today-count">– players today</span>
+          <button class="share-btn" id="lb-share-btn">🔥 Share</button>
+        </div>
+        <div style="padding:4px 16px 10px">
+          <div class="lb-reset-note">Resets at midnight · Next word in <span id="lb-next-timer">–</span></div>
+          <button class="challenge-btn" id="challenge-btn">Challenge Batchmates →</button>
+        </div>
+      </div>
+
+      <!-- All-time panel -->
+      <div id="lb-alltime-panel" style="display:none">
+        <div class="lb-col-headers-alltime"><span>#</span><span>Player</span><span>Total</span><span>Played</span><span>Win%</span></div>
+        <div id="lb-alltime-rows"><div class="lb-loading">Loading…</div></div>
+        <div class="lb-footer">
+          <span class="lb-count" id="lb-alltime-count">– total players</span>
+          <button class="share-btn">🔥 Share</button>
+        </div>
+        <div class="lb-footer-cumulative">Never resets · Cumulative points from all sessions</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, addDoc, collection,
+         query, where, orderBy, limit, getDocs, serverTimestamp, enableNetwork }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD_abn4nR5VxlDG0YkmP1oNKlkmBlz0-SE",
+  authDomain: "insider-wordle.firebaseapp.com",
+  projectId: "insider-wordle",
+  storageBucket: "insider-wordle.firebasestorage.app",
+  messagingSenderId: "523907306850",
+  appId: "1:523907306850:web:40e8a33a84b80d7425883b"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+let currentUser = null;
+
+window.addEventListener("online", () => {
+  enableNetwork(db).catch(()=>{});
+  if (!currentUser) signInAnonymously(auth).catch(()=>{});
+});
+
+async function initAuth() {
+  return new Promise(resolve => {
+    const t = setTimeout(()=>resolve(null), 6000);
+    onAuthStateChanged(auth, async user => {
+      if (user) { clearTimeout(t); currentUser = user; resolve(user); }
+      else {
+        try { const c = await signInAnonymously(auth); clearTimeout(t); currentUser = c.user; resolve(c.user); }
+        catch(e){ clearTimeout(t); resolve(null); }
+      }
+    });
+  });
+}
+
+async function getPlayerName(uid) {
+  try { const s = await getDoc(doc(db,"players",uid)); return s.exists()?s.data().name:null; }
+  catch(e){ return null; }
+}
+async function savePlayerName(uid, name) {
+  try { await setDoc(doc(db,"players",uid),{name,updatedAt:serverTimestamp()},{merge:true}); }
+  catch(e){}
+  localStorage.setItem("playerName",name);
+}
+
+const PENDING_KEY = "pendingScores";
+function queueScore(d){ const p=JSON.parse(localStorage.getItem(PENDING_KEY)||"[]"); p.push(d); localStorage.setItem(PENDING_KEY,JSON.stringify(p)); }
+async function flushPending(){
+  if(!currentUser) return;
+  const pending = JSON.parse(localStorage.getItem(PENDING_KEY)||"[]");
+  if(!pending.length) return;
+  const name = localStorage.getItem("playerName")||"Anonymous";
+  for(const s of pending){
+    try{ await addDoc(collection(db,"scores"),{uid:currentUser.uid,name,...s,playedAt:serverTimestamp()}); }
+    catch(e){ return; }
+  }
+  localStorage.removeItem(PENDING_KEY);
+}
+
+async function saveScore({mode,word,guesses,won,dateKey,timeSecs}){
+  const d = {mode,word,guesses,won,dateKey,timeSecs};
+  const name = localStorage.getItem("playerName")||"Anonymous";
+  if(!currentUser){ queueScore(d); return; }
+  try{
+    await addDoc(collection(db,"scores"),{uid:currentUser.uid,name,...d,playedAt:serverTimestamp()});
+  }catch(e){ queueScore(d); }
+}
+
+async function getTodayLeaderboard(dateKey) {
+  try {
+    const q = query(collection(db,"scores"),where("dateKey","==",dateKey),where("mode","==","daily"),limit(100));
+    const snap = await getDocs(q);
+    const players = {};
+    snap.forEach(d => {
+      const {uid,name,guesses,won,timeSecs} = d.data();
+      if(!players[uid]||!players[uid].won) players[uid]={name,guesses,won:!!won,timeSecs:timeSecs||999};
+    });
+    return Object.entries(players)
+      .map(([uid,p])=>({uid,...p,pts:p.won?Math.max(7-p.guesses,1):0}))
+      .sort((a,b)=>b.pts-a.pts||a.guesses-b.guesses||a.timeSecs-b.timeSecs);
+  } catch(e){ return []; }
+}
+
+async function getAllTimeLeaderboard() {
+  try {
+    const q = query(collection(db,"scores"),where("mode","==","daily"),where("won","==",true),limit(500));
+    const snap = await getDocs(q);
+    const players = {};
+    snap.forEach(d=>{
+      const {uid,name,guesses} = d.data();
+      if(!players[uid]) players[uid]={name,wins:0,played:0,totalPts:0};
+      players[uid].wins++; players[uid].played++; players[uid].totalPts+=Math.max(7-guesses,1);
+    });
+    const q2 = query(collection(db,"scores"),where("mode","==","daily"),where("won","==",false),limit(500));
+    const snap2 = await getDocs(q2);
+    snap2.forEach(d=>{
+      const {uid,name}=d.data();
+      if(!players[uid]) players[uid]={name,wins:0,played:0,totalPts:0};
+      players[uid].played++;
+    });
+    return Object.entries(players)
+      .map(([uid,p])=>({uid,...p,winpct:p.played?Math.round(p.wins/p.played*100):0}))
+      .sort((a,b)=>b.totalPts-a.totalPts||b.wins-a.wins);
+  }catch(e){ return []; }
+}
+
+const CAMPUS_DAILY = [
+  {word:"study",hint:"What students do the night before exams",theme:"Campus Life"},
+  {word:"class",hint:"Where lectures happen",theme:"Campus Life"},
+  {word:"grade",hint:"What determines your future (according to parents)",theme:"Academic"},
+  {word:"books",hint:"The things gathering dust on your shelf",theme:"Campus Life"},
+  {word:"notes",hint:"Borrowed more often than returned",theme:"Campus Life"},
+  {word:"bench",hint:"Found in labs and corridors alike",theme:"Campus Life"},
+  {word:"print",hint:"The last-minute assignment ritual",theme:"Campus Life"},
+  {word:"sleep",hint:"A rare commodity during exam season",theme:"Campus Life"},
+  {word:"break",hint:"The best part of any lecture",theme:"Campus Life"},
+  {word:"write",hint:"Essential skill for any exam",theme:"Academic"},
+  {word:"score",hint:"The number that haunts your dreams",theme:"Academic"},
+  {word:"draft",hint:"First version of your assignment",theme:"Academic"},
+  {word:"light",hint:"Keep it on during late-night studying",theme:"Campus Life"},
+  {word:"brief",hint:"What presentations are never, ever",theme:"Academic"},
+  {word:"merit",hint:"Scholarship basis",theme:"Academic"},
+  {word:"proof",hint:"Show your working!",theme:"Academic"},
+  {word:"query",hint:"Ask the professor... if you dare",theme:"Academic"},
+  {word:"guide",hint:"The companion doc no one reads",theme:"Academic"},
+  {word:"chair",hint:"Occupied in every lecture hall",theme:"Campus Life"},
+  {word:"board",hint:"White, black, or smart — they all get marked",theme:"Campus Life"},
+  {word:"trace",hint:"Follow the algorithm step by step",theme:"Academic"},
+  {word:"paper",hint:"Research or toilet — equally precious",theme:"Academic"},
+  {word:"group",hint:"The project team where one person does all the work",theme:"Campus Life"},
+  {word:"error",hint:"First step to debugging",theme:"Academic"},
+  {word:"check",hint:"Before submitting, always —",theme:"Academic"},
+  {word:"grant",hint:"Funding that professors chase",theme:"Academic"},
+  {word:"forum",hint:"Where campus discussions live online",theme:"Campus Life"},
+  {word:"stage",hint:"Where fests happen",theme:"Campus Life"},
+  {word:"plant",hint:"The forgotten thing in the dept lobby",theme:"Campus Life"},
+];
+
+function getTodayKey(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function getDailyWord(){
+  const d = new Date();
+  const start = new Date(2026,0,1);
+  const idx = Math.floor((d-start)/(1000*60*60*24)) % CAMPUS_DAILY.length;
+  return CAMPUS_DAILY[idx];
+}
+function getWordNum(){
+  const d = new Date();
+  const start = new Date(2026,0,1);
+  return Math.floor((d-start)/(1000*60*60*24))+1;
+}
+
+const VALID_WORDS = new Set(["which","there","their","about","would","these","other","words","could","write","first","water","after","where","right","think","three","years","place","sound","great","again","still","every","small","found","those","never","under","might","while","house","world","below","asked","going","large","until","along","shall","being","often","earth","began","since","study","night","light","above","paper","parts","young","story","point","times","heard","whole","white","given","means","music","miles","thing","today","later","using","money","lines","order","group","among","learn","known","space","table","early","trees","short","hands","state","black","shown","stood","front","voice","kinds","makes","comes","close","power","lived","vowel","taken","built","heart","ready","quite","class","bring","round","horse","shows","piece","green","stand","birds","start","river","tried","least","field","whose","girls","leave","added","color","third","hours","moved","plant","doing","names","forms","heavy","ideas","cried","check","floor","begin","woman","alone","plane","spell","watch","carry","wrote","clear","named","books","child","glass","human","takes","party","build","seems","blood","sides","seven","mouth","solve","north","value","death","maybe","happy","tells","gives","looks","shape","lives","steps","areas","sense","speak","force","ocean","speed","women","metal","south","grass","scale","cells","lower","sleep","wrong","pages","ships","needs","rocks","eight","major","level","total","ahead","reach","stars","store","sight","terms","catch","works","board","cover","songs","equal","stone","waves","guess","dance","spoke","break","cause","radio","weeks","lands","basic","liked","trade","fresh","final","fight","meant","drive","spent","local","knows","train","bread","homes","teeth","coast","thick","brown","clean","quiet","sugar","facts","steel","forth","rules","notes","units","peace","month","seeds","helps","sharp","visit","woods","chief","walls","cross","wings","grown","cases","foods","crops","fruit","stick","wants","stage","sheep","plain","drink","bones","apart","turns","moves","touch","angle","based","range","marks","tired","older","farms","spend","shoes","goods","chair","twice","cents","empty","alike","style","broke","pairs","count","enjoy","score","shore","roots","paint","heads","shook","serve","angry","crowd","wheel","quick","dress","share","alive","noise","solid","cloth","signs","hills","types","drawn","worth","truck","piano","upper","loved","usual","faces","drove","cabin","boats","towns","proud","court","model","prime","fifty","plans","yards","prove","tools","price","sheet","smell","boxes","raise","match","truth","roads","threw","enemy","lunch","chart","scene","graph","doubt","guide","winds","block","grain","smoke","mixed","games","wagon","sweet","topic","extra","plate","title","knife","fence","falls","cloud","wheat","plays","enter","broad","steam","atoms","press","lying","basis","clock","taste","grows","thank","storm","agree","brain","track","smile","funny","beach","stock","hurry","saved","sorry","giant","trail","offer","ought","rough","daily","avoid","keeps","throw","allow","cream","laugh","edges","teach","frame","bells","dream","magic","occur","ended","chord","false","skill","holes","dozen","brave","apple","climb","outer","pitch","ruler","holds","fixed","costs","calls","blank","staff","labor","eaten","youth","tones","honor","globe","gases","doors","poles","loose","apply","tears","exact","brush","chest","layer","whale","minor","faith","tests","judge","items","worry","waste","hoped","strip","begun","aside","lakes","bound","depth","candy","event","worse","aware","shell","rooms","ranch","image","snake","aloud","dried","likes","motor","pound","knees","refer","fully","chain","shirt","flour","drops","spite","orbit","banks","shoot","curve","tribe","tight","blind","slept","shade","claim","flies","theme","queen","fifth","union","hence","straw","entry","issue","birth","feels","anger","brief","rhyme","glory","guard","flows","flesh","owned","trick","yours","sizes","noted","width","burst","route","lungs","uncle","bears","royal","kings","forty","trial","cards","brass","opera","chose","owner","vapor","beats","mouse","tough","wires","meter","tower","finds","inner","stuck","arrow","poems","label","swing","solar","truly","tense","beans","split","rises","weigh","hotel","stems","pride","swung","grade","digit","badly","boots","pilot","sales","swept","lucky","prize","stove","tubes","acres","wound","steep","slide","trunk","error","porch","slave","exist","faced","mines","marry","juice","raced","waved","goose","trust","fewer","favor","mills","views","joint","eager","spots","blend","rings","adult","index","nails","horns","balls","flame","rates","drill","trace","skins","seats","stuff","ratio","minds","dirty","silly","coins","hello","trips","leads","rifle","hopes","bases","shine","bench","moral","fires","meals","shake","shops","cycle","movie","slope","canoe","teams","folks","fired","bands","thumb","shout","canal","habit","reply","ruled","fever","crust","shelf","walks","midst","crack","print","tales","coach","stiff","flood","verse","awake","rocky","march","fault","swift","faint","civil","ghost","feast","blade","limit","germs","reads","ducks","dairy","worst","gifts","lists","stops","rapid","brick","claws","beads","beast","skirt","cakes","lions","frogs","tries","nerve","grand","armed","treat","honey","moist","legal","penny","crown","shock","taxes","sixty","altar","pulls","sport","drums","talks","dying","dates","drank","blows","lever","wages","proof","drugs","tanks","sings","tails","pause","herds","arose","hated","clues","novel","shame","burnt","races","flash","weary","heels","token","coats","spare","shiny","alarm","dimes","sixth","clerk","mercy","sunny","guest","float","shone","pipes","worms","bills","sweat","suits","smart","upset","rains","sandy","rainy","parks","sadly","fancy","rider","unity","bunch","rolls","crash","craft","newly","gates","hatch","paths","funds","wider","grace","grave","tides","admit","shift","sails","pupil","tiger","angel","cruel","agent","drama","urged","patch","nests","vital","sword","blame","weeds","screw","vocal","bacon","chalk","cargo","crazy","acted","goats","arise","witch","loves","queer","dwell","backs","ropes","shots","merry","phone","cheek","peaks","ideal","beard","eagle","creek","cries","ashes","stall","yield","mayor","opens","input","fleet","tooth","cubic","wives","burns","poets","apron","spear","organ","cliff","stamp","paste","rural","baked","chase","slice","slant","knock","noisy","sorts","stays","wiped","blown","piled","clubs","cheer","widow","twist","tenth","hides","comma","sweep","spoon","stern","crept","maple","deeds","rides","muddy","crime","jelly","ridge","drift","dusty","devil","tempo","humor","sends","steal","tents","waist","roses","reign","noble","cheap","dense","linen","geese","woven","posts","hired","wrath","salad","bowed","tires","shark","belts","grasp","blast","polar","fungi","tends","pearl","loads","jokes","veins","frost","hears","loses","hosts","diver","phase","toads","alert","tasks","seams","coral","focus","naked","puppy","jumps","spoil","quart","macro","fears","flung","spark","vivid","brook","steer","spray","decay","ports","socks","urban","goals","grant","minus","films","tunes","shaft","firms","skies","bride","wreck","flock","stare","hobby","bonds","dared","faded","thief","crude","pants","flute","votes","radar","wells","skull","hairs","argue","wears","dolls","voted","caves","cared","broom","scent","panel","fairy","olive","bends","prism","lamps","cable","peach","ruins","rally","lambs","sells","cools","draft","charm","limbs","brake","gazed","cubes","delay","beams","fetch","ranks","array","harsh","camel","vines","picks","naval","purse","rigid","crawl","toast","soils","sauce","basin","ponds","twins","wrist","fluid","pools","brand","stalk","robot","reeds","hoofs","buses","sheer","grief","bloom","dwelt","melts","risen","flags","knelt","fiber","roofs","freed","armor","piles","aimed","algae","twigs","lemon","ditch","drunk","rests","chill","slain","panic","cords","tuned","crisp","ledge","dived","swamp","clung","stole","molds","yarns","liver","gauge","breed","stool","gulls","awoke","gross","diary","rails","belly","trend","flask","stake","fried","draws","actor","handy","bowls","haste","scope","deals","knots","moons","essay","thump","hangs","bliss","dealt","gains","bombs","clown","palms","cones","roast","tidal","bored","chant","acids","dough","camps","swore","lover","hooks","males","cocoa","punch","award","reins","ninth","noses","links","drain","fills","nylon","lunar","pulse","flown","elbow","fatal","sites","moths","meats","foxes","mined","attic","fiery","mount","usage","swear","snowy","rusty","scare","traps","relax","react","valid","robin","cease","gills","prior","safer","polio","loyal","swell","salty","marsh","vague","weave","mound","seals","mules","virus","scout","acute","windy","stout","folds","seize","hilly","joins","pluck","stack","lords","dunes","hawks","trout","feeds","scarf","halls","coals","towel","souls","elect","buggy","pumps","loans","spins","files","oxide","pains","photo","rival","flats","syrup","rodeo","sands","moose","pints","curly","comic","cloak","onion","clams","scrap","couch","codes","fails","ounce","lodge","greet","utter","paved","zones","fours","alley","tiles","bless","crest","elder","kills","yeast","erect","bugle","medal","roles","hound","snail","alter","ankle","relay","loops","zeros","bites","modes","debts","realm","glove","rayon","swims","poked","stray","lifts","maker","lumps","graze","dread","barns","docks","masts","pours","wharf","curse","plump","robes","seeks","cedar","curls","jolly","myths","cages","gloom","locks","pedal","beets","crows","anode","slash","creep","rowed","chips","fists","wines","cares","valve","newer","motel","ivory","necks","clamp","barge","blues","alien","frown","strap","crews","shack","saves","stump","ferry","cooks","juicy","glare","carts","alloy","bulbs","lawns","lasts","fuels","crane","filed","weird","shawl","slips","troop","bolts","suite","sleek","quilt","tramp","blaze","atlas","odors","scrub","crabs","probe","logic","adobe","exile","rebel","grind","sting","spine","cling","desks","grove","leaps","prose","lofty","agony","snare","tusks","bulls","moods","humid","finer","dimly","plank","china","pines","guilt","sacks","brace","quote","lathe","fonts","scalp","adopt","foggy","ferns","grams","clump","perch","tumor","teens","crank","fable","hedge","genes","sober","boast","tract","cigar","unite","owing","thigh","haiku","swish","dikes","wedge","booth","eased","frail","cough","tombs","darts","forts","choir","pouch","pinch","hairy","buyer","torch","vigor","waltz","heats","herbs","users","flint","click","madam","bleak","blunt","aided","lacks","masks","waded","risks","nurse","chaos","sewed","cured","ample","lease","steak","sinks","merit","bluff","bathe","gleam","bonus","colts","shear","gland","silky","skate","birch","anvil","sleds","groan","maids","meets","speck","hymns","hints","drown","bosom","slick","quest","coils","spied","snows","stead","snack","plows","blond","tamed","thorn","waits","glued","banjo","tease","arena","bulky","carve","stunt","warms","shady","razor","folly","leafy","notch","fools","otter","pears","flush","genus","ached","fives","flaps","spout","fumes","adapt","cuffs","tasty","stoop","clips","disks","sniff","lanes","brisk","imply","demon","super","furry","raged","growl","texts","hardy","stung","typed","hates","wiser","timid","serum","beaks","rotor","casts","baths","glide","plots","trait","resin","slums","lyric","puffs","decks","brood","mourn","aloft","abuse","whirl","edged","ovary","quack","heaps","slang","await","civic","saint","bevel","sonar","aunts","packs","froze","tonic","corps","swarm","frank","repay","gaunt","wired","niece","cello","needy","chuck","stony","media","surge","hurts","repel","husky","dated","hunts","mists","exert","dries","mates","sworn","baker","spice","oasis","boils","spurs","doves","sneak","paces","colon","siege","strum","drier","humus","bales","nasty","rinse","boxer","shrub","amuse","tacks","cited","slung","delta","laden","larva","rents","yells","spool","spill","crush","jewel","snaps","stain","kicks","tying","slits","rated","eerie","smash","plums","zebra","earns","bushy","scary","squad","tutor","silks","slabs","bumps","evils","fangs","snout","peril","pivot","yacht","lobby","jeans","grins","viola","liner","comet","scars","chops","raids","eater","slate","skips","soles","misty","knobs","sleet","holly","pests","forks","grill","trays","pails","borne","tenor","wares","carol","woody","canon","wakes","kitty","miner","polls","shaky","nasal","scorn","chess","taxis","crate","shyly","tulip","forge","nymph","budge","lowly","abide","depot","oases","sheds","fudge","pills","rivet","thine","groom","lanky","boost","broth","heave","gravy","beech","timed","quail","inert","gears","chick","hinge","trash","clash","sighs","renew","bough","dwarf","slows","quill","shave","spore","sixes","chunk","madly","paced","braid","fuzzy","motto","spies","slack","mucus","magma","awful","discs","erase","posed","asset","cider","taper","theft","churn","satin","slots","taxed","bully","sloth","shale","tread","raked","curds","manor","aisle","bulge","loins","stair","tapes","leans","bunks","squat","towed","lance","panes","sakes","heirs","caste","dummy","pores","fauna","crook","poise","epoch","risky","warns","fling","berry","grape","flank","drags","squid","pelts","icing","irony","irons","barks","whoop","choke","diets","whips","tally","dozed","twine","kites","bikes","ticks","riots","roars","vault","looms","scold","blink","dandy","sieve","spike","ducts","lends","pizza","brink","widen","plumb","pagan","feats","bison","soggy","scoop","argon","nudge","skiff","amber","sexes","rouse","salts","hitch","exalt","leash","dined","chute","snort","gusts","melon","cheat","reefs","llama","lasso","debut","quota","oaths","prone","mixes","rafts","dives","stale","inlet","flick","pinto","brows","untie","batch","greed","chore","stirs","blush","onset","barbs","volts","beige","swoop","paddy","laced","shove","jerky","poppy","leaks","fares","dodge","affix","brute","nicer","undue","snarl","merge","doses","showy","daddy","roost","vases","swirl","petty","colds","curry","cobra","genie","flare","messy","cores","soaks","ripen","whine","amino","plaid","spiny","mowed","baton","peers","vowed","pious","swans","exits","afoot","plugs","idiom","chili","rites","serfs","cleft","berth","grubs","annex","dizzy","hasty","latch","wasps","mirth","baron","plead","aloof","aging","pixel","bared","mummy","hotly","buddy","chaps","badge","stark","fairs","gully","emery","filly","ovens","drone","gauze","idiot","fussy","annoy","shank","gouge","bleed","elves","roped","unfit","baggy","mower","scant","grabs","fleas","lousy","album","sawed","murky","infer","burly","waged","dingy","brine","kneel","creak","vanes","smoky","spurt","combs","easel","laces","humps","rumor","aroma","horde","leapt","opium","slime","pansy","mares","soaps","husks","snips","hazel","lined","naive","wraps","sized","piers","beset","agile","tongs","steed","fraud","booty","valor","downy","witty","mossy","psalm","tours","polka","milky","gaudy","shrug","tufts","wilds","laser","truss","hares","creed","lilac","siren","tarry","bribe","swine","muted","flips","cures","sinew","boxed","hoops","gasps","hoods","niche","yucca","glows","sewer","whack","fuses","gowns","droop","bucks","pangs","mails","whisk","haven","clasp","sling","stint","urges","champ","piety","chirp","pleat","posse","menus","howls","quake","knack","plaza","fiend","caked","bangs","erupt","poker","olden","cramp","voter","poses","manly","slump","fined","grips","gaped","purge","hiked","maize","fluff","strut","sloop","prowl","roach","bland","dials","plume","slaps","soups","dully","wills","foams","solos","skier","eaves","totem","fused","latex","veils","mused","mains","racks","galls","gnats","bouts","shuts","hoses","hover","gloss","seeps","denim","putty","liter","goofy","exams","enact","stork","lured","toxic","omens","nears","covet","wrung","forum","venom","moody","sassy","flair","guild","prays","wrens","hauls","stave","tilts","pecks","stomp","gales","tempt","capes","mesas","omits","harry","wring","evoke","limes","cluck","lunge","highs","canes","lithe","verge","queue","loath","foyer","outdo","fared","deter","crumb","spire","jumpy","extol","buoys","stubs","lucid","thong","whiff","maxim","hulls","clogs","slats","arbor","cinch","igloo","goody","gazes","dowel","calms","scowl","gulps","waver","mason","lobes","ebony","flail","isles","clods","dazed","adept","oozed","sedan","clays","warts","ketch","skunk","manes","adore","sneer","mango","flora","roomy","minks","thaws","watts","exult","plush","paled","clink","pawed","grope","bravo","gable","stink","sever","waned","rarer","regal","wards","fawns","babes","unify","amend","glade","visor","hefty","nines","throb","pecan","butts","pence","sills","jails","flyer","saber","nomad","miter","beeps","domed","gulfs","curbs","heath","moors","larks","tangy","cheep","rages","evade","lures","freak","vogue","tunic","slams","knits","dumpy","mania","spits","firth","hikes","trots","nosed","clank","dogma","bloat","balsa","graft","stile","finch","sperm","chaff","wiles","copra","amiss","twirl","lurch","popes","chins","smock","tines","guise","grits","junks","shoal","cache","tapir","atoll","deity","toils","spree","mocks","scans","shorn","revel","raven","hoary","reels","scuff","mimic","weedy","corny","truer","rouge","ember","floes","torso","wipes","edict","sulky","recur","groin","baste","kinks","surer","moldy","franc","liars","inept","gusty","facet","jetty","equip","leper","slink","soars","cater","dowry","sided","yearn","decoy","taboo","ovals","heals","pleas","beret","spilt","rover","endow","pygmy","carat","abbey","vents","waken","chimp","fumed","sodas","vinyl","clout","wades","mites","smirk","bores","bunny","surly","frock","foray","purer","milks","query","mired","blare","froth","gruel","navel","paler","puffy","casks","grime","derby","gavel","teddy","vomit","moans","allot","defer","wield","viper","louse","erred","hewed","abhor","wrest","adage","ardor","stabs","rondo","loped","fishy","bible","hires","foals","feuds","jambs","thuds","jeers","knead","quirk","rugby","expel","greys","rigor","ester","lyres","aback","glues","lotus","lurid","rungs","hutch","thyme","valet","yokes","epics","trill","pikes","ozone","caper","chime","frees","famed","leech","smite","neigh","erode","robed","hoard","salve","conic","craze","jacks","gloat","mushy","rumps","fetus","wince","pinks","toots","glens","rusts","stews","shred","parka","chugs","winks","clots","shrew","filmy","juror","dents","gummy","grays","hooky","butte","reams","spank","gayer","tepid","spook","taint","flirt","rogue","spiky","opals","miser","cocky","coyly","balmy","slosh","brawl","aphid","faked","hydra","brags","chide","yanks","allay","video","altos","eases","meted","chasm","longs","excel","taffy","impel","savor","koala","dawns","proxy","clove","duets","dregs","tardy","briar","grimy","ultra","meaty","halve","wails","suede","mauve","envoy","arson","coves","gooey","brews","sofas","chums","amaze","zooms","abbot","halos","scour","suing","cribs","sagas","enema","wordy","harps","coupe","molar","flops","weeps","mints","ashen","felts","askew","munch","divan","vices","jumbo","blobs","blots","spunk","acrid","topaz","cubed","clans","flees","slurs","gnaws","welds","fords","emits","agate","pumas","mends","darks","dukes","plies","canny","hoots","oozes","lamed","fouls","nicks","mated","skims","brunt","tuber","tinge","fates","ditty","thins","frets","eider","bayou","mulch","fasts","amass","damps","morns","friar","palsy","vista","croon","conch","udder","tacos","skits","quits","preen","aster","adder","elegy","pulpy","baled","hovel","lavas","crave","optic","welts","busts","knave","razed","shins","totes","scoot","dears","crock","mutes","trims","doted","shuns","veers","fakes","yoked","wooed","hacks","sprig","wands","lulls","seers","snobs","nooks","pined","perky","mooed","frill","dines","booze","tripe","prong","drips","odder","levee","antic","sidle","pithy","corks","yelps","joker","fleck","buffs","scram","tiers","bogey","doled","irate","vales","coped","hails","elude","bulks","aired","vying","stags","strew","pacts","scabs","silos","dusts","yodel","terse","jaded","baser","jibes","foils","sways","forgo","slays","preys","treks","quell","peeks","assay","lurks","eject","boars","trite","belch","gnash","wanes","lutes","whims","dosed","chewy","snipe","umbra","teems","dozes","upped","brawn","shush","rinds","slush","moron","woken","fjord","sheik","jests","kayak","slews","toted","saner","drape","patty","raves","grist","skied","vixen","civet","vouch","tiara","homey","moped","runts","serge","kinky","corns","brats","pries","amble","fries","loons","datum","musky","gnome","ravel","icily","liken","lemur","frays","silts","sifts","plods","ramps","tress","earls","dudes","waive","karat","jolts","peons","beers","horny","pales","wreak","lairs","stank","swoon","blitz","ensue","atone","bingo","roves","kilts","scald","cynic","dulls","memos","elfin","dales","peels","peals","bares","sinus","crone","sable","hinds","shirk","wilts","roams","duped","cysts","mitts","safes","spats","coops","filet","knell","refit","covey","punks","kilns","abate","talcs","heeds","duels","ruffs","lapel","jaunt","whelp","cleat","dirge","edits","wormy","moats","smear","prods","bowel","frisk","vests","bayed","rasps","tames","delve","embed","befit","wafer","ceded","feign","spews","larch","huffs","doles","hulks","brims","irked","aspic","swipe","mealy","skimp","dowdy","brays","egret","flunk","phlox","gripe","peony","douse","blurs","darns","slunk","lefts","chats","inane","vials","stilt","rinks","wowed","bongs","frond","ingot","evict","singe","slops","dolts","drool","dells","whelk","feted","ether","cocos","hives","jibed","mazes","trios","sirup","squab","laths","leers","pasta","rifts","lopes","alias","whirs","diced","slags","lodes","foxed","idled","prows","plait","malts","chafe","cower","toyed","chefs","keels","sties","racer","etude","sucks","sulks","czars","copse","ailed","abler","rabid","golds","croup","snaky","visas","palls","mopes","boned","wispy","raved","swaps","junky","doily","pawns","tamer","poach","baits","damns","gumbo","daunt","prank","hunks","buxom","honks","stows","idles","routs","sages","goads","remit","copes","culls","havoc","dodos","shams","snubs","icons","dooms","hells","soled","comas","paves","perks","limps","wombs","blurb","daubs","cokes","sours","stuns","cased","musts","coeds","cowed","zoned","rummy","fetes","skulk","rajah","deans","reaps","galas","tills","roved","kudos","toned","pared","scull","vexes","punts","snoop","bails","dames","hazes","lores","marts","voids","rakes","harms","rears","satyr","swill","hexes","colic","leeks","hurls","yowls","phlox","plops","musks","jells","cruet","bided","filch","zests","rooks","rends","loams","basks","sires","carps","flits","muses","bawls","shuck","lisps","peeps","sorer","lolls","prude","floss","flogs","scums","dopes","bogie","pinky","leafs","tubas","scads","lowed","yeses","biked","qualm","evens","caned","gawks","wooly","gluts","romps","bests","dunce","crony","joist","tunas","boner","malls","parch","avers","crams","pares","dally","bigot","kales","flays","leach","pooch","slyer","golfs","mires","flues","loafs","acnes","neons","fiefs","dints","dazes","pouts","cored","yules","lilts","beefs","mutts","fells","cowls","spuds","lames","jawed","dupes","deads","bylaw","noons","nifty","clued","gapes","metes","cuter","maims","droll","cupid","mauls","sedge","papas","eking","loots","hilts","meows","beaus","dices","peppy","riper","fogey","gists","gilts","skews","cedes","zeals","alums","okays","elope","grump","wafts","soots","blimp","hefts","mulls","hosed","cress","doffs","ruder","waifs","ousts","pucks","biers","gulch","suets","hobos","lints","brans","teals","garbs","helms","turfs","quips","wends","banes","napes","swats","bagel","hexed","ogres","goner","gilds","pyres","lards","bides","paged","flout","medic","veals","putts","dirks","dotes","blurt","piths","barer","gaits","wools","dunks","heros","swabs","dirts","jutes","hemps","surfs","chows","shoos","dusks","parry","decal","furls","sears","murks","warps","slues","saris","weans","purrs","dills","togas","newts","bunts","razes","goons","wicks","ruses","vends","geode","drake","judos","lofts","pulps","lauds","mucks","vises","mocha","oiled","fugue","smack","gourd","bumpy","radix","fatty","borax","cubit","cacti","gamma","focal","avail","papal","golly","elite","versa","billy","adieu","annum","howdy","rhino","norms","bobby","axiom","setup","yolks","terns","mixer","genre","knoll","abode","junta","gorge","combo","alpha","overt","kinda","spelt","prick","nobly","audio","modal","warty","fluke","bonny","bream","rosin","bolls","doers","downs","beady","motif","fella","mould","crepe","kerns","glyph","azure","riser","blest","locus","lumpy","beryl","wanna","brier","tuner","rowdy","mural","timer","krill","triad","tenon","amply","deeps","padre","leant","pacer","dolly","trans","sumac","foamy","lolly","giver","codex","manna","unwed","vodka","salon","duple","boron","revue","crier","inter","dilly","whist","cults","spake","reset","loess","decor","mover","verve","ethic","gamut","lingo","align","sissy","incur","reedy","piper","calyx","basil","seine","piney","lemma","trams","winch","ionic","heady","harem","tummy","sally","shied","dross","saver","tilde","bower","serif","facto","belle","inset","bogus","caved","forte","sooty","bongo","credo","basal","aglow","glean","gusto","hymen","ethos","terra","brash","scrip","swash","aleph","tinny","itchy","trice","jowls","gongs","boric","twill","sower","awash","libel","spurn","sabre","rebut","penal","obese","sonny","tacit","xenon","pique","roger","gecko","beget","uncut","aloes","quint","clunk","salvo","diode","matey","hertz","xylem","kiosk","apace","cawed","peter","wench","bytes","tango","nutty","axial","natal","clomp","gored","bandy","gunny","runic","whizz","rupee","fated","wiper","bards","briny","staid","hocks","ochre","yummy","gents","soupy","swath","cameo","ebbed","theta","deems","servo","telly","tabby","tares","blocs","ghoul","cumin","dinky","bronc","tabor","comer","borer","sired","privy","deary","sprit","conga","quire","thugs","furor","bloke","runes","bawdy","cadre","toxin","annul","egged","anion","nodes","picky","stein","jello","audit","echos","fagot","letup","fount","caped","axons","amuck","banal","riled","petit","umber","miler","fibre","agave","bated","bilge","feint","pudgy","manic","pesky","strep","slurp","pylon","puree","caret","temps","newel","yawns","seedy","treed","coups","rangy","mangy","loner","tibia","mommy","titer","kooky","motes","amity","suave","hippo","curvy","samba","newsy","anise","tulle","liven","hallo","wales","opted","canto","idyll","bodes","curio","wrack","hiker","chive","yokel","dotty","demur","cusps","specs","quads","laity","toner","decry","writs","saute","clack","aught","logos","tipsy","natty","ducal","bidet","bulgy","lusts","goeth","baler","sited","shies","hasps","holed","swank","looky","melee","loamy","pimps","titan","binge","shunt","femur","libra","seder","honed","coypu","zowie","jihad","savvy","nadir","basso","manic","maned","mousy","omega","prima","picas","folio","mecca","reals","troth","testy","balky","crimp","chink","abets","splat","vaunt","cutie","pasty","moray","ratty","islet","joust","motet","viral","nukes","grads","comfy","voila","woozy","blued","whomp","sward","metro","skeet","chine","bowie","tubby","emirs","coati","unzip","slobs","trike","funky","ducat","skoal","oomph","taker","minim","getup","stoic","synod","runty","braze","inlay","venue","louts","peaty","humpy","radon","beaut","raspy","unfed","crick","nappy","yipes","rebus","divot","kiwis","vetch","squib","sitar","kiddo","dyers","cotta","matzo","lager","zebus","crass","dacha","kneed","dicta","fakir","knurl","runny","unpin","julep","globs","nudes","sushi","tacky","stoke","kaput","butch","hulas","croft","genii","nodal","outgo","spiel","viols","fetid","cagey","fudgy","epoxy","leggy","hanky","lapis","felon","beefy","coots","melba","caddy","betel","frizz","drear","kooks","turbo","hoagy","moult","helix","zonal","arias","nosey","paean","lacey","banns","swain","fryer","retch","tenet","gigas","whiny","ogled","rumen","begot","cruse","abuts","riven","balks","sines","sigma","abase","ennui","gores","unset","augur","sated","odium","dings","moire","scion","henna","kraut","lifer","prigs","bebop","gages","gazer","gibes","aural","tempi","hooch","snuck","harts","techs","emend","ninny","guava","scarp","liege","tufty","sepia","tomes","carob","emcee","prams","poser","verso","joule","baize","blips","scrim","cubby","clave","winos","rearm","liens","lumen","chump","nanny","trump","fichu","chomp","purty","maser","woosh","patsy","shill","rusks","swami","boded","lobed","natch","shish","tansy","snoot","payer","sappy","laxer","hubby","aegis","riles","ditto","jazzy","dingo","quasi","septa","peaky","lorry","bitty","payee","seamy","imbue","belie","chary","spoof","clime","babel","wacky","sumps","skids","khans","crypt","inure","nonce","hooey","anole","kazoo","calve","limbo","argot","ducky","faker","vibes","gassy","unlit","nervy","femme","biter","fiche","boors","gaffe","recap","synch","dicey","hewer","legit","gurus","edify","tweak","typos","rerun","surds","nulls","hater","lefty","mogul","mafia","debug","pates","blabs","splay","talus","moola","nixed","kilos","snide","horsy","gesso","jaggy","trove","nixes","creel","pater","iotas","cadge","hokum","furze","curie","nutsy","hilum","remix","angst","burls","jimmy","veiny","tryst","codon","befog","gamed","flume","axman","doozy","lubes","rheas","bozos","butyl","mynah","jocks","donut","avian","wurst","chock","quash","quals","hayed","bombe","cushy","spacy","leery","thews","amens","tesla","intro","fiver","frump","capos","opine","coder","namer","jowly","haled","chard","bruin","reuse","toons","frats","silty","cutup","nisei","neato","decaf","softy","bimbo","loony","shoed","agues","peeve","gamey","sarge","reran","potty","coned","upend","narco","whorl","jinks","tizzy","weepy","posit","marge","vegan","clops","numbs","reeks","rubes","rower","biped","tiffs","hocus","hammy","bunco","tykes","chaws","yucky","hokey","maven","adman","slogs","souse","nacho","mimed","melds","boffo","debit","pinup","gulag","randy","bosun","educe","faxes","auras","pesto","antsy","betas","fizzy","dorky","snits","moxie","thane","nobby","gamin","gouty","esses","paned","druid","jades","rehab","gofer","octet","homed","socko","dorks","eared","anted","elide","fazes","oxbow","dowse","macaw","scone","drily","hyper","salsa","mooch","gated","lipid","mitre","venal","knish","ritzy","divas","torus","mange","dimer","recut","meson","wined","fends","phage","fiats","caulk","cavil","panty","roans","bilks","hones","botch","estop","sully","sooth","gelds","raper","pager","fixer","infix","hicks","tuxes","plebe","twits","abash","twixt","wacko","primp","nabla","girts","miffs","emote","rebid","shahs","rutty","grout","grift","deify","biddy","kopek","semis","bries","acmes","piton","hussy","torts","disco","boozy","gibed","vamps","amour","soppy","gonzo","wader","tutus","perms","catty","glitz","brigs","nerds","barmy","gizmo","owlet","sayer","molls","shard","comps","colas","matte","droid","ploys","vapid","cairn","deism","mixup","prosy","raker","flubs","reify","craps","shags","clone","hazed","macho","recto","drams","biker","aquas","porky","doyen","exude","goofs","divvy","noels","jived","hulky","cager","harpy","oldie","vivas","admix","codas","zilch","deist","orcas","retro","pilaf","parse","rants","zingy","toddy","micro","veeps","girly","nexus","demos","bibbs","antes","lulus","gnarl","zippy","epees","wimps","tromp","grail","yoyos","poufs","hales","roust","cabal","rawer","pampa","mosey","kefir","burgs","unmet","boobs","boons","hypes","dynes","nards","lanai","yogis","sepal","quark","toked","prate","hawed","swigs","toker","doper","bossa","linty","foist","mondo","stash","kayos","twerp","zesty","capon","wimpy","rewed","fungo","tarot","frosh","kabob","pinko","redid","heist","tarps","lamas","sutra","dinar","whams","busty","spays","mambo","nabob","preps","cabby","conks","dados","balms","gutsy","faxed","egads","pushy","retry","drubs","daffy","chits","mufti","karma","lotto","toffs","burps","deuce","zings","kappa","doggy","scams","mimes","throe","waled","promo","blats","muffs","oinks","coset","finks","faddy","minis","snafu","sauna","usury","craws","stats","condo","loopy","dorms","ascot","dippy","execs","dopey","envoi","gismo","fazed","strop","jives","slims","batik","pings","leggo","prawn","luaus","campy","prexy","proms","touts","ogles","tweet","toady","naiad","hider","nuked","fatso","obits","narcs","tyros","delis","wooer","hyped","byway","scrod","avows","futon","torte","tuple","carom","kebab","tamps","jilts","duals","artsy","repro","modem","toped","psych","sicko","klutz","tarns","drays","cloys","piker","aimer","limos","flack","dutch","mucky","shire","layup","tokes","axing","toper","duvet","cowry","profs","blahs","addle","sudsy","batty","coifs","gabby","hafta","pitas","gouda","deice","taupe","duchy","nitro","carny","limey","hirer","taxer","roils","ruble","elate","dolor","wryer","snots","coked","gorse","goest","agape","manta","jings","iliac","admen","offal","lotta","bolas","thwap","boggy","donna","locos","belay","gluey","bitsy","hilar","vroom","fetal","raths","renal","dyads","crocs","culpa","kivas","feist","teats","yawls","whens","fusty","eclat","perdu","exeat","molly","supra","wetly","plasm","semen","pukka","paras","stoat","secco","carte","haute","molal","shads","ovoid","pions","modus","rheum","scurf","parer","ephah","doest","sprue","flams","dieth","choos","miked","goopy","bally","plumy","moony","morts","bipod","spume","algal","ambit","spued","dozer","harum","groat","skint","laude","thrum","pappy","rimed","gigue","limed","plein","redly","lites","seest","grebe","absit","pshaw","yawps","plats","payed","areal","tilth","youse","thees","lento","yawed","gipsy","sprat","cornu","amahs","blowy","wahoo","lubra","mecum","coqui","sabra","edema","dicot","astro","kited","ouzel","didos","grata","bonne","axmen","klunk","summa","laves","purls","yawny","teary","masse","largo","bazar","sylph","toque","fugit","plunk","ortho","lucre","cooch","folky","tyres","corky","solon","didot","kerfs","rayed","chile","begat","nippy","litre","magna","rebox","hydro","milch","brent","gyves","lazed","feued","mavis","inapt","baulk","casus","scrum","wised","fossa","dower","kyrie","scuse","feuar","juste","ukase","beaux","tusky","orate","lardy","quiff","epsom","neath","ocher","tared","homme","mezzo","corms","psoas","beaky","terry","infra","spivs","tuans","belli","bergs","anima","weirs","scops","manse","curia","kebob","cycad","talky","tapis","amide","dolce","sloes","jakes","russe","blash","tutti","panga","blebs","tench","swarf","herem","missy","merse","pawky","limen","chert","tiros","brack","foots","welsh","fosse","knops","ileum","noire","firma","podgy","laird","thunk","shute","rowan","shoji","poesy","uncap","fames","glees","costa","turps","fores","solum","imago","byres","fondu","coney","polis","dictu","kraal","sherd","mumbo","wroth","chars","unbox","slued","weest","hades","wiled","syncs","muser","excon","hoars","sibyl","passe","joeys","lotsa","lepta","shays","bocks","endue","darer","nones","ileus","plash","busby","wheal","buffo","yobbo","biles","poxes","rooty","licit","terce","bromo","dweeb","imbed","saran","bruit","punky","softs","biffs","loppy","agars","livre","biome","bunds","shews","diems","ginny","degum","polos","desex","unman","dungy","vitam","wedgy","glebe","apers","ridgy","roids","wifey","vapes","whoas","bunko","yolky","ulnas","reeky","bodge","brant","davit","deque","liker","jenny","tacts","fulls","treap","ligne","acked","refry","vower","aargh","churl","momma","gaols","whump","arras","marls","tiler","grogs","memes","midis","tided","haler","duces","twiny","poste","unrig","prise","drabs","quids","facer","spier","baric","geoid","remap","trier","gunks","steno","stoma","airer","ovate","torah","apian","smuts","pocks","yurts","exurb","defog","nuder","bosky","nimbi","mothy","joyed","labia","pards","jammy","faxer","hoppy","nurbs","cotes","dishy","vised","celeb","pismo","casas","withs","dodgy","scudi","mungs","muons","ureas","unhip","krone","sager","verst","expat","gronk","uvula","shawm","bilgy","braes","cento","webby","lippy","gamic","lordy","mazed","tings","shoat","faery","wirer","diazo","carer","rater","greps","rente","zloty","viers","unapt","poops","fecal","kepis","taxon","eyers","wonts","spina","stoae","yenta","pooey","buret","japan","bedew","hafts","selfs","oared","herby","pryer","oakum","dinks","titty","sepoy","penes","fusee","winey","gimps","nihil","rille","giber","ousel","umiak","cuppy","hames","azine","glads","tacet","bumph","coyer","honky","gamer","gooky","waspy","sedgy","bents","varia","djinn","junco","pubic","wilco","lazes","idyls","lupus","rives","snood","schmo","finis","noter","pavan","orbed","bates","pipet","baddy","goers","shako","stets","sebum","seeth","lobar","raver","ajuga","riced","velds","dribs","ville","dhows","unsew","halma","krona","jiffs","treys","bauds","mimer","plebs","caner","jiber","cuppa","washy","chuff","unarm","yukky","styes","waker","flaks","maces","rimes","gimpy","guano","liras","kapok","scuds","bwana","aider","prier","monte","golem","velar","firer","pieta","umbel","campo","unpeg","fovea","abeam","boson","asker","goths","vocab","vined","trows","tikis","loper","indie","boffs","spang","grapy","tater","ichor","lochs","supes","degas","flics","torsi","beths","weber","resaw","lawny","coven","relet","therm","heigh","trued","zayin","liest","barfs","bassi","roily","flabs","punny","okras","hanks","dipso","nerfs","fauns","calla","pseud","lurer","magus","obeah","atria","twink","palmy","pocky","pends","recta","plonk","slaws","keens","nicad","pones","inker","whews","groks","mosts","trews","ulnar","gyppy","cocas","expos","eruct","oiler","vacua","dreck","dater","arums","tubal","voxel","dixit","beery","assai","lades","actin","buzzy","meads","grody","ribby","clews","creme","email","pyxie","kulak","bocci","rived","duddy","hoper","lapin","wonks","petri","phial","fugal","holon","boomy","duomo","musos","shier","hayer","porgy","hived","litho","fisty","stagy","maria","smogs","asana","yogic","slomo","fawny","amine","wefts","gonad","twirp","brava","plyer","fermi","loges","niter","revet","gyved","totty","zappy","honer","giros","dicer","calks","luxes","monad","cruft","quoin","fumer","amped","shlep","vinca","yahoo","zooey","dryad","nixie","moper","iambs","lunes","nudie","limns","weals","nohow","miaow","gouts","mynas","mazer","oxeye","stoup","jujus","debar","pubes","taels","rands","blear","paver","goosy","sprog","oleos","toffy","pawer","maced","crits","kluge","tubed","sahib","ganef","scats","sputa","vaned","acned","taxol","plink","oweth","tribs","resay","boule","thous","haply","glans","maxis","bezel","antis","porks","quoit","alkyd","glary","beamy","hexad","bonks","tecum","kerbs","filar","frier","redux","abuzz","fader","shoer","couth","trues","guyed","goony","booky","fuzes","hurly","genet","hodad","calix","filer","pawls","iodic","utero","henge","unsay","liers","piing","weald","sexed","folic","poxed","anile","kiths","becks","tatty","plena","rebar","abled","toyer","attar","teaks","aioli","awing","anent","feces","redip","wists","prats","mesne","muter","smurf","owest","bahts","lossy","hunky","hoers","slier","sicks","fatly","delft","hiver","himbo","pengo","busks","loxes","zonks","ilium","aport","ikons","mulct","reeve","civvy","canna","barfy","kaiak","scudo","knout","gaper","bhang","pease","uteri","lases","paten","rasae","axels","stoas","ombre","styli","gunky","hazer","kenaf","ahoys","ammos","weeny","urger","kudzu","paren","bolos","fetor","nitty","techy","lieth","somas","villi","gluon","janes","cants","farts","socle","jinns","ruing","slily","ricer","hadda","wises","wolds","balds","picot","whats","bungs","snarf","legos","dungs","stogy","berms","tangs","vails","roods","morel","sware","elans","latus","gules","razer","doxie","overs","gutta","zincs","nates","kirks","tikes","donee","mohel","ceder","doges","unmap","folia","rawly","snark","topoi","ceils","immix","yores","diest","bubba","pomps","forky","poohs","worts","gloms","beano","muley","barky","tunny","auric","funks","gaffs","cordy","curdy","lisle","toric","soyas","reman","mungy","carpy","apish","oaten","gappy","aurae","bract","rooky","axled","burry","sizer","proem","turfy","impro","mashy","miens","nonny","olios","grook","sates","agley","corgi","dashy","doser","dildo","apsos","laker","playa","selah","malty","dulse","frigs","demit","whoso","rials","sawer","spics","bedim","snugs","fanin","icers","suers","wizen","koine","topos","shirr","rifer","feral","laded","lased","turds","swede","easts","cozen","unhit","pally","aitch","sedum","coper","ruche","geeks","swags","algin","offed","ninja","holer","doter","toter","besot","macer","peens","pewit","redox","poler","yecch","fluky","doeth","twats","cruds","bider","stele","hexer","wests","gluer","pilau","abaft","whelm","lacer","inode","tabus","gator","cuing","refly","luted","cukes","bairn","bight","arses","crump","loggy","blini","spoor","toyon","harks","wazoo","fenny","naves","keyer","tufas","morph","rajas","typal","spiff","oxlip","unban","mussy","finny","rimer","login","molas","cirri","huzza","agone","unsex","unwon","peats","toile","zombi","dewed","nooky","alkyl","ixnay","dovey","holey","cuber","amyls","podia","chino","apnea","prims","lycra","johns","primo","fatwa","egger","hempy","snook","hying","fuzed","barms","crink","moots","yerba","rhumb","direr","munge","eland","nares","wrier","noddy","atilt","jukes","ender","thens","unfix","doggo","zooks","diddy","shmoo","brusk","prest","curer","pasts","kelpy","bocce","kicky","taros","lings","dicky","nerdy","abend","stela","biggy","laved","baldy","pubis","gooks","wonky","stied","hypos","assed","spumy","osier","roble","rumba","biffy","pupal"]);
+
+// ── GAME STATE ──────────────────────────────────────────────────────
+let TARGET_WORD="",TARGET_HINT="",TARGET_THEME="";
+let GAME_MODE="daily";
+const NUM_GUESSES=6,WORD_LEN=5;
+let currentRow=0,currentCol=0,currentGuess=[],gameOver=false,startTime=Date.now(),isRevealing=false;
+
+function $(id){return document.getElementById(id)}
+function toast(msg,type="",dur=2000){
+  const el=document.createElement("div");
+  el.className="toast "+type;el.textContent=msg;
+  $("toast-container").appendChild(el);
+  setTimeout(()=>el.remove(),dur+300);
+}
+
+function getTimeToMidnight(){
+  const now=new Date(),midnight=new Date(now);midnight.setHours(24,0,0,0);
+  const diff=midnight-now;
+  const h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+function startCountdown(){
+  function update(){
+    const t=getTimeToMidnight();
+    if($("next-word-timer"))$("next-word-timer").textContent=t;
+    if($("lb-next-timer"))$("lb-next-timer").textContent=t;
+    if($("countdown"))$("countdown").textContent=t;
+  }
+  update();setInterval(update,1000);
+}
+
+function buildBoard(){
+  const board=$("game-board");board.innerHTML="";
+  for(let r=0;r<NUM_GUESSES;r++){
+    const row=document.createElement("div");row.className="letter-row";row.id=`row-${r}`;
+    for(let c=0;c<WORD_LEN;c++){
+      const box=document.createElement("div");box.className="letter-box";box.id=`box-${r}-${c}`;
+      row.appendChild(box);
+    }
+    board.appendChild(row);
+  }
+}
+
+const ROWS=[["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["ENTER","z","x","c","v","b","n","m","⌫"]];
+function buildKeyboard(){
+  ROWS.forEach((row,ri)=>{
+    const rowEl=$(`kb-row-${ri+1}`);rowEl.innerHTML="";
+    row.forEach(key=>{
+      const btn=document.createElement("button");
+      btn.className="kb-key"+(key==="ENTER"||key==="⌫"?" wide":"");
+      btn.id=`kb-${key}`;
+      if(key==="⌫"){btn.innerHTML=`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/></svg>`;}
+      else{btn.textContent=key;}
+      btn.addEventListener("click",()=>handleKey(key));
+      rowEl.appendChild(btn);
+    });
+  });
+}
+
+function updateCursor(){
+  document.querySelectorAll(".letter-box").forEach(b=>b.classList.remove("active-cursor"));
+  if(!gameOver&&currentRow<NUM_GUESSES&&currentCol<WORD_LEN){
+    const box=$(`box-${currentRow}-${currentCol}`);
+    if(box)box.classList.add("active-cursor");
+  }
+}
+
+function handleKey(key){
+  if(gameOver||isRevealing)return;
+  if(key==="ENTER"){submitGuess();return;}
+  if(key==="⌫"||key==="Backspace"){deleteLetter();return;}
+  if(/^[a-zA-Z]$/.test(key))insertLetter(key.toLowerCase());
+}
+
+function insertLetter(letter){
+  if(currentCol>=WORD_LEN)return;
+  const box=$(`box-${currentRow}-${currentCol}`);
+  box.textContent=letter.toUpperCase();box.classList.add("filled");
+  currentGuess.push(letter);currentCol++;updateCursor();
+}
+
+function deleteLetter(){
+  if(currentCol===0)return;
+  currentCol--;currentGuess.pop();
+  const box=$(`box-${currentRow}-${currentCol}`);
+  box.textContent="";box.classList.remove("filled","active-cursor");
+  updateCursor();
+}
+
+function checkGuess(guess,target){
+  const result=Array(WORD_LEN).fill("absent");
+  const targetArr=target.split(""),guessArr=guess.split("");
+  for(let i=0;i<WORD_LEN;i++){
+    if(guessArr[i]===targetArr[i]){result[i]="correct";targetArr[i]="#";guessArr[i]="*";}
+  }
+  for(let i=0;i<WORD_LEN;i++){
+    if(guessArr[i]==="*")continue;
+    const idx=targetArr.indexOf(guessArr[i]);
+    if(idx!==-1){result[i]="present";targetArr[idx]="#";}
+  }
+  return result;
+}
+
+function submitGuess(){
+  if(currentCol<WORD_LEN){shakeRow(currentRow);toast("Not enough letters","error");return;}
+  const guess=currentGuess.join("");
+  if(!VALID_WORDS.has(guess)){shakeRow(currentRow);toast("Not in word list","error");return;}
+  revealRow(currentRow,checkGuess(guess,TARGET_WORD),guess);
+}
+
+function shakeRow(r){
+  const row=$(`row-${r}`);row.classList.add("shake");setTimeout(()=>row.classList.remove("shake"),400);
+}
+
+function revealRow(r,result,guess){
+  isRevealing=true;const DELAY=300;
+  result.forEach((state,c)=>{
+    setTimeout(()=>{
+      const box=$(`box-${r}-${c}`);
+      box.style.animation=`flip ${DELAY*2}ms ease`;
+      setTimeout(()=>{box.dataset.state=state;box.style.animation="";},DELAY);
+      const letter=guess[c],kbKey=document.getElementById(`kb-${letter}`);
+      if(kbKey){
+        const cur=kbKey.dataset.state;
+        if(cur!=="correct"&&(state==="correct"||(state==="present"&&cur!=="correct")||!cur))kbKey.dataset.state=state;
+      }
+    },c*DELAY);
+  });
+  setTimeout(()=>{
+    isRevealing=false;currentRow++;currentGuess=[];currentCol=0;updateCursor();
+    const won=result.every(s=>s==="correct");
+    if(won)endGame(true,r+1);
+    else if(currentRow>=NUM_GUESSES)endGame(false,NUM_GUESSES);
+  },WORD_LEN*DELAY+DELAY);
+}
+
+async function endGame(won,guessCount){
+  gameOver=true;updateCursor();
+  const timeSecs=Math.floor((Date.now()-startTime)/1000);
+  const pts=won?Math.max(7-guessCount,1):0;
+  const dateKey=getTodayKey();
+  if(GAME_MODE==="daily"){
+    localStorage.setItem("lastPlayed",dateKey);
+    localStorage.setItem("lastResult",JSON.stringify({won,guessCount,pts}));
+    let stats=JSON.parse(localStorage.getItem("stats")||'{"played":0,"wins":0,"totalPts":0,"streak":0,"bestStreak":0}');
+    stats.played++;
+    if(won){stats.wins++;stats.totalPts+=pts;stats.streak++;if(stats.streak>stats.bestStreak)stats.bestStreak=stats.streak;}
+    else{stats.streak=0;}
+    localStorage.setItem("stats",JSON.stringify(stats));
+    await saveScore({mode:"daily",word:TARGET_WORD,guesses:guessCount,won,dateKey,timeSecs});
+    await flushPending();
+    updateScoreboard(stats,pts,guessCount);
+    setTimeout(()=>loadTodayLeaderboard(),1500);
+    setTimeout(()=>showResultModal(won,guessCount,pts,stats),1000);
+  }
+  if(won&&GAME_MODE==="daily")$("lb-today-word").style.visibility="visible";
+}
+
+function showResultModal(won,guessCount,pts,stats){
+  $("result-icon").textContent=won?"🎉":"😞";
+  $("result-title").textContent=won?["Genius!","Magnificent!","Impressive!","Splendid!","Great!","Phew!"][guessCount-1]:"Better luck tomorrow!";
+  $("result-word").textContent=TARGET_WORD.toUpperCase();
+  $("result-sub").textContent=won?`Solved in ${guessCount} ${guessCount===1?"guess":"guesses"} · ${pts} point${pts!==1?"s":""}`:`The word was ${TARGET_WORD.toUpperCase()}`;
+  $("rs-guesses").textContent=won?guessCount:"X";
+  $("rs-pts").textContent=pts;
+  $("rs-streak").textContent=stats.streak;
+  $("result-overlay").classList.remove("hidden");
+}
+
+function updateScoreboard(stats,todayPts,guessCount){
+  const name=localStorage.getItem("playerName")||"–";
+  $("sb-playername").textContent=name.length>13?name.slice(0,13)+"…":name;
+  $("header-user").textContent=name;
+  if(name&&name!=="–")$("header-edit-btn").style.display="inline-flex";
+  const played=stats.played||0,wins=stats.wins||0;
+  const todayPlayed=localStorage.getItem("lastPlayed")===getTodayKey();
+  $("sb-today").textContent=todayPts!==undefined?(todayPts>0?`${todayPts} PTS`:"0 PTS"):(todayPlayed?"–":"PLAYING…");
+  $("sb-total").textContent=(stats.totalPts||0)+" PTS";
+  $("sb-played").textContent=played;
+  $("sb-winrate").textContent=played?Math.round(wins/played*100)+"%":"–";
+  $("sb-streak").textContent=(stats.streak||0);
+  $("sb-beststreak").textContent=stats.bestStreak||0;
+}
+
+async function loadTodayLeaderboard(){
+  const dateKey=getTodayKey();
+  const lb=await getTodayLeaderboard(dateKey);
+  const uid=currentUser?.uid;
+  $("lb-today-count").textContent=lb.length+" players today";
+  const container=$("lb-today-rows");
+  if(!lb.length){container.innerHTML=`<div class="lb-loading">No scores yet — be the first!</div>`;return;}
+  const lastPlayed=localStorage.getItem("lastPlayed")===dateKey;
+  container.innerHTML=lb.slice(0,8).map((p,i)=>{
+    const isYou=p.uid===uid;
+    const rankClass=i===0?"gold-medal":i===1?"silver-medal":i===2?"bronze-medal":"";
+    const tries=p.won?`${p.guesses}/6`:"–";
+    const mins=Math.floor((p.timeSecs||0)/60),secs=(p.timeSecs||0)%60;
+    const time=p.won?`${mins}:${String(secs).padStart(2,"0")}`:"–";
+    return `<div class="lb-row${isYou?" you":""}">
+      <div class="lb-rank ${rankClass}">${rankClass?"":i+1}</div>
+      <div class="lb-name">${p.name||"Anonymous"}${isYou?` <span class="you-badge">YOU</span>`:""}</div>
+      <div class="lb-pts">${p.pts||0}</div>
+      <div class="lb-tries">${tries}</div>
+      <div class="lb-time">${time}</div>
+    </div>`;
+  }).join("");
+  if(lb.findIndex(p=>p.uid===uid)===-1&&!lastPlayed){
+    container.innerHTML+=`<div class="lb-row you">
+      <div class="lb-rank">–</div>
+      <div class="lb-name">${localStorage.getItem("playerName")||"You"} <span class="you-badge">YOU</span></div>
+      <div class="lb-pts lb-playing">Playing…</div>
+      <div class="lb-tries"></div>
+      <div class="lb-time"></div>
+    </div>`;
+  }
+  const rank=lb.findIndex(p=>p.uid===uid)+1;
+  if(rank>0)$("sb-rank").textContent="#"+rank;
+}
+
+async function loadAlltimeLeaderboard(){
+  const lb=await getAllTimeLeaderboard();
+  const uid=currentUser?.uid;
+  $("lb-alltime-count").textContent=lb.length+" total players";
+  const container=$("lb-alltime-rows");
+  if(!lb.length){container.innerHTML=`<div class="lb-loading">No all-time data yet!</div>`;return;}
+  container.innerHTML=lb.slice(0,8).map((p,i)=>{
+    const isYou=p.uid===uid;
+    const rankClass=i===0?"gold-medal":i===1?"silver-medal":i===2?"bronze-medal":"";
+    return `<div class="lb-row-alltime${isYou?" you":""}">
+      <div class="lb-rank ${rankClass}">${rankClass?"":i+1}</div>
+      <div class="lb-name">${p.name||"Anonymous"}${isYou?` <span class="you-badge">YOU</span>`:""}<span class="streak-sub">${p.wins||0} wins</span></div>
+      <div class="lb-pts">${p.totalPts||0}</div>
+      <div class="lb-played">${p.played||0}</div>
+      <div class="lb-winpct">${p.winpct||0}%</div>
+    </div>`;
+  }).join("");
+}
+
+function initDailyGame(){
+  const daily=getDailyWord();
+  TARGET_WORD=daily.word;TARGET_HINT=daily.hint;TARGET_THEME=daily.theme||"Campus Life";
+  const dateKey=getTodayKey();
+  const played=localStorage.getItem("lastPlayed")===dateKey;
+  resetBoard();
+  $("hint-text").textContent=TARGET_HINT;
+  $("theme-display").textContent=TARGET_THEME.toUpperCase();
+  const wordNum=getWordNum();
+  const dateStr=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  $("hero-meta").textContent=`${dateStr} · Word #${wordNum}`;
+  $("lb-datebadge").textContent=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase()+` · #${wordNum}`;
+  $("lb-today-word").textContent=TARGET_WORD.toUpperCase();
+  if(played){gameOver=true;toast("You already played today! Come back tomorrow 🌙","",4000);$("lb-today-word").style.visibility="visible";}
+}
+
+function resetBoard(){
+  gameOver=false;currentRow=0;currentCol=0;currentGuess=[];isRevealing=false;startTime=Date.now();
+  buildBoard();document.querySelectorAll(".kb-key").forEach(k=>{delete k.dataset.state;});updateCursor();
+}
+
+async function init(){
+  buildKeyboard();
+  const user=await initAuth();
+  await flushPending();
+  let playerName=localStorage.getItem("playerName");
+  if(!playerName&&user){playerName=await getPlayerName(user.uid);if(playerName)localStorage.setItem("playerName",playerName);}
+  if(!playerName){$("join-overlay").classList.remove("hidden");}
+  else{$("header-user").textContent=playerName;}
+  initDailyGame();startCountdown();
+  const stats=JSON.parse(localStorage.getItem("stats")||'{"played":0,"wins":0,"totalPts":0,"streak":0,"bestStreak":0}');
+  const dateKey=getTodayKey();
+  const todayPlayed=localStorage.getItem("lastPlayed")===dateKey;
+  const lastResult=JSON.parse(localStorage.getItem("lastResult")||"{}");
+  updateScoreboard(stats,todayPlayed?lastResult.pts:undefined,lastResult.guessCount);
+  loadTodayLeaderboard();
+
+  document.addEventListener("keyup",e=>{
+    if($("join-overlay").classList.contains("hidden")&&$("howto-overlay").classList.contains("hidden")&&$("result-overlay").classList.contains("hidden")){
+      handleKey(e.key==="Backspace"?"⌫":e.key==="Enter"?"ENTER":e.key);
+    }
+  });
+
+  $("join-btn").addEventListener("click",async()=>{
+    const name=$("player-name-input").value.trim();if(!name||name.length<1)return;
+    localStorage.setItem("playerName",name);
+    if(currentUser)await savePlayerName(currentUser.uid,name);
+    $("join-overlay").classList.add("hidden");$("header-user").textContent=name;$("header-edit-btn").style.display="inline-flex";
+    updateScoreboard(JSON.parse(localStorage.getItem("stats")||'{}'),undefined,undefined);
+  });
+  $("skip-link").addEventListener("click",()=>{
+    $("join-overlay").classList.add("hidden");localStorage.setItem("playerName","Anonymous");
+    $("header-user").textContent="Anonymous";$("header-edit-btn").style.display="inline-flex";
+  });
+  $("player-name-input").addEventListener("keyup",e=>{if(e.key==="Enter")$("join-btn").click();});
+
+  $("how-to-btn").addEventListener("click",()=>$("howto-overlay").classList.remove("hidden"));
+  $("howto-close").addEventListener("click",()=>$("howto-overlay").classList.add("hidden"));
+  $("howto-overlay").addEventListener("click",e=>{if(e.target===$("howto-overlay"))$("howto-overlay").classList.add("hidden");});
+  $("result-overlay").addEventListener("click",e=>{if(e.target===$("result-overlay"))$("result-overlay").classList.add("hidden");});
+
+  $("result-share-btn").addEventListener("click",()=>{
+    const result=JSON.parse(localStorage.getItem("lastResult")||"{}");
+    const text=`Insider Wordle #${getWordNum()} ${result.won?result.guessCount:"X"}/6\n\nPlay at ${location.href}`;
+    navigator.clipboard.writeText(text).then(()=>toast("Copied to clipboard!","success")).catch(()=>{});
+  });
+
+  $("lb-tab-today").addEventListener("click",()=>{
+    $("lb-tab-today").classList.add("active");$("lb-tab-alltime").classList.remove("active");
+    $("lb-today-panel").style.display="";$("lb-alltime-panel").style.display="none";
+  });
+  $("lb-tab-alltime").addEventListener("click",()=>{
+    $("lb-tab-alltime").classList.add("active");$("lb-tab-today").classList.remove("active");
+    $("lb-today-panel").style.display="none";$("lb-alltime-panel").style.display="";
+    loadAlltimeLeaderboard();
+  });
+
+  $("lb-share-btn").addEventListener("click",()=>{
+    navigator.clipboard.writeText(`I'm playing Insider Wordle! Join me → ${location.href}`).then(()=>toast("Link copied!","success")).catch(()=>{});
+  });
+  $("challenge-btn").addEventListener("click",()=>{
+    navigator.clipboard.writeText(`Challenge: Can you beat me on today's Insider Wordle? → ${location.href}`).then(()=>toast("Challenge link copied! 🔥","success")).catch(()=>{});
+  });
+  $("header-edit-btn").addEventListener("click",()=>{
+    $("player-name-input").value=localStorage.getItem("playerName")||"";
+    $("join-overlay").classList.remove("hidden");$("player-name-input").focus();$("player-name-input").select();
+  });
+  if(playerName)$("header-edit-btn").style.display="inline-flex";
+  setTimeout(()=>$("loading-screen").classList.add("hidden"),800);
+}
+
+init();
+</script>
+</body>
+</html>
