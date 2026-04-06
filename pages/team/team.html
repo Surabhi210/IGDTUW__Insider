@@ -147,9 +147,13 @@
 
         /* Tech Team Members - 3 columns on desktop, responsive */
         .tech-members-grid {
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            /* Change repeat(auto-fit, minmax(300px, 1fr)) to: */
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            
             max-width: 1200px;
             margin: 0 auto;
+            gap: 2rem; /* Adds space between the two columns */
         }
 
         /* Member Cards */
@@ -765,17 +769,17 @@
                 <div class="member-card">
                     <div class="avatar-wrapper">
                         <div class="avatar-placeholder">
-                            <img src="mishka.png" alt="Mishka">
+                            <img src="hiya.png" alt="Hiya">
                         </div>
 
-                        <a class="linkedin-link" href="https://www.linkedin.com/in/mishka-malhotra/" target="_blank"
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/hiya-trehan-2127a4317/" target="_blank"
                             rel="noopener" aria-label="Connect on LinkedIn">
                             <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
                                 width="32" height="32">
                         </a>
                     </div>
                     <div class="member-info">
-                        <h3>Mishka Malhotra</h3>
+                        <h3>Hiya Trehan</h3>
                         <p class="member-role">Associate Editor</p>
                     </div>
                 </div>
@@ -808,17 +812,17 @@
                 <div class="member-card">
                     <div class="avatar-wrapper">
                         <div class="avatar-placeholder">
-                            <img src="hiya.png" alt="Hiya">
+                            <img src="KeeratKaur.jpeg" alt="Keerat Kaur">
                         </div>
 
-                        <a class="linkedin-link" href="https://www.linkedin.com/in/hiya-trehan-2127a4317/" target="_blank"
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/keeratkaurbhatia?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank"
                             rel="noopener" aria-label="Connect on LinkedIn">
                             <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
                                 width="32" height="32">
                         </a>
                     </div>
                     <div class="member-info">
-                        <h3>Hiya Trehan</h3>
+                        <h3>Keerat Kaur</h3>
                         <p class="member-role">Assistant Editor</p>
                     </div>
                 </div>
@@ -896,7 +900,44 @@
             </div>
 
             <!-- Tech Team Members -->
+
+            
             <div class="team-grid tech-members-grid" style="margin-top: 2rem;">
+
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="Gauri.jpeg" alt="Gauri">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/gauri-sharma-10073931a?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Gauri Sharma</h3>
+                    </div>
+                </div>
+
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="Kanika.jpeg" alt="Kanika">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/kanika-narayan-892ab532a?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Kanika Narayan</h3>
+                    </div>
+                </div>
+
                 <div class="member-card">
                     <div class="avatar-wrapper">
                         <div class="avatar-placeholder">
@@ -930,22 +971,7 @@
                         <h3>Tanisha Sharma</h3>
                     </div>
                 </div>
-                <div class="member-card">
-                    <div class="avatar-wrapper">
-                        <div class="avatar-placeholder">
-                            <img src="tanishao.png" alt="Tanisha">
-                        </div>
-
-                        <a class="linkedin-link" href="https://www.linkedin.com/in/tanisha-ojha-6bb1b0203/" target="_blank"
-                            rel="noopener" aria-label="Connect on LinkedIn">
-                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
-                                width="32" height="32">
-                        </a>
-                    </div>
-                    <div class="member-info">
-                        <h3>Tanisha Ojha</h3>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </section>
