@@ -676,6 +676,23 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;ba
 
 <header>
   <div class="header-logo">
+    <a href="../../index.html" style="
+        color:rgba(255,255,255,0.55);
+        text-decoration:none;
+        font-size:.65rem;
+        font-family:'DM Sans',sans-serif;
+        font-weight:600;
+        letter-spacing:.08em;
+        text-transform:uppercase;
+        padding:4px 10px;
+        border:1px solid rgba(255,255,255,0.15);
+        border-radius:20px;
+        margin-right:8px;
+        transition:all .2s;
+    " onmouseover="this.style.color='#fff';this.style.borderColor='rgba(255,255,255,0.4)'"
+       onmouseout="this.style.color='rgba(255,255,255,0.55)';this.style.borderColor='rgba(255,255,255,0.15)'">
+        ← Home
+    </a>
     <span class="header-logo-dot"></span>
     INSIDER WORDLE
   </div>
@@ -955,13 +972,13 @@ const CAMPUS_DAILY = [
 function getTodayKey(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function getDailyWord(){
   const d = new Date();
-  const start = new Date(2026,0,1);
+  const start = new Date(2026,3,7);
   const idx = Math.floor((d-start)/(1000*60*60*24)) % CAMPUS_DAILY.length;
   return CAMPUS_DAILY[idx];
 }
 function getWordNum(){
   const d = new Date();
-  const start = new Date(2026,0,1);
+  const start = new Date(2026,3,7);
   return Math.floor((d-start)/(1000*60*60*24))+1;
 }
 
