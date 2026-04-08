@@ -145,15 +145,13 @@
             margin: 0 auto;
         }
 
-        /* Tech Team Members - 3 columns on desktop, responsive */
+        /* Tech Team Members - 4 columns in one row */
         .tech-members-grid {
-            /* Change repeat(auto-fit, minmax(300px, 1fr)) to: */
             display: grid;
-            grid-template-columns: repeat(2, 1fr); 
-            
-            max-width: 1200px;
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 1600px;
             margin: 0 auto;
-            gap: 2rem; /* Adds space between the two columns */
+            gap: 2rem;
         }
 
         /* Member Cards */
@@ -357,9 +355,12 @@
                 grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             }
 
-            .editorial-grid,
-            .tech-members-grid {
+            .editorial-grid {
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+
+            .tech-members-grid {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
@@ -405,10 +406,13 @@
                 line-height: 1.4;
             }
 
-            /* Force smaller grids on medium screens */
-            .editorial-grid,
-            .tech-members-grid {
+            .editorial-grid {
                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                max-width: 800px;
+            }
+
+            .tech-members-grid {
+                grid-template-columns: repeat(2, 1fr);
                 max-width: 800px;
             }
         }
@@ -441,10 +445,14 @@
             /* All grids become single column on tablet and below */
             .team-grid,
             .founders-grid,
-            .editorial-grid,
-            .tech-members-grid {
+            .editorial-grid {
                 grid-template-columns: 1fr !important;
                 max-width: 450px !important;
+            }
+
+            .tech-members-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                max-width: 500px !important;
             }
             
             .member-card,
@@ -899,9 +907,7 @@
                 </div>
             </div>
 
-            <!-- Tech Team Members -->
-
-            
+            <!-- Tech Team Members - all 4 in one row -->
             <div class="team-grid tech-members-grid" style="margin-top: 2rem;">
 
                 <div class="member-card">
