@@ -145,14 +145,23 @@
             margin: 0 auto;
         }
 
-        /* Tech Team Members - 4 columns in one row */
-        .tech-members-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            max-width: 1600px;
-            margin: 0 auto;
-            gap: 2rem;
-        }
+        /* Tech Team Members - centered flex row, wraps cleanly */
+.tech-members-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.tech-members-grid .member-card {
+    flex: 0 1 calc((100% - 4rem) / 3);  /* 3 per row on desktop */
+    width: auto;
+    max-width: 380px;
+    height: auto;
+    min-height: 330px;
+}
 
         /* Member Cards */
         .member-card {
@@ -367,9 +376,7 @@
                 grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             }
 
-            .tech-members-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
+            
         }
 
         @media (max-width: 900px) {
@@ -420,79 +427,85 @@
             }
 
             .tech-members-grid {
-                grid-template-columns: repeat(2, 1fr);
-                max-width: 800px;
-            }
+    max-width: 800px;
+}
+.tech-members-grid .member-card {
+    flex: 0 1 calc((100% - 2rem) / 2);  /* 2 per row, teesra card center mein */
+}
         }
 
         @media (max-width: 768px) {
-            .hero {
-                padding: 100px 0 50px;
-            }
-            
-            .hero h1 {
-                font-size: 2.8rem;
-                line-height: 1.2;
-            }
-            
-            .hero p {
-                font-size: 1.2rem;
-                padding: 0 1rem;
-                line-height: 1.5;
-            }
-            
-            .team-section {
-                padding: 50px 0;
-            }
-            
-            .team-section h2 {
-                font-size: 2rem;
-                margin-bottom: 2rem;
-            }
-            
-            /* All grids become single column on tablet and below */
-            .team-grid,
-            .founders-grid,
-            .editorial-grid {
-                grid-template-columns: 1fr !important;
-                max-width: 450px !important;
-            }
+    .hero {
+        padding: 100px 0 50px;
+    }
 
-            .tech-members-grid {
-                grid-template-columns: 1fr !important;
-                max-width: 450px !important;
-            }
-            
-            .member-card,
-            .founder-card {
-                width: 100%;
-                max-width: 400px;
-                height: auto;
-                min-height: 350px;
-                padding: 1.5rem;
-            }
-            
-            .avatar-placeholder {
-                width: 150px;
-                height: 150px;
-                font-size: 1.5rem;
-                margin-bottom: 1rem;
-            }
-            
-            .member-role {
-                font-size: 1.3rem;
-                line-height: 1.3;
-            }
-            
-            .member-info h3 {
-                font-size: 1.3rem;
-                line-height: 1.4;
-            }
-            
-            .container {
-                padding: 0 15px;
-            }
-        }
+    .hero h1 {
+        font-size: 2.8rem;
+        line-height: 1.2;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        padding: 0 1rem;
+        line-height: 1.5;
+    }
+
+    .team-section {
+        padding: 50px 0;
+    }
+
+    .team-section h2 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    /* All grids become single column on tablet and below */
+    .team-grid,
+    .founders-grid,
+    .editorial-grid {
+        grid-template-columns: 1fr !important;
+        max-width: 450px !important;
+    }
+
+    /* Tech members: flex hai, isliye grid-template-columns nahi chahiye */
+    .tech-members-grid {
+        max-width: 450px !important;
+    }
+
+    .tech-members-grid .member-card {
+        flex: 1 1 100%;
+    }
+
+    .member-card,
+    .founder-card {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        min-height: 350px;
+        padding: 1.5rem;
+    }
+
+    .avatar-placeholder {
+        width: 150px;
+        height: 150px;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .member-role {
+        font-size: 1.3rem;
+        line-height: 1.3;
+    }
+
+    .member-info h3 {
+        font-size: 1.3rem;
+        line-height: 1.4;
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+}
 
         @media (max-width: 600px) {
             .member-card,
@@ -749,27 +762,45 @@
                     <div class="member-info">
                         <h3>Mimansha Kumar</h3>
                         <p class="member-role">President</p>
-                        <p class="member-info">Editor-In-Chief</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <!-- card 2 -->
-                <div class="founder-card">
+    <!-- Vice Presidents -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="fade-up">Vice Presidents</h2>
+            <div class="team-grid faculty-grid">
+                <div class="member-card">
                     <div class="avatar-wrapper">
                         <div class="avatar-placeholder">
-                            <img src="riddhima.png" alt="Riddhima">
+                            <img src="palak.png" alt="Palak Goyal">
                         </div>
 
-                        <a class="linkedin-link" href="http://www.linkedin.com/in/riddhima-batra-937242317" target="_blank"
+                        <!-- TODO: add LinkedIn link when available in sheet -->
+                    </div>
+                    <div class="member-info">
+                        <h3>Palak Goyal</h3>
+                        <p class="member-role">Vice President (Tech)</p>
+                    </div>
+                </div>
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="anoushkag.png" alt="Anoushka Gupta">
+                        </div>
+
+                        <a class="linkedin-link" href="http://www.linkedin.com/in/anoushka-gupta-331163319" target="_blank"
                             rel="noopener" aria-label="Connect on LinkedIn">
                             <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
                                 width="32" height="32">
                         </a>
                     </div>
                     <div class="member-info">
-                        <h3>Riddhima Batra</h3>
-                        <p class="member-role">Vice President</p>
-                        <p class="member-info">Associate Editor</p>
+                        <h3>Anoushka Gupta</h3>
+                        <p class="member-role">Vice President (Non-Tech)</p>
                     </div>
                 </div>
             </div>
@@ -781,6 +812,49 @@
         <div class="container">
             <h2 class="fade-up">Secretary</h2>
             <div class="team-grid secretary-grid">
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="muskan.png" alt="Muskan">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/muskan-goel-apr10" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Muskan Goel</h3>
+                        <p class="member-role">Secretary</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Editorial Team -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="fade-up">Editorial Team</h2>
+            <div class="team-grid editorial-grid">
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="KeeratKaur.jpeg" alt="Keerat Kaur">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/keeratkaurbhatia?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Keerat Kaur</h3>
+                        <p class="member-role">Associate Editor</p>
+                    </div>
+                </div>
                 <div class="member-card">
                     <div class="avatar-wrapper">
                         <div class="avatar-placeholder">
@@ -799,62 +873,48 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Editorial Team -->
-    <section class="team-section">
-        <div class="container">
-            <h2 class="fade-up">Editorial Team</h2>
-            <div class="team-grid editorial-grid">
+            <div class="team-grid editorial-grid" style="margin-top: 2rem;">
                 <div class="member-card">
                     <div class="avatar-wrapper">
                         <div class="avatar-placeholder">
-                            <img src="anoushkag.png" alt="Anoushka Gupta">
+                            <img src="avni.png" alt="Avni Arora">
                         </div>
 
-                        <a class="linkedin-link" href="http://www.linkedin.com/in/anoushka-gupta-331163319" target="_blank"
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/avni-arora-/" target="_blank"
                             rel="noopener" aria-label="Connect on LinkedIn">
                             <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
                                 width="32" height="32">
                         </a>
                     </div>
                     <div class="member-info">
-                        <h3>Anoushka Gupta</h3>
+                        <h3>Avni Arora</h3>
                         <p class="member-role">Assistant Editor</p>
                     </div>
                 </div>
                 <div class="member-card">
                     <div class="avatar-wrapper">
                         <div class="avatar-placeholder">
-                            <img src="KeeratKaur.jpeg" alt="Keerat Kaur">
+                            <img src="pranavi.png" alt="Pranavi Mendiratta">
                         </div>
 
-                        <a class="linkedin-link" href="https://www.linkedin.com/in/keeratkaurbhatia?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank"
-                            rel="noopener" aria-label="Connect on LinkedIn">
-                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
-                                width="32" height="32">
-                        </a>
+                        <!-- TODO: add LinkedIn link when available in sheet -->
                     </div>
                     <div class="member-info">
-                        <h3>Keerat Kaur</h3>
+                        <h3>Pranavi Mendiratta</h3>
                         <p class="member-role">Assistant Editor</p>
                     </div>
                 </div>
                 <div class="member-card">
                     <div class="avatar-wrapper">
                         <div class="avatar-placeholder">
-                            <img src="muskan.png" alt="Muskan">
+                            <img src="gunnika.png" alt="Gunnika Aggarwal">
                         </div>
 
-                        <a class="linkedin-link" href="https://www.linkedin.com/in/muskan-goel-apr10" target="_blank"
-                            rel="noopener" aria-label="Connect on LinkedIn">
-                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
-                                width="32" height="32">
-                        </a>
+                        <!-- TODO: add LinkedIn link when available in sheet -->
                     </div>
                     <div class="member-info">
-                        <h3>Muskan Goel</h3>
+                        <h3>Gunnika Aggarwal</h3>
                         <p class="member-role">Assistant Editor</p>
                     </div>
                 </div>
@@ -867,6 +927,22 @@
         <div class="container">
             <h2 class="fade-up">Design Team</h2>
             <div class="team-grid design-grid">
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="mansa.png" alt="Mansa Kaur">
+                        </div>
+
+                        <!-- TODO: add LinkedIn link when available in sheet -->
+                    </div>
+                    <div class="member-info">
+                        <h3>Mansa Kaur</h3>
+                        <p class="member-role">Design Head</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-grid design-grid" style="margin-top: 2rem;">
                 <div class="member-card">
                     <div class="avatar-wrapper">
                         <div class="avatar-placeholder">
@@ -888,12 +964,75 @@
         </div>
     </section>
 
+    <!-- PR Team -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="fade-up">PR Team</h2>
+            <div class="team-grid secretary-grid">
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="Gauri.jpeg" alt="Gauri">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/gauri-sharma-10073931a?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Gauri Sharma</h3>
+                        <p class="member-role">PR Head</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EM Team -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="fade-up">EM Team</h2>
+            <div class="team-grid editorial-grid">
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="anshika.png" alt="Anshika">
+                        </div>
+
+                        <a class="linkedin-link" href="https://www.linkedin.com/in/anshika-prajapati-36252b36b?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank"
+                            rel="noopener" aria-label="Connect on LinkedIn">
+                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
+                                width="32" height="32">
+                        </a>
+                    </div>
+                    <div class="member-info">
+                        <h3>Anshika</h3>
+                        <p class="member-role">EM Head</p>
+                    </div>
+                </div>
+                <div class="member-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-placeholder">
+                            <img src="aarushi.png" alt="Aarushi Singh">
+                        </div>
+
+                        <!-- TODO: add LinkedIn link when available in sheet -->
+                    </div>
+                    <div class="member-info">
+                        <h3>Aarushi Singh</h3>
+                        <p class="member-role">EM Co-Head</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Tech Team -->
     <section class="team-section">
         <div class="container">
             <h2 class="fade-up">Tech Team</h2>
-
-            <!-- Tech Team Lead -->
             <div class="team-grid tech-lead-grid">
                 <div class="member-card">
                     <div class="avatar-wrapper">
@@ -909,31 +1048,12 @@
                     </div>
                     <div class="member-info">
                         <h3>Surabhi Sethi</h3>
-                        <p class="member-role">Assistant Web Manager</p>
+                        <p class="member-role">Tech Head</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Tech Team Members - all 4 in one row -->
             <div class="team-grid tech-members-grid" style="margin-top: 2rem;">
-
-                <div class="member-card">
-                    <div class="avatar-wrapper">
-                        <div class="avatar-placeholder">
-                            <img src="Gauri.jpeg" alt="Gauri">
-                        </div>
-
-                        <a class="linkedin-link" href="https://www.linkedin.com/in/gauri-sharma-10073931a?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank"
-                            rel="noopener" aria-label="Connect on LinkedIn">
-                            <img src="https://img.icons8.com/?size=100&id=447&format=png&color=ffffff" alt="LinkedIn"
-                                width="32" height="32">
-                        </a>
-                    </div>
-                    <div class="member-info">
-                        <h3>Gauri Sharma</h3>
-                    </div>
-                </div>
-
                 <div class="member-card">
                     <div class="avatar-wrapper">
                         <div class="avatar-placeholder">
@@ -950,7 +1070,6 @@
                         <h3>Kanika Narayan</h3>
                     </div>
                 </div>
-
                 <div class="member-card">
                     <div class="avatar-wrapper">
                         <div class="avatar-placeholder">
@@ -967,7 +1086,6 @@
                         <h3>Srishti Gupta</h3>
                     </div>
                 </div>
-
                 <div class="member-card">
                     <div class="avatar-wrapper">
                         <div class="avatar-placeholder">
@@ -984,7 +1102,6 @@
                         <h3>Tanisha Sharma</h3>
                     </div>
                 </div>
-                
             </div>
         </div>
     </section>
